@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illustration - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>Illustration</h1>
+                <p>Traditional and digital illustrations</p>
+            </div>
+            
+            <section class="gallery-section">
+                <h2 class="section-title">Artwork</h2>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be dynamically populated -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <button class="lightbox-prev" id="lightboxPrev">&#8249;</button>
+        <img id="lightbox-img" class="lightbox-content">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+        <button class="lightbox-next" id="lightboxNext">&#8250;</button>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+  
+    <script>
+        // Gallery data will be populated by generate.js
+        const galleryData = [
+          {
+                    "title": "Donut On A Unicorn",
+                    "image": "images/illustration/Donut on a Unicorn-f.png",
+                    "description": "Donut On A Unicorn artwork",
+                    "category": "illustration"
+          },
+          {
+                    "title": "Googly Eyes",
+                    "image": "images/illustration/Googly Eyes-f.jpg",
+                    "description": "Googly Eyes artwork",
+                    "category": "illustration"
+          },
+          {
+                    "title": "Josh Morningstar Poster",
+                    "image": "images/illustration/Josh Morningstar Poster-f.jpg",
+                    "description": "Josh Morningstar Poster artwork",
+                    "category": "illustration"
+          },
+          {
+                    "title": "The Totem",
+                    "image": "images/illustration/The Totem-f.jpg",
+                    "description": "The Totem artwork",
+                    "category": "illustration"
+          },
+          {
+                    "title": "Mother's Day Card",
+                    "image": "images/illustration/mothersdaycard.png",
+                    "description": "Mother's Day Card artwork",
+                    "category": "illustration"
+          },
+          {
+                    "title": "The Politician",
+                    "image": "images/illustration/thepolititian.jpg",
+                    "description": "The Politician artwork",
+                    "category": "illustration"
+          }
+];
+
+        // Initialize gallery when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (galleryData.length > 0) {
+                generateGallery('#galleryGrid', galleryData);
+            } else {
+                document.getElementById('galleryGrid').innerHTML = '<div class="no-content"><p>No illustration images found. Add images to the images/illustration/ folder and run "node generate.js"</p></div>';
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script>
+      // Set current year in footer
+      document.addEventListener('DOMContentLoaded', function() {
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+          yearSpan.textContent = new Date().getFullYear();
+        }
+      });
+    </script>
+    <script>
+    // Inject shared navigation
+    fetch('nav.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').outerHTML = html;
+        // Initialize navigation functionality after loading
+        initializeNavigation();
+      });
+    </script>
+</body>
+</html>

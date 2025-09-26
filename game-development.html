@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Development - Dirtpickle's Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>Game Development</h1>
+                <p>Interactive experiences and games</p>
+            </div>
+            
+            <section class="project-section">
+                <div class="project-showcase">
+                    <div class="game-container">
+                        <div id="game-preview" class="game-preview">
+                            <div class="game-thumbnail">
+                                <img src="game/Attack of the Pigmen/icons/loading-logo.png" alt="Attack of the Pigmen" />
+                                <div class="play-overlay">
+                                    <button id="play-game-btn" class="play-button">
+                                        <span class="play-icon">▶</span>
+                                        <span class="play-text">Play Game</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="game-info">
+                                <h3>Attack of the Pigmen</h3>
+                                <p>Top-down shooter game - Click to play on itch.io</p>
+                            </div>
+                        </div>
+                        <iframe 
+                            id="game-iframe" 
+                            src="" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            width="640" 
+                            height="380" 
+                            style="display:none;max-width:100%;border-radius:8px;">
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dirtpickle. Portfolio site built with HTML, CSS & JavaScript.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+<script>
+// Inject shared navigation
+fetch('nav.html')
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('nav-placeholder').outerHTML = html;
+        // Initialize navigation functionality after loading
+        initializeNavigation();
+    });
+
+// Game loading functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const playButton = document.getElementById('play-game-btn');
+    const gamePreview = document.getElementById('game-preview');
+    const gameIframe = document.getElementById('game-iframe');
+    
+    if (playButton) {
+        playButton.addEventListener('click', function() {
+            // Hide the preview
+            gamePreview.style.display = 'none';
+            // Set the iframe source to load the itch.io game
+            gameIframe.src = 'https://itch.io/embed-upload/5666853?color=2d3444';
+            gameIframe.style.display = 'block';
+        });
+    }
+});
+</script>
+</body>
+</html>

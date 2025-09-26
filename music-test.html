@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Music Test</h1>
+        <div id="music-container" class="music-grid">
+            <!-- Music players will be dynamically populated -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Test music data
+        const testMusicData = [
+            {
+                "title": "07   Kormon Boys",
+                "src": "music/07 - Kormon Boys.mp3"
+            },
+            {
+                "title": "Lounge",
+                "src": "music/lounge.mp3"
+            }
+        ];
+        
+        // Generate music players when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded');
+            alert('Test page loaded with ' + testMusicData.length + ' tracks');
+            try {
+                generateConsolidatedMusicPlayer('#music-container', testMusicData);
+                alert('Music player function called successfully');
+            } catch (error) {
+                alert('Error calling music player: ' + error.message);
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

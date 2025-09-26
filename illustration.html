@@ -44,42 +44,78 @@
     <script>
         // Gallery data will be populated by generate.js
         const galleryData = [
-          {
-                    "title": "Donut On A Unicorn",
-                    "image": "images/illustration/Donut on a Unicorn-f.png",
-                    "description": "Donut On A Unicorn artwork",
-                    "category": "illustration"
-          },
-          {
-                    "title": "Googly Eyes",
-                    "image": "images/illustration/Googly Eyes-f.jpg",
-                    "description": "Googly Eyes artwork",
-                    "category": "illustration"
-          },
-          {
-                    "title": "Josh Morningstar Poster",
-                    "image": "images/illustration/Josh Morningstar Poster-f.jpg",
-                    "description": "Josh Morningstar Poster artwork",
-                    "category": "illustration"
-          },
-          {
-                    "title": "The Totem",
-                    "image": "images/illustration/The Totem-f.jpg",
-                    "description": "The Totem artwork",
-                    "category": "illustration"
-          },
-          {
-                    "title": "Mother's Day Card",
-                    "image": "images/illustration/mothersdaycard.png",
-                    "description": "Mother's Day Card artwork",
-                    "category": "illustration"
-          },
-          {
-                    "title": "The Politician",
-                    "image": "images/illustration/thepolititian.jpg",
-                    "description": "The Politician artwork",
-                    "category": "illustration"
-          }
+    {
+        "title": "AVASKULL",
+        "image": "images/illustration/AVASKULL.jpg",
+        "fullImage": "images/illustration/AVASKULL.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "Donut On A Unicorn",
+        "image": "images/illustration/Donut on a Unicorn-f.png",
+        "fullImage": "images/illustration/Donut on a Unicorn-f.png",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "DPO1 11",
+        "image": "images/illustration/DPO1_11.jpg",
+        "fullImage": "images/illustration/DPO1_11.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "DPO2",
+        "image": "images/illustration/DPO2.jpg",
+        "fullImage": "images/illustration/DPO2.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "Googly Eyes",
+        "image": "images/illustration/Googly Eyes-f.jpg",
+        "fullImage": "images/illustration/Googly Eyes-f.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "Josh Morningstar Poster",
+        "image": "images/illustration/Josh Morningstar Poster-f.jpg",
+        "fullImage": "images/illustration/Josh Morningstar Poster-f.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "Mothersdaycard",
+        "image": "images/illustration/mothersdaycard.png",
+        "fullImage": "images/illustration/mothersdaycard.png",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "The Totem",
+        "image": "images/illustration/The Totem-f.jpg",
+        "fullImage": "images/illustration/The Totem-f.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    },
+    {
+        "title": "Thepolititian",
+        "image": "images/illustration/thepolititian.jpg",
+        "fullImage": "images/illustration/thepolititian.jpg",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Creative Work"
+    }
 ];
 
         // Initialize gallery when page loads
@@ -109,6 +145,9 @@
         document.getElementById('nav-placeholder').outerHTML = html;
         // Initialize navigation functionality after loading
         initializeNavigation();
+        // Set active nav link for this page
+        const illustrationLinks = document.querySelectorAll('a[href="illustration.html"]');
+        illustrationLinks.forEach(link => link.classList.add('active'));
       });
     </script>
 </body>

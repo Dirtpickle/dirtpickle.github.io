@@ -3,33 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get in touch with Dirtpickle for creative collaborations, commissions, and project inquiries.">
     <title>Contact - Dirtpickle's Portfolio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+    <!-- Inline Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-link">
+                    <span>Main</span>
+                </a>
+                <a href="game-development.html" class="nav-link">
+                    <span>Games</span>
+                </a>
+                <a href="art.html" class="nav-link">
+                    <span>Art</span>
+                </a>
+                <a href="3d.html" class="nav-link">
+                    <span>3D</span>
+                </a>
+                <a href="video.html" class="nav-link">
+                    <span>Videos</span>
+                </a>
+                <a href="audio.html" class="nav-link">
+                    <span>Audio</span>
+                </a>
+                <a href="contact.html" class="nav-link active">
+                    <span>Contact</span>
+                </a>
+            </div>
+            <button id="mobile-toggle" class="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <div class="mobile-menu-content">
+            <a href="index.html" class="nav-link">
+                <span>Main</span>
+            </a>
+            <a href="game-development.html" class="nav-link">
+                <span>Games</span>
+            </a>
+            <a href="art.html" class="nav-link">
+                <span>Art</span>
+            </a>
+            <a href="3d.html" class="nav-link">
+                <span>3D</span>
+            </a>
+            <a href="video.html" class="nav-link">
+                <span>Videos</span>
+            </a>
+            <a href="audio.html" class="nav-link">
+                <span>Audio</span>
+            </a>
+            <a href="contact.html" class="nav-link active">
+                <span>Contact</span>
+            </a>
+        </div>
+    </div>
+    <div id="mobile-backdrop" class="mobile-backdrop"></div>
+
     <main class="main-content">
-        <section class="hero-section" style="text-align:center; margin-bottom:2.5rem;">
-            <h1 class="hero-title" style="font-size:2.5rem; font-weight:700; margin-bottom:0.5rem; letter-spacing:-0.03em; color:#fff;">Contact</h1>
-            <p class="hero-subtitle" style="color:#a3a3a3; font-size:1.15rem;">Want to get in touch? Email me at <a href="mailto:dirtpickle@gmail.com" style="color:#2563eb;">dirtpickle@gmail.com</a> or use the links below.</p>
-        </section>
-    </main>
-    <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Dirtpickle. Portfolio site built with HTML, CSS & JavaScript.</p>
+            <div class="hero">
+                <h1>Let's Work Together</h1>
+                <p class="hero-subtitle">Ready to bring your creative vision to life? I'm available for freelance projects, collaborations, and commissions.</p>
+            </div>
+            
+            <!-- Contact Form Section -->
+            <section class="contact-section">
+                <div class="contact-form-container">
+                    <div class="contact-form-wrapper">
+                        <h2>Get In Touch</h2>
+                        <p class="form-description">Ready to collaborate? Send me a message and I'll get back to you within 24 hours.</p>
+                        
+                        <form id="contact-form" class="contact-form" action="https://formspree.io/f/xnngnkkn" method="POST">
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="_replyto" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a topic...</option>
+                                    <option value="Game Art & Design">Game Art & Design</option>
+                                    <option value="Illustration Work">Illustration Work</option>
+                                    <option value="Music Composition">Music Composition</option>
+                                    <option value="3D Modeling & Animation">3D Modeling & Animation</option>
+                                    <option value="Collaboration">Collaboration</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="budget">Project Budget (Optional)</label>
+                                <select id="budget" name="budget">
+                                    <option value="">Select budget range...</option>
+                                    <option value="Under $500">Under $500</option>
+                                    <option value="$500 - $1,000">$500 - $1,000</option>
+                                    <option value="$1,000 - $2,500">$1,000 - $2,500</option>
+                                    <option value="$2,500 - $5,000">$2,500 - $5,000</option>
+                                    <option value="$5,000+">$5,000+</option>
+                                    <option value="Let's discuss">Let's discuss</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="timeline">Project Timeline (Optional)</label>
+                                <select id="timeline" name="timeline">
+                                    <option value="">Select timeline...</option>
+                                    <option value="ASAP">ASAP</option>
+                                    <option value="Within 1 week">Within 1 week</option>
+                                    <option value="2-4 weeks">2-4 weeks</option>
+                                    <option value="1-2 months">1-2 months</option>
+                                    <option value="3+ months">3+ months</option>
+                                    <option value="Flexible">Flexible</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" placeholder="Tell me about your project, goals, and any specific requirements..." required></textarea>
+                            </div>
+                            
+                            <!-- Formspree honeypot field -->
+                            <input type="text" name="_gotcha" style="display:none" />
+                            
+                            <button type="submit" class="submit-btn">
+                                <span class="btn-text">Send Message</span>
+                                <span class="btn-loading" style="display: none;">Sending...</span>
+                            </button>
+                        </form>
+                        
+                        <div id="form-status" class="form-status" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="info-card">
+                            <h3>Response Time</h3>
+                            <p>I typically respond to all inquiries within 24 hours during business days.</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>Project Process</h3>
+                            <p>After your initial message, we'll schedule a brief call to discuss your project details and timeline.</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>Portfolio Review</h3>
+                            <p>Feel free to browse my work while you're here to get a sense of my style and capabilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="mailto:contact@dirtpickle.com">Email</a>
+                    <span class="footer-separator">|</span>
+                    <a href="https://github.com/dirtpickle" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <p>&copy; 2025 Dirtpickle. Portfolio site built with HTML, CSS & JavaScript.</p>
+            </div>
         </div>
     </footer>
+
     <script src="script.js"></script>
-</body>
-<script>
-// Inject shared navigation
-fetch('nav.html')
-    .then(res => res.text())
-    .then(html => {
-        document.getElementById('nav-placeholder').outerHTML = html;
-        // Initialize navigation functionality after loading
-        initializeNavigation();
-    });
-</script>
+    <script>
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            } else {
+                setTimeout(function() {
+                    if (typeof initializeNavigation === 'function') {
+                        initializeNavigation();
+                    }
+                }, 100);
+            }
+            
+            // Initialize contact form
+            initializeContactForm();
+        });
+        
+        function initializeContactForm() {
+            const form = document.getElementById('contact-form');
+            const statusDiv = document.getElementById('form-status');
+            const submitBtn = form.querySelector('.submit-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'block';
+                statusDiv.style.display = 'none';
+                
+                try {
+                    // If using Netlify forms (recommended for GitHub Pages)
+                    const formData = new FormData(form);
+                    
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams(formData).toString()
+                    });
+                    
+                    if (response.ok) {
+                        showStatus('Thank you! Your message has been sent. I\'ll get back to you within 24 hours.', 'success');
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                } catch (error) {
+                    showStatus('Sorry, there was an error sending your message. Please try again or contact me directly.', 'error');
+                }
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+            });
+            
+            function showStatus(message, type) {
+                statusDiv.textContent = message;
+                statusDiv.className = `form-status ${type}`;
+                statusDiv.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
 </body>
 </html>

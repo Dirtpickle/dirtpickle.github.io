@@ -48,6 +48,9 @@ fetch('nav.html')
     document.getElementById('nav-placeholder').outerHTML = html;
     // Initialize navigation functionality after loading
     initializeNavigation();
+    // Set active nav link for this page
+    const characterLinks = document.querySelectorAll('a[href="character-design.html"]');
+    characterLinks.forEach(link => link.classList.add('active'));
   });
 </script>
     <script>
@@ -55,45 +58,59 @@ fetch('nav.html')
         const galleryData = [
     {
         "title": "Bronson Export",
-        "image": "images/character-design/bronson-export.png",
+        "image": "images/character-design/bronson-export-professional-f.png",
+        "fullImage": "images/character-design/bronson-export-professional-f.png",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Professional"
     },
     {
         "title": "Charachters Large",
-        "image": "images/character-design/charachters_large.png",
+        "image": "images/character-design/charachters_large-professional.png",
+        "fullImage": "images/character-design/charachters_large-professional.png",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Professional"
     },
     {
         "title": "Duik Rig Attack",
-        "image": "images/character-design/Duik-Rig-Attack.gif",
+        "image": "images/character-design/Duik-Rig-Attack-personal.gif",
+        "fullImage": "images/character-design/Duik-Rig-Attack-personal.gif",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Personal Project"
     },
     {
         "title": "Duik Rig Walk Cycle",
-        "image": "images/character-design/Duik-Rig-Walk-Cycle.gif",
+        "image": "images/character-design/Duik-Rig-Walk-Cycle-personal.gif",
+        "fullImage": "images/character-design/Duik-Rig-Walk-Cycle-personal.gif",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Personal Project"
     },
     {
-        "title": "Eyeball F",
-        "image": "images/character-design/Eyeball-f.png",
+        "title": "Eyeball",
+        "image": "images/character-design/Eyeball-wip-f.png",
+        "fullImage": "images/character-design/Eyeball-wip-f.png",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Work in Progress"
     },
     {
-        "title": "Reaper2 Export",
-        "image": "images/character-design/reaper2-export.png",
+        "title": "Reaper Profile Professionalpng",
+        "image": "images/character-design/Reaper Profile-professionalpng.png",
+        "fullImage": "images/character-design/Reaper Profile-professionalpng.png",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Professional"
     },
     {
-        "title": "Walker Hayes F",
-        "image": "images/character-design/Walker Hayes-f.jpg",
+        "title": "Walker Hayes",
+        "image": "images/character-design/Walker Hayes-client-f.jpg",
+        "fullImage": "images/character-design/Walker Hayes-client-f.jpg",
         "type": "image",
-        "category": "character-design"
+        "category": "character-design",
+        "workType": "Client Work"
     }
 ];
         

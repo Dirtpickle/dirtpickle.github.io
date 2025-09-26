@@ -1,31 +1,38 @@
-// Initialize Navigation (called after nav.html is loaded)
+// Portfolio JavaScript - Clean Version
+
+// Navigation
 function initializeNavigation() {
-    // Mobile Menu Toggle
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileBackdrop = document.getElementById('mobile-backdrop');
 
     function openMobileMenu() {
-        if (mobileMenu) {
+        if (mobileMenu && mobileBackdrop) {
             mobileMenu.classList.add('active');
-            if (mobileBackdrop) mobileBackdrop.classList.add('active');
+            mobileBackdrop.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
     }
 
     function closeMobileMenu() {
-        if (mobileMenu) {
+        if (mobileMenu && mobileBackdrop) {
             mobileMenu.classList.remove('active');
-            if (mobileBackdrop) mobileBackdrop.classList.remove('active');
+            mobileBackdrop.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
     }
 
-    if (mobileToggle) mobileToggle.addEventListener('click', openMobileMenu);
-    if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', openMobileMenu);
+    }
+    
+    if (mobileBackdrop) {
+        mobileBackdrop.addEventListener('click', closeMobileMenu);
+    }
 
     // Close mobile menu when clicking a link
-    document.querySelectorAll('.mobile-menu-content a').forEach(link => {
+    const mobileLinks = document.querySelectorAll('.mobile-menu .nav-link');
+    mobileLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
     });
 
@@ -37,28 +44,37 @@ function initializeNavigation() {
     });
 }
 
-// Lightbox Functionality
+// Lightbox functionality
 function openLightbox(src, caption) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
-    // Clean up the filename for the caption
+    
+    if (!lightbox || !lightboxImg || !lightboxCaption) {
+        return;
+    }
+
+    // Clean up caption
     let displayCaption = caption;
     if (!displayCaption || displayCaption.trim() === '') {
-        // Extract filename from src
         const base = src.split('/').pop();
         displayCaption = base
-            .replace(/-f(?=\.[^/.]+$)/, '') // Remove -f before extension
-            .replace(/\.[^/.]+$/, '') // Remove extension
+            .replace(/-f(?=\.[^/.]+$)/, '')
+            .replace(/\.[^/.]+$/, '')
             .replace(/[-_]+/g, ' ')
             .replace(/\b\w/g, c => c.toUpperCase());
     }
-    if (lightbox && lightboxImg && lightboxCaption) {
-        lightbox.style.display = 'block';
-        lightboxImg.src = src;
-        lightboxCaption.textContent = displayCaption;
-        document.body.style.overflow = 'hidden';
-    }
+    
+    lightbox.style.display = 'block';
+    lightboxImg.src = src;
+    lightboxCaption.textContent = displayCaption;
+    document.body.style.overflow = 'hidden';
+    
+    // Disable pointer events on navigation and other content
+    const nav = document.querySelector('nav');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (nav) nav.style.pointerEvents = 'none';
+    if (mobileMenu) mobileMenu.style.pointerEvents = 'none';
 }
 
 function closeLightbox() {
@@ -66,31 +82,16 @@ function closeLightbox() {
     if (lightbox) {
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
+        
+        // Re-enable pointer events on navigation and other content
+        const nav = document.querySelector('nav');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (nav) nav.style.pointerEvents = 'auto';
+        if (mobileMenu) mobileMenu.style.pointerEvents = 'auto';
     }
 }
 
-// Close lightbox on outside click
-document.addEventListener('DOMContentLoaded', function() {
-    const lightbox = document.getElementById('lightbox');
-    if (lightbox) {
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLightbox();
-            }
-        });
-    }
-});
-
-// Close lightbox on escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeLightbox();
-    }
-});
-
-// Music Player Functionality (using ConsolidatedMusicPlayer class below)
-
-// Consolidated Music Player Class
+// Music Player Class
 class ConsolidatedMusicPlayer {
     constructor(container, musicData) {
         this.container = container;
@@ -113,13 +114,23 @@ class ConsolidatedMusicPlayer {
     }
     
     init() {
+        if (!this.audio) return;
+
         // Control event listeners
-        this.playPauseBtn.addEventListener('click', () => this.togglePlay());
-        this.prevBtn.addEventListener('click', () => this.previousTrack());
-        this.nextBtn.addEventListener('click', () => this.nextTrack());
+        if (this.playPauseBtn) {
+            this.playPauseBtn.addEventListener('click', () => this.togglePlay());
+        }
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.previousTrack());
+        }
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.nextTrack());
+        }
         
         // Progress bar click to seek
-        this.progressBar.addEventListener('click', (e) => this.seekToPosition(e));
+        if (this.progressBar) {
+            this.progressBar.addEventListener('click', (e) => this.seekToPosition(e));
+        }
         
         // Audio event listeners
         this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
@@ -129,34 +140,51 @@ class ConsolidatedMusicPlayer {
         this.audio.addEventListener('pause', () => this.updatePlayButton(false));
         
         // Track list event listeners
-        this.trackList.addEventListener('click', (e) => {
-            if (e.target.closest('.track-item')) {
-                const trackIndex = parseInt(e.target.closest('.track-item').dataset.track);
-                this.playTrack(trackIndex);
-            }
-        });
+        if (this.trackList) {
+            this.trackList.addEventListener('click', (e) => {
+                const trackItem = e.target.closest('.track-item');
+                if (trackItem) {
+                    const trackIndex = parseInt(trackItem.dataset.track);
+                    this.playTrack(trackIndex);
+                }
+            });
+        }
     }
     
     togglePlay() {
+        if (!this.audio) return;
+        
         if (this.isPlaying) {
             this.audio.pause();
         } else {
-            this.audio.play();
+            this.audio.play().catch(e => console.log('Play failed:', e));
         }
     }
     
     playTrack(index) {
+        if (index < 0 || index >= this.musicData.length) return;
+        
         this.currentTrack = index;
         this.audio.src = this.musicData[index].src;
-        this.currentTitle.textContent = this.musicData[index].title;
+        
+        if (this.currentTitle) {
+            this.currentTitle.textContent = this.musicData[index].title;
+        }
         
         // Update active track in playlist
-        this.trackList.querySelectorAll('.track-item').forEach(item => item.classList.remove('active'));
-        this.trackList.querySelector(`[data-track="${index}"]`).classList.add('active');
+        if (this.trackList) {
+            this.trackList.querySelectorAll('.track-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeTrack = this.trackList.querySelector(`[data-track="${index}"]`);
+            if (activeTrack) {
+                activeTrack.classList.add('active');
+            }
+        }
         
         this.audio.load();
         if (this.isPlaying) {
-            this.audio.play();
+            this.audio.play().catch(e => console.log('Play failed:', e));
         }
     }
     
@@ -171,67 +199,130 @@ class ConsolidatedMusicPlayer {
     }
     
     seekToPosition(e) {
-        if (this.audio.duration) {
-            const rect = this.progressBar.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            const clickPercent = clickX / width;
-            const seekTime = clickPercent * this.audio.duration;
-            this.audio.currentTime = Math.max(0, Math.min(seekTime, this.audio.duration));
-        }
+        if (!this.audio.duration) return;
+        
+        const rect = this.progressBar.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        const clickPercent = clickX / width;
+        const seekTime = clickPercent * this.audio.duration;
+        this.audio.currentTime = Math.max(0, Math.min(seekTime, this.audio.duration));
     }
     
     updateProgress() {
-        if (this.audio.duration) {
-            const progress = (this.audio.currentTime / this.audio.duration) * 100;
+        if (!this.audio.duration) return;
+        
+        const progress = (this.audio.currentTime / this.audio.duration) * 100;
+        if (this.progressFill) {
             this.progressFill.style.width = progress + '%';
-            
-            // Format time display
-            const currentMin = Math.floor(this.audio.currentTime / 60);
-            const currentSec = Math.floor(this.audio.currentTime % 60);
-            const totalMin = Math.floor(this.audio.duration / 60);
-            const totalSec = Math.floor(this.audio.duration % 60);
-            
+        }
+        
+        // Format time display
+        const currentMin = Math.floor(this.audio.currentTime / 60);
+        const currentSec = Math.floor(this.audio.currentTime % 60);
+        const totalMin = Math.floor(this.audio.duration / 60);
+        const totalSec = Math.floor(this.audio.duration % 60);
+        
+        if (this.currentTime) {
             this.currentTime.textContent = `${currentMin}:${String(currentSec).padStart(2, '0')}`;
+        }
+        if (this.totalTime) {
             this.totalTime.textContent = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
         }
     }
     
     updateDuration() {
-        if (this.audio.duration) {
+        if (this.audio.duration && this.trackList) {
             const trackItem = this.trackList.querySelector(`[data-track="${this.currentTrack}"]`);
-            const durationSpan = trackItem.querySelector('.track-duration');
-            const min = Math.floor(this.audio.duration / 60);
-            const sec = Math.floor(this.audio.duration % 60);
-            durationSpan.textContent = `${min}:${String(sec).padStart(2, '0')}`;
+            const durationSpan = trackItem ? trackItem.querySelector('.track-duration') : null;
+            if (durationSpan) {
+                const min = Math.floor(this.audio.duration / 60);
+                const sec = Math.floor(this.audio.duration % 60);
+                durationSpan.textContent = `${min}:${String(sec).padStart(2, '0')}`;
+            }
         }
     }
     
     updatePlayButton(playing) {
         this.isPlaying = playing;
-        // Toggle SVG play/pause icon
-        const svg = this.playPauseBtn.querySelector('svg');
-        if (!svg) return;
-        const playIcon = svg.querySelector('#play-icon');
-        if (playing) {
-            // Show pause (two rectangles)
-            if (playIcon) playIcon.setAttribute('points', '13,10 13,22 16,22 16,10 20,10 20,22 23,22 23,10');
-        } else {
-            // Show play (triangle)
-            if (playIcon) playIcon.setAttribute('points', '13,10 13,22 23,16');
+        if (!this.playPauseBtn) return;
+        
+        const playIcon = this.playPauseBtn.querySelector('#play-icon');
+        if (playIcon) {
+            if (playing) {
+                // Show pause (two rectangles)
+                playIcon.innerHTML = '<rect x="11" y="10" width="3" height="12" fill="white"/><rect x="18" y="10" width="3" height="12" fill="white"/>';
+            } else {
+                // Show play (triangle)
+                playIcon.innerHTML = '<polygon points="13,10 13,22 23,16" fill="white"/>';
+            }
         }
     }
 }
 
-// Gallery Grid Auto-generation (for pages with galleries)
+// Video Lazy Loading Implementation
+function initVideoLazyLoading() {
+    const lazyVideos = document.querySelectorAll('.lazy-video');
+    
+    if ('IntersectionObserver' in window) {
+        // Modern browser support
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    loadVideo(video);
+                    videoObserver.unobserve(video);
+                }
+            });
+        }, {
+            rootMargin: '50px' // Start loading 50px before the video enters viewport
+        });
+        
+        lazyVideos.forEach(video => {
+            videoObserver.observe(video);
+        });
+    } else {
+        // Fallback for older browsers
+        lazyVideos.forEach(video => {
+            loadVideo(video); // Just load all videos immediately
+        });
+    }
+}
+
+function loadVideo(video) {
+    // Load the video source
+    const dataSrc = video.getAttribute('data-src');
+    if (dataSrc) {
+        // Set the source
+        const source = video.querySelector('source');
+        if (source) {
+            source.src = source.getAttribute('data-src');
+        }
+        video.src = dataSrc;
+        
+        // Change preload to metadata to get first frame
+        video.preload = 'metadata';
+        
+        // Remove lazy class
+        video.classList.remove('lazy-video');
+        
+        // Load the video
+        video.load();
+        
+        // Optional: Auto-load first frame
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = 0.5; // Get frame at 0.5 seconds
+        });
+    }
+}
+
+// Gallery generation with lazy loading
 function generateGallery(containerSelector, mediaData) {
     const container = document.querySelector(containerSelector);
     if (!container || !mediaData) {
-        console.log('❌ Gallery generation failed: container or data missing');
+        console.log('Gallery generation failed: container or data missing');
         return;
     }
-    
-    console.log('🎯 Generating gallery for', containerSelector, 'with', mediaData.length, 'items');
     
     container.innerHTML = '';
     
@@ -241,81 +332,76 @@ function generateGallery(containerSelector, mediaData) {
         
         // Clean up the title
         const cleanTitle = item.title
-            .replace(/-f$/, '') // Remove -f suffix
-            .replace(/[-_]+/g, ' ') // Replace dashes/underscores with spaces
-            .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize words
+            .replace(/-f$/, '')
+            .replace(/[-_]+/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase());
         
-        // Get category from item or derive from filename/path
+        // Get category
         let category = item.category || 'Artwork';
         if (category === 'character-design') category = 'Character Design';
         if (category === 'game-art') category = 'Game Art';
         if (category === 'illustration') category = 'Illustration';
         if (category === '3d') category = '3D Art';
         
-        // Handle both images and videos
+        // Get work type
+        const workType = item.workType || 'Creative Work';
+        
+        // Handle videos and images
         if (item.video) {
-            // Video item
-            console.log(`🎬 Creating video gallery item ${index}: ${cleanTitle} (${item.video})`);
             galleryItem.className += ' video-item';
             
-            // Use custom thumbnail if available, otherwise use video thumbnail
-            const thumbnailSrc = item.thumbnail ? item.thumbnail : `${item.video}#t=0.5`;
-            const thumbnailElement = item.thumbnail 
-                ? `<img src="${item.thumbnail}" alt="${cleanTitle}" class="video-thumbnail">`
-                : `<video class="video-thumbnail" preload="metadata" muted><source src="${thumbnailSrc}" type="video/mp4"></video>`;
+            // Use placeholder image or create a data-src for lazy loading
+            const thumbnailSrc = item.thumbnail ? item.thumbnail : '';
             
             galleryItem.innerHTML = `
                 <div class="video-thumb" onclick="openVideoModal('${item.video}', '${cleanTitle}')">
-                    ${thumbnailElement}
+                    ${thumbnailSrc ? 
+                        `<img src="${item.thumbnail}" alt="${cleanTitle}" class="video-thumbnail" loading="lazy">` :
+                        `<video class="video-thumbnail lazy-video" 
+                               data-src="${item.video}" 
+                               preload="none" 
+                               muted 
+                               playsinline>
+                            <source data-src="${item.video}" type="video/mp4">
+                        </video>`
+                    }
                     <div class="play-overlay"></div>
                     <div class="gallery-overlay">
                         <div class="gallery-title">${cleanTitle}</div>
                         <div class="gallery-type">${category}</div>
+                        <div class="gallery-work-type">${workType}</div>
                     </div>
                 </div>
             `;
         } else {
-            // Image item
-            console.log(`📷 Creating image gallery item ${index}: ${cleanTitle} (${item.image})`);
-            
             galleryItem.innerHTML = `
                 <img src="${item.image}" alt="${cleanTitle}" loading="lazy" onclick="openLightbox('${item.image}', '${cleanTitle}')">
                 <div class="gallery-overlay">
                     <div class="gallery-title">${cleanTitle}</div>
                     <div class="gallery-type">${category}</div>
+                    <div class="gallery-work-type">${workType}</div>
                 </div>
             `;
         }
         
-        // Add loading animation delay for smoother appearance
+        // Add loading animation delay
         galleryItem.style.animationDelay = `${index * 0.1}s`;
-        
         container.appendChild(galleryItem);
-        
-        // Handle loading for both images and videos
-        if (item.image) {
-            const img = galleryItem.querySelector('img');
-            img.addEventListener('load', () => {
-                img.classList.remove('loading');
-                console.log(`✅ Image loaded: ${item.image}`);
-            });
-            
-            img.addEventListener('error', () => {
-                img.classList.add('error');
-                console.error(`❌ Image failed to load: ${item.image}`);
-            });
-        }
     });
     
-    console.log('🎯 Gallery generation complete');
+    // Initialize video lazy loading after gallery is created
+    initVideoLazyLoading();
 }
 
-// Gallery Grid Auto-generation (for pages with galleries)
+// Enhanced gallery generation (alias for backward compatibility)
+function generateEnhancedGallery(containerSelector, mediaData) {
+    generateGallery(containerSelector, mediaData);
+}
+
+// Music player generation
 function generateConsolidatedMusicPlayer(containerSelector, musicData) {
     const container = document.querySelector(containerSelector);
     if (!container || !musicData) return;
-    
-    let currentTrack = 0;
     
     const playerHTML = `
         <div class="music-player-unit">
@@ -324,26 +410,28 @@ function generateConsolidatedMusicPlayer(containerSelector, musicData) {
                     <h3 id="current-title">${musicData[0].title}</h3>
                 </div>
                 <div class="player-controls">
-                    <button id="prev-btn" class="audio-icon-btn" title="Previous">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="rgba(255,45,85,0.15)"/>
-                            <polygon points="15,7 15,17 8,12" fill="#fff"/>
+                    <button id="prev-btn" class="control-btn" title="Previous">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <polygon points="19,20 9,12 19,4" fill="currentColor"/>
+                            <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/>
                         </svg>
                     </button>
-                    <button id="play-pause-btn" class="audio-icon-btn accent" title="Play/Pause">
-                        <svg id="play-pause-svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="16" r="16" fill="#ff2d55"/>
-                            <polygon id="play-icon" points="13,10 13,22 23,16" fill="#fff"/>
+                    <button id="play-pause-btn" class="control-btn play-btn" title="Play/Pause">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <g id="play-icon">
+                                <polygon points="13,10 13,22 23,16" fill="white"/>
+                            </g>
                         </svg>
                     </button>
-                    <button id="next-btn" class="audio-icon-btn" title="Next">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="rgba(255,45,85,0.15)"/>
-                            <polygon points="9,7 9,17 16,12" fill="#fff"/>
+                    <button id="next-btn" class="control-btn" title="Next">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <polygon points="5,4 15,12 5,20" fill="currentColor"/>
+                            <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/>
                         </svg>
                     </button>
                 </div>
             </div>
+            
             <div class="progress-container">
                 <span class="current-time" id="current-time">0:00</span>
                 <div class="progress-bar-wrapper">
@@ -353,6 +441,7 @@ function generateConsolidatedMusicPlayer(containerSelector, musicData) {
                 </div>
                 <span class="total-time" id="total-time">0:00</span>
             </div>
+            
             <div class="playlist">
                 <h4>Playlist</h4>
                 <div class="track-list" id="track-list">
@@ -365,6 +454,7 @@ function generateConsolidatedMusicPlayer(containerSelector, musicData) {
                     `).join('')}
                 </div>
             </div>
+            
             <audio id="main-audio" preload="metadata">
                 <source src="${musicData[0].src}" type="audio/mpeg">
             </audio>
@@ -372,43 +462,67 @@ function generateConsolidatedMusicPlayer(containerSelector, musicData) {
     `;
     
     container.innerHTML = playerHTML;
-    
-    // Initialize the consolidated player
-    new ConsolidatedMusicPlayer(container, musicData);
+    return new ConsolidatedMusicPlayer(container, musicData);
 }
 
-// Video Modal Functions for Mixed Media Galleries
+// Enhanced video modal with lazy loading
 function openVideoModal(src, caption) {
-    // Create video modal if it doesn't exist
     let modal = document.getElementById('video-modal');
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'video-modal';
-        modal.className = 'lightbox';
-        modal.style.display = 'none';
+        modal.className = 'video-modal';
         modal.innerHTML = `
-            <span class="lightbox-close" onclick="closeVideoModal()">&times;</span>
-            <div class="video-container">
-                <video id="modal-video" class="modal-video" controls preload="metadata">
+            <button class="video-close" onclick="closeVideoModal()">&times;</button>
+            <div class="video-modal-content">
+                <div class="video-loading" id="video-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading video...</p>
+                </div>
+                <video id="modal-video" class="modal-video" controls preload="none" style="display: none;">
                     <source id="modal-video-src" src="" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button id="fullscreen-btn" onclick="toggleVideoFullscreen()" class="fullscreen-btn" title="Fullscreen">⛶</button>
             </div>
             <div id="video-modal-caption" class="lightbox-caption"></div>
         `;
         document.body.appendChild(modal);
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeVideoModal();
+            }
+        });
     }
     
     const video = document.getElementById('modal-video');
     const source = document.getElementById('modal-video-src');
-    const cap = document.getElementById('video-modal-caption');
+    const captionElement = document.getElementById('video-modal-caption');
+    const loadingElement = document.getElementById('video-loading');
     
-    source.src = src;
-    video.load();
-    cap.textContent = caption;
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    if (source && video && captionElement) {
+        // Show loading state
+        loadingElement.style.display = 'block';
+        video.style.display = 'none';
+        
+        // Set up video
+        source.src = src;
+        video.load();
+        captionElement.textContent = caption;
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Hide loading when video is ready
+        video.addEventListener('canplay', () => {
+            loadingElement.style.display = 'none';
+            video.style.display = 'block';
+        }, { once: true });
+        
+        // Handle loading errors
+        video.addEventListener('error', () => {
+            loadingElement.innerHTML = '<p>Error loading video</p>';
+        }, { once: true });
+    }
 }
 
 function closeVideoModal() {
@@ -426,35 +540,35 @@ function closeVideoModal() {
     }
 }
 
-function toggleVideoFullscreen() {
-    const video = document.getElementById('modal-video');
-    if (video) {
-        if (video.requestFullscreen) {
-            video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
+// Initialize everything when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeNavigation();
+    
+    // Close lightbox on outside click
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+    }
+    
+    // Close modals with escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            closeVideoModal();
         }
-    }
-}
-
-// Close video modal when clicking outside
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('video-modal');
-    if (modal && e.target === modal) {
-        closeVideoModal();
-    }
+    });
 });
 
-// Close video modal with Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeVideoModal();
-    }
-});
- 
- // Expose gallery and modal functions globally for inline HTML usage
- window.generateGallery = generateGallery;
- window.openVideoModal = openVideoModal;
- window.openLightbox = openLightbox;
+// Export functions for global access
+window.initializeNavigation = initializeNavigation;
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
+window.openVideoModal = openVideoModal;
+window.closeVideoModal = closeVideoModal;
+window.generateGallery = generateGallery;
+window.generateEnhancedGallery = generateEnhancedGallery;
+window.generateConsolidatedMusicPlayer = generateConsolidatedMusicPlayer;

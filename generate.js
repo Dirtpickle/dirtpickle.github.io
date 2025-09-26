@@ -13,7 +13,18 @@ const SUPPORTED_EXTENSIONS = [
 function formatTitle(filename) {
     return filename
         .replace(/\.[^/.]+$/, '') // Remove extension
-        .replace(/[-_]+/g, ' ')   // Replace dashes/underscores with spaces
+        // Remove tag suffixes before formatting
+        .replace(/-f$|_f$/, '') // Remove featured tags
+        .replace(/-professional$|_professional$/, '') // Remove professional tags
+        .replace(/-client$|_client$/, '') // Remove client tags
+        .replace(/-personal$|_personal$/, '') // Remove personal tags
+        .replace(/-concept$|_concept$/, '') // Remove concept tags
+        .replace(/-commission$|_commission$/, '') // Remove commission tags
+        .replace(/-portfolio$|_portfolio$/, '') // Remove portfolio tags
+        .replace(/-study$|_study$/, '') // Remove study tags
+        .replace(/-wip$|_wip$/, '') // Remove wip tags
+        .replace(/-demo$|_demo$/, '') // Remove demo tags
+        .replace(/[-_]+/g, ' ')   // Replace remaining dashes/underscores with spaces
         .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize
 }
 
@@ -24,6 +35,53 @@ function getMediaType(filename) {
     if (['.mp4', '.mov', '.avi', '.webm'].includes(ext)) return 'video';
     if (['.mp3', '.wav', '.ogg', '.m4a'].includes(ext)) return 'audio';
     return 'unknown';
+}
+
+// Get work type based on filename tags (similar to -f for featured)
+function getWorkType(filename) {
+    const lower = filename.toLowerCase();
+    
+    // Check for specific tags in filename
+    if (lower.includes('-professional') || lower.includes('_professional')) return 'Professional';
+    if (lower.includes('-client') || lower.includes('_client')) return 'Client Work';
+    if (lower.includes('-personal') || lower.includes('_personal')) return 'Personal Project';
+    if (lower.includes('-concept') || lower.includes('_concept')) return 'Concept Art';
+    if (lower.includes('-commission') || lower.includes('_commission')) return 'Commission';
+    if (lower.includes('-portfolio') || lower.includes('_portfolio')) return 'Portfolio Piece';
+    if (lower.includes('-study') || lower.includes('_study')) return 'Study';
+    if (lower.includes('-wip') || lower.includes('_wip')) return 'Work in Progress';
+    if (lower.includes('-demo') || lower.includes('_demo')) return 'Demo';
+    
+    return 'Creative Work'; // Default
+}
+
+// Check if a thumbnail exists for a given file
+function findThumbnail(originalPath) {
+    const parsedPath = path.parse(originalPath);
+    const category = path.basename(path.dirname(originalPath));
+    
+    // Common image extensions for thumbnails
+    const thumbExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+    
+    // Try different thumbnail naming patterns
+    const patterns = [
+        parsedPath.name, // Exact match
+        parsedPath.name + '_thumb', // With _thumb suffix
+        parsedPath.name + '-thumb', // With -thumb suffix
+        parsedPath.name.replace(/\s+/g, '_'), // Spaces as underscores
+        parsedPath.name.replace(/\s+/g, '_') + '_thumb' // Spaces as underscores + thumb
+    ];
+    
+    for (const pattern of patterns) {
+        for (const ext of thumbExtensions) {
+            const thumbPath = `thumbnails/${category}/${pattern}${ext}`;
+            if (fs.existsSync(thumbPath)) {
+                return thumbPath;
+            }
+        }
+    }
+    
+    return null; // No thumbnail found
 }
 
 // Universal directory scanner - works for ANY directory
@@ -48,13 +106,16 @@ function scanDirectory(dir) {
                 if (SUPPORTED_EXTENSIONS.includes(ext)) {
                     const mediaType = getMediaType(file);
                     const relativePath = path.relative('.', filePath).replace(/\\/g, '/');
+                    const thumbnailPath = findThumbnail(relativePath);
                     
                     items.push({
                         title: formatTitle(file),
                         filename: file,
                         path: relativePath,
+                        thumbnail: thumbnailPath, // Add thumbnail if available
                         type: mediaType,
-                        category: path.basename(path.dirname(relativePath))
+                        category: path.basename(path.dirname(relativePath)),
+                        workType: getWorkType(file)
                     });
                 }
             }
@@ -82,21 +143,26 @@ function updatePageData(htmlFile, dataArrayName, items) {
             if (item.type === 'audio') {
                 return {
                     title: item.title,
-                    src: item.path
+                    src: item.path,
+                    workType: item.workType
                 };
             } else if (item.type === 'video') {
                 return {
                     title: item.title,
                     video: item.path,
+                    thumbnail: item.thumbnail, // Use thumbnail for video preview
                     type: 'video',
-                    category: item.category
+                    category: item.category,
+                    workType: item.workType
                 };
             } else {
                 return {
                     title: item.title,
-                    image: item.path,
+                    image: item.thumbnail || item.path, // Use thumbnail if available, fallback to original
+                    fullImage: item.path, // Keep original path for full view
                     type: 'image',
-                    category: item.category
+                    category: item.category,
+                    workType: item.workType
                 };
             }
         });
@@ -133,7 +199,7 @@ function generateAll() {
         { file: 'audio.html', dataName: 'musicData', filter: item => item.type === 'audio' }
     ];
     
-    // Scan all directories once
+    // Scan all directories once (excluding thumbnails - they're for display only)
     const allItems = [
         ...scanDirectory('./images'),
         ...scanDirectory('./video'),

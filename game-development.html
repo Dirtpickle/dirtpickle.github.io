@@ -7,7 +7,67 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+    <!-- Inline Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-link">
+                    <span>Main</span>
+                </a>
+                <a href="game-development.html" class="nav-link active">
+                    <span>Games</span>
+                </a>
+                <a href="art.html" class="nav-link">
+                    <span>Art</span>
+                </a>
+                <a href="3d.html" class="nav-link">
+                    <span>3D</span>
+                </a>
+                <a href="video.html" class="nav-link">
+                    <span>Videos</span>
+                </a>
+                <a href="audio.html" class="nav-link">
+                    <span>Audio</span>
+                </a>
+                <a href="contact.html" class="nav-link">
+                    <span>Contact</span>
+                </a>
+            </div>
+            <button id="mobile-toggle" class="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <div class="mobile-menu-content">
+            <a href="index.html" class="nav-link">
+                <span>Main</span>
+            </a>
+            <a href="game-development.html" class="nav-link active">
+                <span>Games</span>
+            </a>
+            <a href="art.html" class="nav-link">
+                <span>Art</span>
+            </a>
+            <a href="3d.html" class="nav-link">
+                <span>3D</span>
+            </a>
+            <a href="video.html" class="nav-link">
+                <span>Videos</span>
+            </a>
+            <a href="audio.html" class="nav-link">
+                <span>Audio</span>
+            </a>
+            <a href="contact.html" class="nav-link">
+                <span>Contact</span>
+            </a>
+        </div>
+    </div>
+    <div id="mobile-backdrop" class="mobile-backdrop"></div>
 
     <main class="main-content">
         <div class="container">
@@ -56,33 +116,33 @@
     </footer>
 
     <script src="script.js"></script>
-</body>
-<script>
-// Inject shared navigation
-fetch('nav.html')
-    .then(res => res.text())
-    .then(html => {
-        document.getElementById('nav-placeholder').outerHTML = html;
-        // Initialize navigation functionality after loading
-        initializeNavigation();
-    });
-
-// Game loading functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const playButton = document.getElementById('play-game-btn');
-    const gamePreview = document.getElementById('game-preview');
-    const gameIframe = document.getElementById('game-iframe');
-    
-    if (playButton) {
-        playButton.addEventListener('click', function() {
-            // Hide the preview
-            gamePreview.style.display = 'none';
-            // Set the iframe source to load the itch.io game
-            gameIframe.src = 'https://itch.io/embed-upload/5666853?color=2d3444';
-            gameIframe.style.display = 'block';
+    <script>
+        // Game loading functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            } else {
+                setTimeout(function() {
+                    if (typeof initializeNavigation === 'function') {
+                        initializeNavigation();
+                    }
+                }, 100);
+            }
+            
+            const playButton = document.getElementById('play-game-btn');
+            const gamePreview = document.getElementById('game-preview');
+            const gameIframe = document.getElementById('game-iframe');
+            
+            if (playButton) {
+                playButton.addEventListener('click', function() {
+                    // Hide the preview
+                    gamePreview.style.display = 'none';
+                    // Set the iframe source to load the itch.io game
+                    gameIframe.src = 'https://itch.io/embed-upload/5666853?color=2d3444';
+                    gameIframe.style.display = 'block';
+                });
+            }
         });
-    }
-});
-</script>
+    </script>
 </body>
 </html>

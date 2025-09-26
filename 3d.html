@@ -7,7 +7,67 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+    <!-- Inline Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-link">
+                    <span>Main</span>
+                </a>
+                <a href="game-development.html" class="nav-link">
+                    <span>Games</span>
+                </a>
+                <a href="art.html" class="nav-link">
+                    <span>Art</span>
+                </a>
+                <a href="3d.html" class="nav-link active">
+                    <span>3D</span>
+                </a>
+                <a href="video.html" class="nav-link">
+                    <span>Videos</span>
+                </a>
+                <a href="audio.html" class="nav-link">
+                    <span>Audio</span>
+                </a>
+                <a href="contact.html" class="nav-link">
+                    <span>Contact</span>
+                </a>
+            </div>
+            <button id="mobile-toggle" class="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <div class="mobile-menu-content">
+            <a href="index.html" class="nav-link">
+                <span>Main</span>
+            </a>
+            <a href="game-development.html" class="nav-link">
+                <span>Games</span>
+            </a>
+            <a href="art.html" class="nav-link">
+                <span>Art</span>
+            </a>
+            <a href="3d.html" class="nav-link active">
+                <span>3D</span>
+            </a>
+            <a href="video.html" class="nav-link">
+                <span>Videos</span>
+            </a>
+            <a href="audio.html" class="nav-link">
+                <span>Audio</span>
+            </a>
+            <a href="contact.html" class="nav-link">
+                <span>Contact</span>
+            </a>
+        </div>
+    </div>
+    <div id="mobile-backdrop" class="mobile-backdrop"></div>
 
     <main class="main-content">
         <div class="container">
@@ -32,55 +92,40 @@
 
     <script src="script.js"></script>
     <script>
-        // Inject shared navigation
-        fetch('nav.html')
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('nav-placeholder').outerHTML = html;
-                // Initialize navigation functionality after loading
-                initializeNavigation();
-            });
-
         // 3D gallery data (will be populated by generator)
         const threeDData = [
     {
         "title": "Blender Sculpt Behelit",
-        "video": "3d/Blender Sculpt Behelit.mp4",
+        "video": "3d/Blender Sculpt Behelit-personal-f.mp4",
+        "thumbnail": null,
         "type": "video",
-        "category": "3d"
+        "category": "3d",
+        "workType": "Personal Project"
     },
     {
         "title": "Stronghold Ad   Nachise",
-        "video": "3d/Stronghold Ad - Nachise.mp4",
+        "video": "3d/Stronghold Ad - Nachise-client.mp4",
+        "thumbnail": null,
         "type": "video",
-        "category": "3d"
+        "category": "3d",
+        "workType": "Client Work"
     }
 ];
         
-        console.log('3D Gallery data:', threeDData); // Debug output
-        
         // Generate 3D gallery when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (threeDData.length > 0) {
-                const galleryContainer = document.getElementById('gallery-container');
-                if (galleryContainer) {
-                    generateGallery('#gallery-container', threeDData);
-                } else {
-                    console.error('gallery-container element not found!');
-                }
-                
-                // Debug: Check what was actually created
-                setTimeout(() => {
-                    const container = document.getElementById('gallery-container');
-                    if (container) {
-                        const videos = container.querySelectorAll('video');
-                        const images = container.querySelectorAll('img');
-                        console.log('Created', videos.length, 'video elements and', images.length, 'image elements');
-                        videos.forEach((video, index) => {
-                            console.log(`Video ${index}: src="${video.src}"`);
-                        });
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            } else {
+                setTimeout(function() {
+                    if (typeof initializeNavigation === 'function') {
+                        initializeNavigation();
                     }
-                }, 1000);
+                }, 100);
+            }
+            
+            if (threeDData.length > 0) {
+                generateGallery('#gallery-container', threeDData);
             } else {
                 document.getElementById('gallery-container').innerHTML = '<p style="text-align: center; color: #666; padding: 2rem; font-style: italic;">3D collection coming soon... Add videos and images to the 3d/ folder and run "node generate.js"</p>';
             }

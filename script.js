@@ -1,58 +1,124 @@
+// Expose setupMobileMenu globally for dynamic nav injection
+
 // Portfolio JavaScript - Clean Version
 
-// Navigation
-function initializeNavigation() {
+
+
+// Mobile menu setup function
+function setupMobileMenu() {
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileBackdrop = document.getElementById('mobile-backdrop');
+    const hamburgerLines = document.querySelectorAll('.hamburger-line');
 
+    if (!mobileToggle || !mobileMenu || !mobileBackdrop) return;
+
+    // Remove previous event listeners if any (by cloning)
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    const newBackdrop = mobileBackdrop.cloneNode(true);
+    mobileBackdrop.parentNode.replaceChild(newBackdrop, mobileBackdrop);
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+        const isOpen = mobileMenu.classList.contains('active');
+        if (isOpen) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    }
+
+    // Open mobile menu
     function openMobileMenu() {
-        if (mobileMenu && mobileBackdrop) {
-            mobileMenu.classList.add('active');
-            mobileBackdrop.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        mobileMenu.classList.add('active');
+        newBackdrop.classList.add('active');
+        newToggle.setAttribute('aria-expanded', 'true');
+        if (hamburgerLines.length >= 3) {
+            hamburgerLines[0].style.transform = 'rotate(-45deg) translate(-5px, 6px)';
+            hamburgerLines[1].style.opacity = '0';
+            hamburgerLines[2].style.transform = 'rotate(45deg) translate(-5px, -6px)';
         }
+        document.body.style.overflow = 'hidden';
     }
 
+    // Close mobile menu
     function closeMobileMenu() {
-        if (mobileMenu && mobileBackdrop) {
-            mobileMenu.classList.remove('active');
-            mobileBackdrop.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        mobileMenu.classList.remove('active');
+        newBackdrop.classList.remove('active');
+        newToggle.setAttribute('aria-expanded', 'false');
+        if (hamburgerLines.length >= 3) {
+            hamburgerLines[0].style.transform = '';
+            hamburgerLines[1].style.opacity = '';
+            hamburgerLines[2].style.transform = '';
         }
+        document.body.style.overflow = '';
     }
 
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', openMobileMenu);
-    }
-    
-    if (mobileBackdrop) {
-        mobileBackdrop.addEventListener('click', closeMobileMenu);
-    }
+    newToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleMobileMenu();
+    });
+    newBackdrop.addEventListener('click', closeMobileMenu);
 
-    // Close mobile menu when clicking a link
-    const mobileLinks = document.querySelectorAll('.mobile-menu .nav-link');
-    mobileLinks.forEach(link => {
+    // Close menu when clicking on menu links
+    const mobileMenuLinks = mobileMenu.querySelectorAll('.nav-link');
+    mobileMenuLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
     });
 
-    // Close mobile menu on escape key
+    // Close menu on escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 1024 && mobileMenu.classList.contains('active')) {
             closeMobileMenu();
         }
     });
 }
 
-// Lightbox functionality
+// Call setupMobileMenu on DOMContentLoaded (for static nav)
+document.addEventListener('DOMContentLoaded', setupMobileMenu);
+
+// NSFW Blur Toggle
+function toggleNSFWBlur(overlayElement) {
+    const galleryItem = overlayElement.closest('.gallery-item');
+    if (galleryItem) {
+        // Add both 'nsfw-revealed' and 'revealed' for CSS compatibility
+        galleryItem.classList.add('nsfw-revealed');
+        galleryItem.classList.add('revealed');
+        overlayElement.style.display = 'none';
+    }
+}
+
+// Lightbox functionality with zoom and pan
+let lightboxState = {
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    isDragging: false,
+    startX: 0,
+    startY: 0,
+    lastX: 0,
+    lastY: 0
+};
+
 function openLightbox(src, caption) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
-    
+
     if (!lightbox || !lightboxImg || !lightboxCaption) {
         return;
     }
+
+    // Reset zoom and pan state
+    resetLightboxTransform();
 
     // Clean up caption
     let displayCaption = caption;
@@ -64,17 +130,20 @@ function openLightbox(src, caption) {
             .replace(/[-_]+/g, ' ')
             .replace(/\b\w/g, c => c.toUpperCase());
     }
-    
+
     lightbox.style.display = 'block';
     lightboxImg.src = src;
     lightboxCaption.textContent = displayCaption;
     document.body.style.overflow = 'hidden';
-    
+
     // Disable pointer events on navigation and other content
     const nav = document.querySelector('nav');
     const mobileMenu = document.getElementById('mobile-menu');
     if (nav) nav.style.pointerEvents = 'none';
     if (mobileMenu) mobileMenu.style.pointerEvents = 'none';
+
+    // Setup zoom and pan events
+    setupLightboxZoomPan();
 }
 
 function closeLightbox() {
@@ -82,12 +151,188 @@ function closeLightbox() {
     if (lightbox) {
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
-        
+
         // Re-enable pointer events on navigation and other content
         const nav = document.querySelector('nav');
         const mobileMenu = document.getElementById('mobile-menu');
         if (nav) nav.style.pointerEvents = 'auto';
         if (mobileMenu) mobileMenu.style.pointerEvents = 'auto';
+
+        // Reset zoom and pan state
+        resetLightboxTransform();
+        removeLightboxZoomPanEvents();
+    }
+}
+
+// Reset lightbox transform state
+function resetLightboxTransform() {
+    lightboxState = {
+        scale: 1,
+        translateX: 0,
+        translateY: 0,
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        lastX: 0,
+        lastY: 0
+    };
+
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightboxImg) {
+        lightboxImg.style.transform = 'translate(-50%, -50%) scale(1) translate(0px, 0px)';
+        lightboxImg.style.cursor = 'zoom-in';
+    }
+}
+
+// Apply transform to lightbox image
+function updateLightboxTransform() {
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightboxImg) {
+        lightboxImg.style.transform = `translate(-50%, -50%) scale(${lightboxState.scale}) translate(${lightboxState.translateX}px, ${lightboxState.translateY}px)`;
+        lightboxImg.style.cursor = lightboxState.scale > 1 ? 'grab' : 'zoom-in';
+        if (lightboxState.isDragging) {
+            lightboxImg.style.cursor = 'grabbing';
+        }
+    }
+}
+
+// Setup zoom and pan event listeners
+function setupLightboxZoomPan() {
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightbox = document.getElementById('lightbox');
+
+    if (!lightboxImg || !lightbox) return;
+
+    // Mouse wheel zoom
+    const handleWheel = (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        const newScale = Math.max(0.5, Math.min(5, lightboxState.scale + delta));
+
+        if (newScale !== lightboxState.scale) {
+            lightboxState.scale = newScale;
+
+            // If zooming out to 1 or less, reset position
+            if (lightboxState.scale <= 1) {
+                lightboxState.translateX = 0;
+                lightboxState.translateY = 0;
+                lightboxState.scale = 1;
+            }
+
+            updateLightboxTransform();
+        }
+    };
+
+    // Mouse drag for panning
+    const handleMouseDown = (e) => {
+        if (lightboxState.scale > 1) {
+            e.preventDefault();
+            lightboxState.isDragging = true;
+            lightboxState.startX = e.clientX;
+            lightboxState.startY = e.clientY;
+            lightboxState.lastX = lightboxState.translateX;
+            lightboxState.lastY = lightboxState.translateY;
+            updateLightboxTransform();
+        }
+    };
+
+    const handleMouseMove = (e) => {
+        if (lightboxState.isDragging && lightboxState.scale > 1) {
+            e.preventDefault();
+            const deltaX = e.clientX - lightboxState.startX;
+            const deltaY = e.clientY - lightboxState.startY;
+            lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
+            lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
+            updateLightboxTransform();
+        }
+    };
+
+    const handleMouseUp = () => {
+        lightboxState.isDragging = false;
+        updateLightboxTransform();
+    };
+
+    // Touch events for mobile
+    const handleTouchStart = (e) => {
+        if (e.touches.length === 1 && lightboxState.scale > 1) {
+            e.preventDefault();
+            lightboxState.isDragging = true;
+            lightboxState.startX = e.touches[0].clientX;
+            lightboxState.startY = e.touches[0].clientY;
+            lightboxState.lastX = lightboxState.translateX;
+            lightboxState.lastY = lightboxState.translateY;
+        }
+    };
+
+    const handleTouchMove = (e) => {
+        if (e.touches.length === 1 && lightboxState.isDragging && lightboxState.scale > 1) {
+            e.preventDefault();
+            const deltaX = e.touches[0].clientX - lightboxState.startX;
+            const deltaY = e.touches[0].clientY - lightboxState.startY;
+            lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
+            lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
+            updateLightboxTransform();
+        }
+    };
+
+    const handleTouchEnd = () => {
+        lightboxState.isDragging = false;
+        updateLightboxTransform();
+    };
+
+    // Double click/tap to toggle zoom
+    const handleDoubleClick = (e) => {
+        e.preventDefault();
+        if (lightboxState.scale === 1) {
+            lightboxState.scale = 2;
+        } else {
+            lightboxState.scale = 1;
+            lightboxState.translateX = 0;
+            lightboxState.translateY = 0;
+        }
+        updateLightboxTransform();
+    };
+
+    // Store event handlers for cleanup
+    lightboxImg._zoomPanHandlers = {
+        wheel: handleWheel,
+        mousedown: handleMouseDown,
+        mousemove: handleMouseMove,
+        mouseup: handleMouseUp,
+        touchstart: handleTouchStart,
+        touchmove: handleTouchMove,
+        touchend: handleTouchEnd,
+        dblclick: handleDoubleClick
+    };
+
+    // Add event listeners
+    lightboxImg.addEventListener('wheel', handleWheel, { passive: false });
+    lightboxImg.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    lightboxImg.addEventListener('touchstart', handleTouchStart, { passive: false });
+    lightboxImg.addEventListener('touchmove', handleTouchMove, { passive: false });
+    lightboxImg.addEventListener('touchend', handleTouchEnd);
+    lightboxImg.addEventListener('dblclick', handleDoubleClick);
+}
+
+// Remove zoom and pan event listeners
+function removeLightboxZoomPanEvents() {
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    if (lightboxImg && lightboxImg._zoomPanHandlers) {
+        const handlers = lightboxImg._zoomPanHandlers;
+
+        lightboxImg.removeEventListener('wheel', handlers.wheel);
+        lightboxImg.removeEventListener('mousedown', handlers.mousedown);
+        document.removeEventListener('mousemove', handlers.mousemove);
+        document.removeEventListener('mouseup', handlers.mouseup);
+        lightboxImg.removeEventListener('touchstart', handlers.touchstart);
+        lightboxImg.removeEventListener('touchmove', handlers.touchmove);
+        lightboxImg.removeEventListener('touchend', handlers.touchend);
+        lightboxImg.removeEventListener('dblclick', handlers.dblclick);
+
+        delete lightboxImg._zoomPanHandlers;
     }
 }
 
@@ -330,14 +575,19 @@ function generateGallery(containerSelector, mediaData) {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         
+        // Add NSFW class if item is marked as NSFW
+        if (item.nsfw) {
+            galleryItem.className += ' nsfw';
+        }
+        
         // Clean up the title
         const cleanTitle = item.title
             .replace(/-f$/, '')
             .replace(/[-_]+/g, ' ')
             .replace(/\b\w/g, c => c.toUpperCase());
         
-        // Get category
-        let category = item.category || 'Artwork';
+        // Get category - prioritize genre over folder category
+        let category = item.genre || item.category || 'Artwork';
         if (category === 'character-design') category = 'Character Design';
         if (category === 'game-art') category = 'Game Art';
         if (category === 'illustration') category = 'Illustration';
@@ -349,10 +599,8 @@ function generateGallery(containerSelector, mediaData) {
         // Handle videos and images
         if (item.video) {
             galleryItem.className += ' video-item';
-            
             // Use placeholder image or create a data-src for lazy loading
             const thumbnailSrc = item.thumbnail ? item.thumbnail : '';
-            
             galleryItem.innerHTML = `
                 <div class="video-thumb" onclick="openVideoModal('${item.video}', '${cleanTitle}')">
                     ${thumbnailSrc ? 
@@ -371,16 +619,20 @@ function generateGallery(containerSelector, mediaData) {
                         <div class="gallery-type">${category}</div>
                         <div class="gallery-work-type">${workType}</div>
                     </div>
+                    ${item.nsfw ? '<div class="nsfw-overlay" onclick="toggleNSFWBlur(this)"><span>18+ Content<br>Click to View</span></div>' : ''}
                 </div>
             `;
         } else {
+            // Use fullImage if available, otherwise fallback to image
+            const fullImage = item.fullImage || item.image;
             galleryItem.innerHTML = `
-                <img src="${item.image}" alt="${cleanTitle}" loading="lazy" onclick="openLightbox('${item.image}', '${cleanTitle}')">
+                <img src="${item.image}" alt="${cleanTitle}" loading="lazy" onclick="openLightbox('${fullImage}', '${cleanTitle}')">
                 <div class="gallery-overlay">
                     <div class="gallery-title">${cleanTitle}</div>
                     <div class="gallery-type">${category}</div>
                     <div class="gallery-work-type">${workType}</div>
                 </div>
+                ${item.nsfw ? '<div class="nsfw-overlay" onclick="toggleNSFWBlur(this)"><span>18+ Content<br>Click to View</span></div>' : ''}
             `;
         }
         
@@ -542,6 +794,16 @@ function closeVideoModal() {
 
 // Initialize everything when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
+    // Inject shared footer
+    const footerPlaceholder = document.getElementById('footer-placeholder');
+    if (footerPlaceholder) {
+        fetch('footer.html')
+            .then(res => res.text())
+            .then(html => {
+                footerPlaceholder.outerHTML = html;
+            });
+    }
+
     initializeNavigation();
     
     // Close lightbox on outside click

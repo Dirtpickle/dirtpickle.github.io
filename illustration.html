@@ -34,11 +34,7 @@
         <button class="lightbox-next" id="lightboxNext">&#8250;</button>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; <span id="currentYear"></span> Portfolio. All rights reserved.</p>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
   
     <script>
@@ -50,7 +46,8 @@
         "fullImage": "images/illustration/AVASKULL.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "AVASKULL - dark artistic illustration with gothic and macabre elements"
     },
     {
         "title": "Donut On A Unicorn",
@@ -58,7 +55,8 @@
         "fullImage": "images/illustration/Donut on a Unicorn-f.png",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "Donut On A Unicorn - whimsical fantasy artwork combining magical and creative elements"
     },
     {
         "title": "DPO1 11",
@@ -66,7 +64,8 @@
         "fullImage": "images/illustration/DPO1_11.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "DPO1 11 - Digital illustration showcasing artistic creativity and technical skill"
     },
     {
         "title": "DPO2",
@@ -74,7 +73,8 @@
         "fullImage": "images/illustration/DPO2.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "DPO2 - Digital illustration showcasing artistic creativity and technical skill"
     },
     {
         "title": "Googly Eyes",
@@ -82,7 +82,8 @@
         "fullImage": "images/illustration/Googly Eyes-f.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "Googly Eyes - Digital illustration showcasing artistic creativity and technical skill"
     },
     {
         "title": "Josh Morningstar Poster",
@@ -90,7 +91,8 @@
         "fullImage": "images/illustration/Josh Morningstar Poster-f.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "Josh Morningstar Poster - promotional artwork designed for marketing and visual communication"
     },
     {
         "title": "Mothersdaycard",
@@ -98,7 +100,8 @@
         "fullImage": "images/illustration/mothersdaycard.png",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "Mothersdaycard - Digital illustration showcasing artistic creativity and technical skill"
     },
     {
         "title": "The Totem",
@@ -106,7 +109,8 @@
         "fullImage": "images/illustration/The Totem-f.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "The Totem - Digital illustration showcasing artistic creativity and technical skill"
     },
     {
         "title": "Thepolititian",
@@ -114,7 +118,8 @@
         "fullImage": "images/illustration/thepolititian.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Creative Work",
+        "description": "Thepolititian - Digital illustration showcasing artistic creativity and technical skill"
     }
 ];
 
@@ -140,15 +145,14 @@
     <script>
     // Inject shared navigation
     fetch('nav.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('nav-placeholder').outerHTML = html;
-        // Initialize navigation functionality after loading
-        initializeNavigation();
-        // Set active nav link for this page
-        const illustrationLinks = document.querySelectorAll('a[href="illustration.html"]');
-        illustrationLinks.forEach(link => link.classList.add('active'));
-      });
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('nav-placeholder').outerHTML = html;
+                // Set active nav link for this page
+                const illustrationLinks = document.querySelectorAll('a[href="illustration.html"]');
+                illustrationLinks.forEach(link => link.classList.add('active'));
+                setTimeout(setupMobileMenu, 50);
+            });
     </script>
 </body>
 </html>

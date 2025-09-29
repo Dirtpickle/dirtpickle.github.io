@@ -1,0 +1,24 @@
+./android-chrome-192x192.png
+./apple-touch-icon.png
+./favicon-32x32.png
+./images/dirtpickle-portrait.png
+./images/character-design/Eyeball-wip.png
+./images/character-design/Walker Hayes-client-f.jpg
+./images/tattoo/Googly Eyes-client-f.jpg
+./images/tattoo/DPO-2-personal.jpg
+./images/tattoo/DPO-1-persoanal.jpg
+./images/illustration/The Polititian-personal.jpg
+./images/illustration/Donut on a Unicorn-personal-f.png
+./images/illustration/Mothers Day Card-personal-nsfw.png
+./images/illustration/Attack of the Pigmen Promo Art-professional-f.png
+./images/game-art/ui/Player Skins Store-professional.png
+./images/game-art/ui/Weapon Store-professional.png
+./thumbnails/3d/Blender Sculpt Behelit-personal-f-thumb.png
+./thumbnails/3d/Arizona Stronghold Nachise Ad-advert-client_thumb.png
+./thumbnails/video/Floof Troop Motion Graphic-client_thumb.png
+./thumbnails/images/character-design/Walker Hayes-client-f_thumb.jpg
+./thumbnails/images/character-design/Eyeball-wip_thumb.png
+./thumbnails/images/tattoo/Googly Eyes-client-f_thumb.jpg
+./thumbnails/images/illustration/Attack of the Pigmen Promo Art-professional-f_thumb.png
+./thumbnails/images/illustration/Donut on a Unicorn-personal-f_thumb.png
+./thumbnails/images/illustration/The Polititian-personal_thumb.jpg

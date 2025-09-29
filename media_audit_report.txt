@@ -1,0 +1,41 @@
+{'type': 'image', 'path': './android-chrome-192x192.png', 'format': 'PNG', 'size': (192, 192), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 27}
+{'type': 'image', 'path': './apple-touch-icon.png', 'format': 'PNG', 'size': (180, 180), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 25}
+{'type': 'image', 'path': './favicon-32x32.png', 'format': 'PNG', 'size': (32, 32), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 1}
+{'type': 'video', 'path': './3d/Blender Sculpt Behelit-personal-f.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'video', 'path': './3d/Arizona Stronghold Nachise Ad-advert-client.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'video', 'path': './video/Attack of the Pigmen Trailer-advert-professional.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'video', 'path': './video/Attack of the Pigmen Ad-advert-professional.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'video', 'path': './video/Floof Troop Motion Graphic-client.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'video', 'path': './video/Attack of the Pigmen Promo-advert-professional.mp4', 'error': "[Errno 2] No such file or directory: 'ffprobe'"}
+{'type': 'image', 'path': './images/dirtpickle-portrait.png', 'format': 'PNG', 'size': (1024, 1024), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 1223}
+{'type': 'image', 'path': './images/character-design/Duik-Rig-Walk-Cycle-personal.gif', 'format': 'GIF', 'size': (1080, 1080), 'dpi': (72, 72), 'mode': 'P', 'filesize_kb': 916}
+{'type': 'image', 'path': './images/character-design/bronson-export-professional-f.png', 'format': 'PNG', 'size': (256, 256), 'dpi': (72, 72), 'mode': 'RGBA', 'filesize_kb': 3}
+{'type': 'image', 'path': './images/character-design/Duik-Rig-Attack-personal.gif', 'format': 'GIF', 'size': (1080, 1080), 'dpi': (72, 72), 'mode': 'P', 'filesize_kb': 1122}
+{'type': 'image', 'path': './images/character-design/Reaper Profile-professionalpng.png', 'format': 'PNG', 'size': (640, 640), 'dpi': (72, 72), 'mode': 'RGBA', 'filesize_kb': 6}
+{'type': 'image', 'path': './images/character-design/Eyeball-wip.png', 'format': 'PNG', 'size': (1872, 905), 'dpi': (299.9994, 299.9994), 'mode': 'RGB', 'filesize_kb': 343}
+{'type': 'image', 'path': './images/character-design/Walker Hayes-client-f.jpg', 'format': 'JPEG', 'size': (1181, 1748), 'dpi': (300.0, 300.0), 'mode': 'RGB', 'filesize_kb': 201}
+{'type': 'image', 'path': './images/tattoo/Googly Eyes-client-f.jpg', 'format': 'JPEG', 'size': (1034, 1652), 'dpi': (300, 300), 'mode': 'RGB', 'filesize_kb': 288}
+{'type': 'image', 'path': './images/tattoo/DPO-2-personal.jpg', 'format': 'JPEG', 'size': (3446, 3446), 'dpi': (300.0, 300.0), 'mode': 'CMYK', 'filesize_kb': 5618}
+{'type': 'image', 'path': './images/tattoo/DPO-1-persoanal.jpg', 'format': 'JPEG', 'size': (1958, 2919), 'dpi': (300.0, 300.0), 'mode': 'RGB', 'filesize_kb': 1821}
+{'type': 'image', 'path': './images/illustration/Josh Morningstar Poster-client-f.jpg', 'format': 'JPEG', 'size': (1080, 1669), 'dpi': (72, 72), 'mode': 'RGB', 'filesize_kb': 453}
+{'type': 'image', 'path': './images/illustration/Arizona Volleyball Addicts Logo-client.jpg', 'format': 'JPEG', 'size': (1993, 2801), 'dpi': (72, 72), 'mode': 'CMYK', 'filesize_kb': 2824}
+{'type': 'image', 'path': './images/illustration/The Polititian-personal.jpg', 'format': 'JPEG', 'size': (1920, 987), 'dpi': (300.0, 300.0), 'mode': 'RGB', 'filesize_kb': 196}
+{'type': 'image', 'path': './images/illustration/Donut on a Unicorn-personal-f.png', 'format': 'PNG', 'size': (1515, 1469), 'dpi': (299.9994, 299.9994), 'mode': 'RGB', 'filesize_kb': 1121}
+{'type': 'image', 'path': './images/illustration/Mothers Day Card-personal-nsfw.png', 'format': 'PNG', 'size': (1638, 1638), 'dpi': (299.9994, 299.9994), 'mode': 'RGB', 'filesize_kb': 584}
+{'type': 'image', 'path': './images/illustration/The Totem-personal-f.jpg', 'format': 'JPEG', 'size': (881, 907), 'dpi': (72, 72), 'mode': 'RGB', 'filesize_kb': 199}
+{'type': 'image', 'path': './images/illustration/Attack of the Pigmen Promo Art-professional-f.png', 'format': 'PNG', 'size': (3658, 3035), 'dpi': (299.9994, 299.9994), 'mode': 'RGB', 'filesize_kb': 1337}
+{'type': 'image', 'path': './images/game-art/ui/Player Skins Store-professional.png', 'format': 'PNG', 'size': (1734, 968), 'dpi': (95.9866, 95.9866), 'mode': 'RGBA', 'filesize_kb': 36}
+{'type': 'image', 'path': './images/game-art/ui/Weapon Store-professional.png', 'format': 'PNG', 'size': (1134, 635), 'dpi': (96.012, 96.012), 'mode': 'RGB', 'filesize_kb': 12}
+{'type': 'image', 'path': './images/game-art/ui/charachters_large-professional.png', 'format': 'PNG', 'size': (1944, 1554), 'dpi': (72, 72), 'mode': 'RGBA', 'filesize_kb': 120}
+{'type': 'image', 'path': './thumbnails/3d/Blender Sculpt Behelit-personal-f-thumb.png', 'format': 'PNG', 'size': (292, 292), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 109}
+{'type': 'image', 'path': './thumbnails/3d/Arizona Stronghold Nachise Ad-advert-client_thumb.png', 'format': 'PNG', 'size': (667, 667), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 258}
+{'type': 'image', 'path': './thumbnails/video/Floof Troop Motion Graphic-client_thumb.png', 'format': 'PNG', 'size': (512, 512), 'dpi': (71.9836, 71.9836), 'mode': 'RGBA', 'filesize_kb': 212}
+{'type': 'image', 'path': './thumbnails/images/character-design/Walker Hayes-client-f_thumb.jpg', 'format': 'JPEG', 'size': (365, 365), 'dpi': (300, 300), 'mode': 'RGB', 'filesize_kb': 32}
+{'type': 'image', 'path': './thumbnails/images/character-design/Eyeball-wip_thumb.png', 'format': 'PNG', 'size': (521, 521), 'dpi': (299.9994, 299.9994), 'mode': 'RGBA', 'filesize_kb': 142}
+{'type': 'image', 'path': './thumbnails/images/tattoo/Googly Eyes-client-f_thumb.jpg', 'format': 'JPEG', 'size': (906, 906), 'dpi': (300, 300), 'mode': 'RGB', 'filesize_kb': 205}
+{'type': 'image', 'path': './thumbnails/images/illustration/The Totem-personal-f_thumb.jpg', 'format': 'JPEG', 'size': (197, 197), 'dpi': (72, 72), 'mode': 'RGB', 'filesize_kb': 17}
+{'type': 'image', 'path': './thumbnails/images/illustration/Arizona Volleyball Addicts Logo-client_thumb.jpg', 'format': 'JPEG', 'size': (822, 822), 'dpi': (72, 72), 'mode': 'CMYK', 'filesize_kb': 756}
+{'type': 'image', 'path': './thumbnails/images/illustration/Josh Morningstar Poster-client-f_thumb.jpg', 'format': 'JPEG', 'size': (467, 467), 'dpi': (72, 72), 'mode': 'RGB', 'filesize_kb': 50}
+{'type': 'image', 'path': './thumbnails/images/illustration/Attack of the Pigmen Promo Art-professional-f_thumb.png', 'format': 'PNG', 'size': (813, 813), 'dpi': (299.9994, 299.9994), 'mode': 'RGBA', 'filesize_kb': 264}
+{'type': 'image', 'path': './thumbnails/images/illustration/Donut on a Unicorn-personal-f_thumb.png', 'format': 'PNG', 'size': (743, 743), 'dpi': (299.9994, 299.9994), 'mode': 'RGBA', 'filesize_kb': 397}
+{'type': 'image', 'path': './thumbnails/images/illustration/The Polititian-personal_thumb.jpg', 'format': 'JPEG', 'size': (313, 313), 'dpi': (300, 300), 'mode': 'RGB', 'filesize_kb': 29}

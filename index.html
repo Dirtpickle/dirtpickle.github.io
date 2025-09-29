@@ -3,76 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dirtpickle's Portfolio - Multidisciplinary artist specializing in game art, illustration, music composition, and interactive experiences.">
-    <title>Dirtpickle's Portfolio</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Dirtpickle - Game Artist & Developer Portfolio | Character Design, 3D Art, Interactive Experiences</title>
+    <meta name="description" content="Multidisciplinary artist and developer specializing in game art, character design, 3D modeling, illustration, and interactive experiences. Professional portfolio showcasing creative digital work.">
+    <meta name="keywords" content="game artist, character design, 3D modeling, digital art, portfolio, game development, illustration, interactive art, creative developer, visual artist">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/">
+    <meta property="og:title" content="Dirtpickle - Game Artist & Developer Portfolio">
+    <meta property="og:description" content="Multidisciplinary artist specializing in game art, character design, 3D modeling, and interactive experiences.">
+    <meta property="og:image" content="https://dirtpickle.com/images/dirtpickle-portrait.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/">
+    <meta property="twitter:title" content="Dirtpickle - Game Artist & Developer Portfolio">
+    <meta property="twitter:description" content="Multidisciplinary artist specializing in game art, character design, 3D modeling, and interactive experiences.">
+    <meta property="twitter:image" content="https://dirtpickle.com/images/dirtpickle-portrait.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Inline Navigation - No more fetch() calls -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-desktop">
-                <a href="index.html" class="nav-link active">
-                    <span>Main</span>
-                </a>
-                <a href="game-development.html" class="nav-link">
-                    <span>Games</span>
-                </a>
-                <a href="art.html" class="nav-link">
-                    <span>Art</span>
-                </a>
-                <a href="3d.html" class="nav-link">
-                    <span>3D</span>
-                </a>
-                <a href="video.html" class="nav-link">
-                    <span>Videos</span>
-                </a>
-                <a href="audio.html" class="nav-link">
-                    <span>Audio</span>
-                </a>
-                <a href="contact.html" class="nav-link">
-                    <span>Contact</span>
-                </a>
-            </div>
-            <button id="mobile-toggle" class="mobile-toggle">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </nav>
-    
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu">
-        <div class="mobile-menu-content">
-            <a href="index.html" class="nav-link active">
-                <span>Main</span>
-            </a>
-            <a href="game-development.html" class="nav-link">
-                <span>Games</span>
-            </a>
-            <a href="art.html" class="nav-link">
-                <span>Art</span>
-            </a>
-            <a href="3d.html" class="nav-link">
-                <span>3D</span>
-            </a>
-            <a href="video.html" class="nav-link">
-                <span>Videos</span>
-            </a>
-            <a href="audio.html" class="nav-link">
-                <span>Audio</span>
-            </a>
-            <a href="contact.html" class="nav-link">
-                <span>Contact</span>
-            </a>
-        </div>
-    </div>
-    <div id="mobile-backdrop" class="mobile-backdrop"></div>
-
+    <!-- NAV_INCLUDE -->
     <main class="main-content">
         <div class="container">
             <div class="hero">
+                <div class="hero-portrait">
+                    <img src="images/dirtpickle-portrait.png" alt="Dirtpickle" />
+                </div>
                 <h1>Dirtpickle</h1>
                 <p>Multidisciplinary artist and developer specializing in game art, illustration, music composition, and interactive experiences. Passionate about creating unique digital worlds and memorable characters.</p>
             </div>
@@ -86,11 +57,7 @@
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Dirtpickle. Portfolio site built with HTML, CSS & JavaScript.</p>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <!-- Lightbox Modal -->
     <div id="lightbox" class="lightbox">
@@ -104,78 +71,96 @@
         // Featured data - auto-generated by generate.js
         const featuredData = [
     {
-        "title": "Bronson Export",
+        "title": "Attack Of The Pigmen Promo Art",
+        "image": "thumbnails/images/illustration/Attack of the Pigmen Promo Art-professional-f_thumb.png",
+        "fullImage": "images/illustration/Attack of the Pigmen Promo Art-professional-f.png",
+        "type": "image",
+        "category": "illustration",
+        "workType": "Professional",
+        "description": "Attack Of The Pigmen Promo Art - Digital illustration showcasing artistic creativity and technical skill",
+        "nsfw": false
+    },
+    {
+        "title": "Bronson",
         "image": "images/character-design/bronson-export-professional-f.png",
         "fullImage": "images/character-design/bronson-export-professional-f.png",
         "type": "image",
         "category": "character-design",
-        "workType": "Professional"
+        "workType": "Professional",
+        "description": "Bronson - Original character design showcasing creative digital artistry",
+        "nsfw": false
     },
     {
         "title": "Donut On A Unicorn",
-        "image": "images/illustration/Donut on a Unicorn-f.png",
-        "fullImage": "images/illustration/Donut on a Unicorn-f.png",
+        "image": "thumbnails/images/illustration/Donut on a Unicorn-personal-f_thumb.png",
+        "fullImage": "images/illustration/Donut on a Unicorn-personal-f.png",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
-    },
-    {
-        "title": "Eyeball",
-        "image": "images/character-design/Eyeball-wip-f.png",
-        "fullImage": "images/character-design/Eyeball-wip-f.png",
-        "type": "image",
-        "category": "character-design",
-        "workType": "Work in Progress"
+        "workType": "Personal Project",
+        "description": "Donut On A Unicorn - Digital illustration showcasing artistic creativity and technical skill",
+        "nsfw": false
     },
     {
         "title": "Googly Eyes",
-        "image": "images/illustration/Googly Eyes-f.jpg",
-        "fullImage": "images/illustration/Googly Eyes-f.jpg",
+        "image": "thumbnails/images/tattoo/Googly Eyes-client-f_thumb.jpg",
+        "fullImage": "images/tattoo/Googly Eyes-client-f.jpg",
         "type": "image",
-        "category": "illustration",
-        "workType": "Creative Work"
+        "category": "tattoo",
+        "workType": "Client Work",
+        "description": "Googly Eyes - Custom tattoo design combining artistic vision with body art aesthetics",
+        "nsfw": false
     },
     {
         "title": "Josh Morningstar Poster",
-        "image": "images/illustration/Josh Morningstar Poster-f.jpg",
-        "fullImage": "images/illustration/Josh Morningstar Poster-f.jpg",
+        "image": "thumbnails/images/illustration/Josh Morningstar Poster-client-f_thumb.jpg",
+        "fullImage": "images/illustration/Josh Morningstar Poster-client-f.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Client Work",
+        "description": "Josh Morningstar Poster - Digital illustration showcasing artistic creativity and technical skill",
+        "nsfw": false
     },
     {
         "title": "The Totem",
-        "image": "images/illustration/The Totem-f.jpg",
-        "fullImage": "images/illustration/The Totem-f.jpg",
+        "image": "thumbnails/images/illustration/The Totem-personal-f_thumb.jpg",
+        "fullImage": "images/illustration/The Totem-personal-f.jpg",
         "type": "image",
         "category": "illustration",
-        "workType": "Creative Work"
+        "workType": "Personal Project",
+        "description": "The Totem - Digital illustration showcasing artistic creativity and technical skill",
+        "nsfw": false
     },
     {
         "title": "Walker Hayes",
-        "image": "images/character-design/Walker Hayes-client-f.jpg",
+        "image": "thumbnails/images/character-design/Walker Hayes-client-f_thumb.jpg",
         "fullImage": "images/character-design/Walker Hayes-client-f.jpg",
         "type": "image",
         "category": "character-design",
-        "workType": "Client Work"
+        "workType": "Client Work",
+        "description": "Walker Hayes - Original character design showcasing creative digital artistry",
+        "nsfw": false
     },
     {
         "title": "Blender Sculpt Behelit",
         "video": "3d/Blender Sculpt Behelit-personal-f.mp4",
-        "thumbnail": null,
+        "thumbnail": "thumbnails/3d/Blender Sculpt Behelit-personal-f-thumb.png",
         "type": "video",
         "category": "3d",
-        "workType": "Personal Project"
+        "workType": "Personal Project",
+        "description": "Blender Sculpt Behelit - 3D artwork demonstrating dimensional modeling and digital sculpting skills",
+        "genre": "3D Animation",
+        "duration": "PT2M",
+        "nsfw": false,
+        "technique": "3D Modeling",
+        "software": "Blender"
     }
 ];
         
-        // Initialize page - wait for script.js to load
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if functions are available, if not wait a bit
             if (typeof initializeNavigation === 'function') {
                 initializeNavigation();
             } else {
-                // Wait for script.js to load
                 setTimeout(function() {
                     if (typeof initializeNavigation === 'function') {
                         initializeNavigation();
@@ -184,7 +169,6 @@
             }
             
             if (featuredData.length > 0) {
-                // Same check for generateGallery
                 if (typeof generateGallery === 'function') {
                     generateGallery('#featured-gallery', featuredData);
                 } else {
@@ -199,6 +183,21 @@
                     '<p style="text-align: center; color: #737373; padding: 2rem;">No featured images found. Add images to the images/ folder and run "node generate.js"</p>';
             }
         });
+    </script>
+    <script>
+    // Dynamic nav.html loader
+        (function(){
+            fetch('nav.html').then(r=>r.text()).then(html=>{
+                const navDiv = document.createElement('div');
+                navDiv.innerHTML = html;
+                document.body.insertBefore(navDiv, document.body.firstChild);
+                // Set active class on home link
+                const homeLinks = document.querySelectorAll('a[href="index.html"]');
+                homeLinks.forEach(link => link.classList.add('active'));
+                // Delay setupMobileMenu to ensure nav is in DOM
+                setTimeout(setupMobileMenu, 50);
+            });
+        })();
     </script>
 </body>
 </html>

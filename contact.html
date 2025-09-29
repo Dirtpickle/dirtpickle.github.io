@@ -3,78 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Get in touch with Dirtpickle for creative collaborations, commissions, and project inquiries.">
-    <title>Contact - Dirtpickle's Portfolio</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Contact - Dirtpickle | Get In Touch for Creative Projects & Collaborations</title>
+    <meta name="title" content="Contact - Dirtpickle | Get In Touch for Creative Projects & Collaborations">
+    <meta name="description" content="Ready to bring your creative vision to life? Contact Dirtpickle for freelance projects, collaborations, commissions, and professional art services. Available for game art, character design, 3D modeling, and digital illustration work.">
+    <meta name="keywords" content="contact artist, hire game artist, freelance character designer, commission artwork, 3D modeling services, digital art commissions, creative collaboration">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/contact.html">
+    <meta property="og:title" content="Contact Dirtpickle - Professional Art Services">
+    <meta property="og:description" content="Get in touch for creative projects, collaborations, and professional art services.">
+    <meta property="og:image" content="https://dirtpickle.com/images/dirtpickle-portrait.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/contact.html">
+    <meta property="twitter:title" content="Contact Dirtpickle - Professional Art Services">
+    <meta property="twitter:description" content="Get in touch for creative projects and collaborations.">
+    <meta property="twitter:image" content="https://dirtpickle.com/images/dirtpickle-portrait.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/contact.html">
+    
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data for Contact -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contact Dirtpickle",
+        "description": "Get in touch for creative projects, collaborations, and professional art services",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Digital Artist & Game Developer",
+            "knowsAbout": ["Game Art", "Character Design", "3D Modeling", "Digital Illustration"],
+            "offers": {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Creative Art Services",
+                    "description": "Professional game art, character design, 3D modeling, and digital illustration services"
+                }
+            }
+        }
+    }
+    </script>
 </head>
 <body>
-    <!-- Inline Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-desktop">
-                <a href="index.html" class="nav-link">
-                    <span>Main</span>
-                </a>
-                <a href="game-development.html" class="nav-link">
-                    <span>Games</span>
-                </a>
-                <a href="art.html" class="nav-link">
-                    <span>Art</span>
-                </a>
-                <a href="3d.html" class="nav-link">
-                    <span>3D</span>
-                </a>
-                <a href="video.html" class="nav-link">
-                    <span>Videos</span>
-                </a>
-                <a href="audio.html" class="nav-link">
-                    <span>Audio</span>
-                </a>
-                <a href="contact.html" class="nav-link active">
-                    <span>Contact</span>
-                </a>
-            </div>
-            <button id="mobile-toggle" class="mobile-toggle">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </nav>
+    <!-- Skip to main content -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu">
-        <div class="mobile-menu-content">
-            <a href="index.html" class="nav-link">
-                <span>Main</span>
-            </a>
-            <a href="game-development.html" class="nav-link">
-                <span>Games</span>
-            </a>
-            <a href="art.html" class="nav-link">
-                <span>Art</span>
-            </a>
-            <a href="3d.html" class="nav-link">
-                <span>3D</span>
-            </a>
-            <a href="video.html" class="nav-link">
-                <span>Videos</span>
-            </a>
-            <a href="audio.html" class="nav-link">
-                <span>Audio</span>
-            </a>
-            <a href="contact.html" class="nav-link active">
-                <span>Contact</span>
-            </a>
-        </div>
-    </div>
-    <div id="mobile-backdrop" class="mobile-backdrop"></div>
+    <!-- Navigation Placeholder -->
+    <div id="nav-placeholder"></div>
 
-    <main class="main-content">
+    <main id="main-content" class="main-content">
         <div class="container">
+            <!-- FIXED: Updated hero section to match standard structure -->
             <div class="hero">
                 <h1>Let's Work Together</h1>
-                <p class="hero-subtitle">Ready to bring your creative vision to life? I'm available for freelance projects, collaborations, and commissions.</p>
+                <p>Ready to bring your creative vision to life? I'm available for freelance projects, collaborations, and commissions.</p>
             </div>
             
             <!-- Contact Form Section -->
@@ -84,6 +77,7 @@
                         <h2>Get In Touch</h2>
                         <p class="form-description">Ready to collaborate? Send me a message and I'll get back to you within 24 hours.</p>
                         
+                        <!-- Fixed Formspree Form -->
                         <form id="contact-form" class="contact-form" action="https://formspree.io/f/xnngnkkn" method="POST">
                             <div class="form-group">
                                 <label for="name">Name *</label>
@@ -92,7 +86,7 @@
                             
                             <div class="form-group">
                                 <label for="email">Email *</label>
-                                <input type="email" id="email" name="_replyto" required>
+                                <input type="email" id="email" name="email" required>
                             </div>
                             
                             <div class="form-group">
@@ -139,8 +133,12 @@
                                 <textarea id="message" name="message" rows="6" placeholder="Tell me about your project, goals, and any specific requirements..." required></textarea>
                             </div>
                             
-                            <!-- Formspree honeypot field -->
+                            <!-- Formspree honeypot field for spam protection -->
                             <input type="text" name="_gotcha" style="display:none" />
+                            
+                            <!-- Formspree configuration -->
+                            <input type="hidden" name="_next" value="https://dirtpickle.com/contact.html?success=1">
+                            <input type="hidden" name="_subject" value="New contact form submission from portfolio">
                             
                             <button type="submit" class="submit-btn">
                                 <span class="btn-text">Send Message</span>
@@ -172,35 +170,33 @@
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="mailto:contact@dirtpickle.com">Email</a>
-                    <span class="footer-separator">|</span>
-                    <a href="https://github.com/dirtpickle" target="_blank" rel="noopener">GitHub</a>
-                </div>
-                <p>&copy; 2025 Dirtpickle. Portfolio site built with HTML, CSS & JavaScript.</p>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="script.js"></script>
     <script>
-        // Initialize navigation
+        // Inject shared navigation
+        fetch('nav.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('nav-placeholder').outerHTML = html;
+                        // Set active nav link for this page
+                        const contactLinks = document.querySelectorAll('a[href="contact.html"]');
+                        contactLinks.forEach(link => link.classList.add('active'));
+                        setTimeout(setupMobileMenu, 50);
+                    });
+
+        // Initialize page functionality
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof initializeNavigation === 'function') {
-                initializeNavigation();
-            } else {
-                setTimeout(function() {
-                    if (typeof initializeNavigation === 'function') {
-                        initializeNavigation();
-                    }
-                }, 100);
-            }
-            
             // Initialize contact form
             initializeContactForm();
+            
+            // Check for success parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === '1') {
+                showStatus('Thank you! Your message has been sent successfully. I\'ll get back to you within 24 hours.', 'success');
+                // Remove the parameter from URL without page reload
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         });
         
         function initializeContactForm() {
@@ -210,51 +206,40 @@
             const btnText = submitBtn.querySelector('.btn-text');
             const btnLoading = submitBtn.querySelector('.btn-loading');
             
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Show loading state
+            form.addEventListener('submit', function(e) {
+                // Show loading state immediately
                 submitBtn.disabled = true;
                 btnText.style.display = 'none';
                 btnLoading.style.display = 'block';
                 statusDiv.style.display = 'none';
                 
-                try {
-                    // If using Netlify forms (recommended for GitHub Pages)
-                    const formData = new FormData(form);
-                    
-                    const response = await fetch('/', {
-                        method: 'POST',
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams(formData).toString()
-                    });
-                    
-                    if (response.ok) {
-                        showStatus('Thank you! Your message has been sent. I\'ll get back to you within 24 hours.', 'success');
-                        form.reset();
-                    } else {
-                        throw new Error('Network response was not ok');
-                    }
-                } catch (error) {
-                    showStatus('Sorry, there was an error sending your message. Please try again or contact me directly.', 'error');
-                }
-                
-                // Reset button state
-                submitBtn.disabled = false;
-                btnText.style.display = 'block';
-                btnLoading.style.display = 'none';
+                // Let the form submit naturally to Formspree
+                // The page will redirect based on the _next hidden field
             });
             
-            function showStatus(message, type) {
-                statusDiv.textContent = message;
-                statusDiv.className = `form-status ${type}`;
-                statusDiv.style.display = 'block';
-                
-                // Auto-hide after 5 seconds
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 5000);
-            }
+            // Handle form validation
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        this.style.borderColor = 'var(--accent)';
+                    } else {
+                        this.style.borderColor = 'var(--green)';
+                    }
+                });
+            });
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('form-status');
+            statusDiv.textContent = message;
+            statusDiv.className = `form-status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            // Auto-hide after 8 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 8000);
         }
     </script>
 </body>

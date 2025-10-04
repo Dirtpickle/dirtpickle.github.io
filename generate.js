@@ -1,13 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Simple configuration - all supported file types
-const SUPPORTED_EXTENSIONS = [
-    '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg',
-    '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.SVG',
-    '.mp4', '.mov', '.avi', '.webm', '.MP4', '.MOV', '.AVI', '.WEBM',
-    '.mp3', '.wav', '.ogg', '.m4a', '.MP3', '.WAV', '.OGG', '.M4A'
-];
+// Path to the JSON database created by the CMS
+const DATABASE_PATH = './content-database.json';
 
 // SEO-optimized descriptions based on categories and keywords
 const SEO_DESCRIPTIONS = {
@@ -41,29 +36,8 @@ const SEO_DESCRIPTIONS = {
     }
 };
 
-// Extract explicit tags from filename - tags are always -tag or _tag format
-function extractTags(filename) {
-    const tags = [];
-    
-    // Remove file extension first
-    const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
-    
-    // Look for patterns like -tag or _tag (no spaces)
-    const tagPattern = /[-_]([a-zA-Z0-9]+)/g;
-    let match;
-    
-    while ((match = tagPattern.exec(nameWithoutExt)) !== null) {
-        const tag = match[1].toLowerCase().trim();
-        if (tag && tag !== 'f') { // Exclude featured flag
-            tags.push(tag);
-        }
-    }
-    
-    return tags;
-}
-
-// Video-specific genre detection - ONLY from explicit tags
-function getVideoGenre(filename, category, tags) {
+// Video-specific genre detection - from JSON tags
+function getVideoGenre(category, tags) {
     // Check explicit tags first
     for (const tag of tags) {
         if (tag === 'trailer' || tag === 'game-trailer') return 'Game Trailer';
@@ -73,15 +47,15 @@ function getVideoGenre(filename, category, tags) {
         if (tag === 'tutorial') return 'Tutorial';
         if (tag === 'demo' || tag === 'gameplay') return 'Gameplay Demo';
     }
-    
+
     // If no explicit tags, use folder-based defaults
     if (category === '3d') return '3D Animation';
-    
+
     return 'Creative Video'; // Default
 }
 
-// 3D-specific technique detection - ONLY from explicit tags
-function get3DTechnique(filename, category, tags) {
+// 3D-specific technique detection - from JSON tags
+function get3DTechnique(tags) {
     // Check explicit tags first
     for (const tag of tags) {
         if (tag === 'sculpt' || tag === 'sculpting' || tag === 'zbrush') return 'Digital Sculpting';
@@ -93,12 +67,12 @@ function get3DTechnique(filename, category, tags) {
         if (tag === 'render' || tag === 'rendering' || tag === 'lighting') return '3D Rendering';
         if (tag === 'texture' || tag === 'texturing' || tag === 'material') return 'Texturing & Materials';
     }
-    
+
     return '3D Modeling'; // Default for 3D category
 }
 
-// 3D software detection - ONLY from explicit tags
-function detect3DSoftware(filename, tags) {
+// 3D software detection - from JSON tags
+function detect3DSoftware(tags) {
     // Check explicit tags first
     for (const tag of tags) {
         if (tag === 'blender') return 'Blender';
@@ -111,18 +85,12 @@ function detect3DSoftware(filename, tags) {
         if (tag === 'unreal') return 'Unreal Engine';
         if (tag === 'unity') return 'Unity 3D';
     }
-    
-    // Check filename only for software names (common exception)
-    const title = filename.toLowerCase();
-    if (title.includes('blender')) return 'Blender';
-    if (title.includes('maya')) return 'Autodesk Maya';
-    if (title.includes('zbrush')) return 'ZBrush';
-    
+
     return 'Professional 3D Software'; // Default
 }
 
 // Estimate video duration based on explicit tags or reasonable defaults
-function estimateVideoDuration(filename, tags) {
+function estimateVideoDuration(tags) {
     // Check explicit tags first
     for (const tag of tags) {
         if (tag === 'trailer') return 'PT1M45S'; // ~1:45
@@ -131,28 +99,14 @@ function estimateVideoDuration(filename, tags) {
         if (tag === 'motion-graphics') return 'PT45S'; // ~45s
         if (tag === 'tutorial') return 'PT5M'; // ~5:00
     }
-    
+
     return 'PT2M'; // Default 2 minutes
 }
 
-// Clean up titles - remove all -tag and _tag portions
-function formatTitle(filename) {
-    const nameWithoutExt = filename.replace(/\.[^/.]+$/, ''); // Remove extension
-    
-    // Remove all -tag and _tag patterns to get clean title
-    const cleanTitle = nameWithoutExt.replace(/[-_][a-zA-Z0-9]+/g, '');
-    
-    return cleanTitle
-        .replace(/\s+/g, ' ') // Normalize spaces
-        .trim() // Remove leading/trailing spaces
-        .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize
-}
-
 // Generate SEO-optimized description
-function generateDescription(filename, category, tags) {
-    const title = formatTitle(filename);
+function generateDescription(title, category, tags) {
     const categoryData = SEO_DESCRIPTIONS[category] || SEO_DESCRIPTIONS['illustration'];
-    
+
     // Check for explicit content tags to create specific descriptions
     for (const tag of tags) {
         if (tag === 'trailer') {
@@ -174,141 +128,76 @@ function generateDescription(filename, category, tags) {
             return `${title} - professional 3D visualization featuring architectural design, lighting, and cinematic presentation`;
         }
     }
-    
+
     // Default description with title
     return `${title} - ${categoryData.default}`;
 }
 
-// Get media type from file extension
-function getMediaType(filename) {
-    const ext = path.extname(filename).toLowerCase();
-    if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(ext)) return 'image';
-    if (['.mp4', '.mov', '.avi', '.webm'].includes(ext)) return 'video';
-    if (['.mp3', '.wav', '.ogg', '.m4a'].includes(ext)) return 'audio';
-    return 'unknown';
-}
-
-// Get work type based on explicit filename tags ONLY
-function getWorkType(filename, tags) {
-    // Check explicit tags first - ONLY work-related tags, not content-type tags
-    for (const tag of tags) {
-        if (tag === 'professional') return 'Professional';
-        if (tag === 'client') return 'Client Work';
-        if (tag === 'personal') return 'Personal Project';
-        if (tag === 'concept') return 'Concept Art';
-        if (tag === 'commission') return 'Commission';
-        if (tag === 'portfolio') return 'Portfolio Piece';
-        if (tag === 'study') return 'Study';
-        if (tag === 'wip') return 'Work in Progress';
-        if (tag === 'demo') return 'Demo';
-        // Removed 'advert' and 'advertisement' - these are content types, not work types
+// Load content from JSON database
+function loadContentDatabase() {
+    if (!fs.existsSync(DATABASE_PATH)) {
+        console.log(`⚠️ Database not found at ${DATABASE_PATH}`);
+        console.log('📝 Please use the Content Manager app to create and manage your content.');
+        return { content: [], tags: [], categories: [], workTypes: [] };
     }
-    
-    return 'Creative Work'; // Default
-}
 
-// Check if content is NSFW
-function isNSFW(filename, tags) {
-    return tags.includes('nsfw');
-}
-
-// Check if a thumbnail exists for a given file
-function findThumbnail(originalPath) {
-    const parsedPath = path.parse(originalPath);
-    const relativePath = path.relative('.', originalPath);
-    const pathParts = relativePath.split(path.sep);
-    
-    // Handle different folder structures
-    let thumbnailDir;
-    if (pathParts[0] === 'images' && pathParts.length > 2) {
-        // For images/category/file.ext -> thumbnails/images/category/
-        thumbnailDir = `thumbnails/${pathParts[0]}/${pathParts[1]}`;
-    } else if (pathParts.length > 1) {
-        // For category/file.ext -> thumbnails/category/
-        thumbnailDir = `thumbnails/${pathParts[0]}`;
-    } else {
-        // For file.ext -> thumbnails/
-        thumbnailDir = 'thumbnails';
-    }
-    
-    // Common image extensions for thumbnails
-    const thumbExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
-    
-    // Try different thumbnail naming patterns
-    const patterns = [
-        parsedPath.name, // Exact match
-        parsedPath.name + '_thumb', // With _thumb suffix
-        parsedPath.name + '-thumb', // With -thumb suffix
-        parsedPath.name.replace(/\s+/g, '_'), // Spaces as underscores
-        parsedPath.name.replace(/\s+/g, '_') + '_thumb' // Spaces as underscores + thumb
-    ];
-    
-    for (const pattern of patterns) {
-        for (const ext of thumbExtensions) {
-            const thumbPath = `${thumbnailDir}/${pattern}${ext}`;
-            if (fs.existsSync(thumbPath)) {
-                return thumbPath;
-            }
-        }
-    }
-    
-    return null; // No thumbnail found
-}
-
-// Universal directory scanner - works for ANY directory
-function scanDirectory(dir) {
-    if (!fs.existsSync(dir)) return [];
-    
     try {
-        const items = [];
-        const files = fs.readdirSync(dir);
-        
-        for (const file of files) {
-            const filePath = path.join(dir, file);
-            const stat = fs.statSync(filePath);
-            
-            if (stat.isDirectory()) {
-                // Recursively scan subdirectories
-                const subdirItems = scanDirectory(filePath);
-                items.push(...subdirItems);
-            } else {
-                // Check if it's a supported file
-                const ext = path.extname(file);
-                if (SUPPORTED_EXTENSIONS.includes(ext)) {
-                    const mediaType = getMediaType(file);
-                    const relativePath = path.relative('.', filePath).replace(/\\/g, '/');
-                    const thumbnailPath = findThumbnail(relativePath);
-                    const category = path.basename(path.dirname(relativePath));
-                    const tags = extractTags(file);
-                    
-                    items.push({
-                        title: formatTitle(file),
-                        filename: file,
-                        path: relativePath,
-                        thumbnail: thumbnailPath,
-                        type: mediaType,
-                        category: category,
-                        workType: getWorkType(file, tags),
-                        description: generateDescription(file, category, tags),
-                        nsfw: isNSFW(file, tags),
-                        tags: tags, // Store extracted tags for debugging
-                        ...(mediaType === 'video' && {
-                            genre: getVideoGenre(file, category, tags),
-                            duration: estimateVideoDuration(file, tags)
-                        }),
-                        ...(category === '3d' && {
-                            technique: get3DTechnique(file, category, tags),
-                            software: detect3DSoftware(file, tags)
-                        })
-                    });
-                }
-            }
-        }
-        
-        return items.sort((a, b) => a.title.localeCompare(b.title));
+        const data = fs.readFileSync(DATABASE_PATH, 'utf8');
+        const database = JSON.parse(data);
+        console.log(`✅ Loaded ${database.content.length} items from database`);
+        return database;
     } catch (error) {
-        console.error(`Error scanning ${dir}:`, error.message);
-        return [];
+        console.error(`❌ Error loading database: ${error.message}`);
+        return { content: [], tags: [], categories: [], workTypes: [] };
+    }
+}
+
+// Transform CMS database item to website format
+function transformItem(item) {
+    const tags = item.tags || [];
+    const category = item.category || 'uncategorized';
+
+    // Add cache buster based on file modification time or database timestamp
+    const cacheBuster = `?v=${Date.now()}`;
+
+    // Base transformation
+    const transformed = {
+        title: item.title,
+        type: item.type,
+        category: category,
+        workType: item.workType || 'Creative Work',
+        description: generateDescription(item.title, category, tags),
+        tags: tags,
+        nsfw: item.nsfw || false,
+        featured: item.featured || false
+    };
+
+    // Type-specific transformations
+    if (item.type === 'audio') {
+        return {
+            ...transformed,
+            src: item.path
+        };
+    } else if (item.type === 'video') {
+        return {
+            ...transformed,
+            video: item.path,
+            thumbnail: (item.thumbnail || item.path) + cacheBuster,
+            genre: getVideoGenre(category, tags),
+            duration: estimateVideoDuration(tags),
+            ...(category === '3d' && {
+                technique: get3DTechnique(tags),
+                software: detect3DSoftware(tags)
+            })
+        };
+    } else {
+        // Image
+        return {
+            ...transformed,
+            image: (item.thumbnail || item.path) + cacheBuster,
+            fullImage: item.path + cacheBuster,
+            ...(item.frames && item.frames.length > 0 && { frames: item.frames })
+        };
     }
 }
 
@@ -318,54 +207,18 @@ function updatePageData(htmlFile, dataArrayName, items) {
         console.log(`⚠️ ${htmlFile} doesn't exist, skipping...`);
         return;
     }
-    
+
     try {
         let content = fs.readFileSync(htmlFile, 'utf8');
-        
+
         // Transform items to match expected format
-        const transformedItems = items.map(item => {
-            if (item.type === 'audio') {
-                return {
-                    title: item.title,
-                    src: item.path,
-                    workType: item.workType,
-                    description: item.description,
-                    nsfw: item.nsfw
-                };
-            } else if (item.type === 'video') {
-                return {
-                    title: item.title,
-                    video: item.path,
-                    thumbnail: item.thumbnail,
-                    type: 'video',
-                    category: item.category,
-                    workType: item.workType,
-                    description: item.description,
-                    genre: item.genre || 'Creative Video',
-                    duration: item.duration || 'PT2M',
-                    nsfw: item.nsfw,
-                    ...(item.technique && { technique: item.technique }),
-                    ...(item.software && { software: item.software })
-                };
-            } else {
-                return {
-                    title: item.title,
-                    image: item.thumbnail || item.path,
-                    fullImage: item.path,
-                    type: 'image',
-                    category: item.category,
-                    workType: item.workType,
-                    description: item.description,
-                    nsfw: item.nsfw
-                };
-            }
-        });
-        
+        const transformedItems = items.map(transformItem);
+
         // Special case for audio.html: update both this.tracks and the visible playlist
         if (htmlFile === 'audio.html' && dataArrayName === 'musicData') {
             // Update the JS tracks array
-            const tracksPattern = /this\.tracks\s*=\s*\[[^\]]*\]/s;
-            const newTracksString = `this.tracks = ${JSON.stringify(transformedItems, null, 20)}`;
+            const tracksPattern = /this\.tracks\s*=\s*\[[\s\S]*?\n\s*\];/;
+            const newTracksString = `this.tracks = ${JSON.stringify(transformedItems)}`;
             if (tracksPattern.test(content)) {
                 content = content.replace(tracksPattern, newTracksString);
             }
@@ -389,18 +242,18 @@ function updatePageData(htmlFile, dataArrayName, items) {
             }
 
             fs.writeFileSync(htmlFile, content);
-            console.log(`✅ Updated ${htmlFile} with ${items.length} items (tag-based categories & playlist)`);
+            console.log(`✅ Updated ${htmlFile} with ${items.length} items (JSON database)`);
             return;
         }
-        
+
         // Find and replace the data array (standard pattern)
         const arrayPattern = new RegExp(`const ${dataArrayName}\\s*=\\s*\\[[\\s\\S]*?\\];`);
         const newArrayString = `const ${dataArrayName} = ${JSON.stringify(transformedItems, null, 4)};`;
-        
+
         if (arrayPattern.test(content)) {
             content = content.replace(arrayPattern, newArrayString);
             fs.writeFileSync(htmlFile, content);
-            console.log(`✅ Updated ${htmlFile} with ${items.length} items (tag-based categories)`);
+            console.log(`✅ Updated ${htmlFile} with ${items.length} items (JSON database)`);
         } else {
             console.log(`⚠️ Could not find ${dataArrayName} array in ${htmlFile}`);
         }
@@ -421,12 +274,12 @@ function generateSitemap() {
         { url: '/audio.html', priority: '0.8', changefreq: 'monthly' },
         { url: '/contact.html', priority: '0.7', changefreq: 'yearly' }
     ];
-    
+
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`;
-    
+
     pages.forEach(page => {
         sitemap += `
     <url>
@@ -436,10 +289,10 @@ function generateSitemap() {
         <priority>${page.priority}</priority>
     </url>`;
     });
-    
+
     sitemap += `
 </urlset>`;
-    
+
     fs.writeFileSync('sitemap.xml', sitemap);
     console.log('📄 Generated sitemap.xml for SEO');
 }
@@ -454,57 +307,203 @@ Sitemap: https://dirtpickle.com/sitemap.xml
 
 # Optimize crawling
 Crawl-delay: 1`;
-    
+
     fs.writeFileSync('robots.txt', robotsTxt);
     console.log('🤖 Generated robots.txt for search engines');
 }
 
+function generateGameDevelopmentPage() {
+    const gamesDir = './games';
+    let games = [];
+
+    // Check if games directory exists and read games
+    if (fs.existsSync(gamesDir)) {
+        const gameFiles = fs.readdirSync(gamesDir).filter(file => file.endsWith('.json'));
+
+        if (gameFiles.length > 0) {
+            // Load game data and find thumbnails from database
+            const database = loadContentDatabase();
+            games = gameFiles.map(file => {
+                const gameData = JSON.parse(fs.readFileSync(`${gamesDir}/${file}`, 'utf8'));
+                const gamePath = `games/${file}`;
+
+                // Find the game in database to get thumbnail
+                const dbEntry = database.content.find(item => item.path === gamePath);
+
+                return {
+                    ...gameData,
+                    thumbnail: dbEntry?.thumbnail || null,
+                    thumbnailOffsetX: dbEntry?.thumbnailOffsetX || 0,
+                    thumbnailOffsetY: dbEntry?.thumbnailOffsetY || 0,
+                    description: gameData.description || 'Click to play on itch.io'
+                };
+            });
+        }
+    }
+
+    // Generate HTML for each game
+    const gamesHTML = games.map((game, index) => `
+                    <div class="game-container">
+                        <div id="game-preview-${index}" class="game-preview">
+                            <div class="game-thumbnail">
+                                <img src="${game.thumbnail || 'images/placeholder.png'}" alt="${game.title}" class="game-thumbnail-img" style="transform: translate(${game.thumbnailOffsetX}px, ${game.thumbnailOffsetY}px);">
+                                <div class="game-play-overlay" data-game-index="${index}">
+                                    <div class="game-play-icon"></div>
+                                </div>
+                                <div class="game-title-overlay">
+                                    <h3>${game.title}</h3>
+                                    <p>${game.description || 'Click to play on itch.io'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <iframe
+                            id="game-iframe-${index}"
+                            src=""
+                            data-embed-url="${game.embedUrl}"
+                            frameborder="0"
+                            allowfullscreen
+                            width="640"
+                            height="380"
+                            style="display:none;max-width:100%;border-radius:8px;">
+                            <a href="${game.embedUrl}">Play ${game.title} on itch.io</a>
+                        </iframe>
+                    </div>`).join('\n');
+
+    // Generate the full page
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Development - Dirtpickle's Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>Game Development</h1>
+                <p>Interactive experiences and games</p>
+            </div>
+
+            <section class="project-section">
+                <div class="project-showcase">
+${gamesHTML}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+            fetch('nav.html').then(r=>r.text()).then(html=>{
+                const navDiv = document.createElement('div');
+                navDiv.innerHTML = html;
+                document.body.insertBefore(navDiv, document.body.firstChild);
+                const gameLinks = document.querySelectorAll('a[href="game-development.html"]');
+                gameLinks.forEach(link => link.classList.add('active'));
+                setTimeout(setupMobileMenu, 50);
+            });
+    })();
+    // Game loading functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const gameOverlays = document.querySelectorAll('.game-play-overlay');
+
+        gameOverlays.forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const gameIndex = this.getAttribute('data-game-index');
+                const gamePreview = document.getElementById('game-preview-' + gameIndex);
+                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
+                const gameContainer = gamePreview.closest('.game-container');
+                const embedUrl = gameIframe.getAttribute('data-embed-url');
+
+                if (gamePreview) gamePreview.style.display = 'none';
+                if (gameIframe && embedUrl) {
+                    gameIframe.src = embedUrl;
+                    gameIframe.style.display = 'block';
+                }
+                
+                // Add game-active class to disable hover animations
+                if (gameContainer) {
+                    gameContainer.classList.add('game-active');
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>`;
+
+    fs.writeFileSync('./game-development.html', html);
+
+    if (games.length === 0) {
+        console.log('✅ game-development.html generated (no games)');
+    } else {
+        console.log(`✅ game-development.html generated with ${games.length} game(s)`);
+    }
+}
+
 // Main execution
 function generateAll() {
-    console.log('🚀 Tag-Based Gallery Generator - Scanning all media...\n');
-    
+    console.log('🚀 CMS Database Gallery Generator\n');
+
+    // Load content from JSON database
+    const database = loadContentDatabase();
+
+    if (database.content.length === 0) {
+        console.log('\n⚠️ No content found in database.');
+        console.log('👉 Use the Content Manager desktop app to add and tag your content.');
+        return;
+    }
+
+    console.log(`\n📊 Database Summary:`);
+    console.log(`   • Total items: ${database.content.length}`);
+    console.log(`   • Categories: ${database.categories.join(', ')}`);
+    console.log(`   • Tags available: ${database.tags.length}`);
+    console.log(`   • Work types: ${database.workTypes.join(', ')}\n`);
+
     // Define all the pages and what they should contain
     const pages = [
-        { file: 'index.html', dataName: 'featuredData', filter: item => item.filename.includes('-f') },
-        { file: 'art.html', dataName: 'characterData', filter: item => item.category === 'character-design' },
-        { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' },
-        { file: 'art.html', dataName: 'gameArtData', filter: item => item.category === 'game-art' || item.category === 'props' || item.category === 'ui' },
-        { file: 'art.html', dataName: 'tattooData', filter: item => item.category === 'tattoo' },
-        { file: '3d.html', dataName: 'threeDData', filter: item => item.category === '3d' },
-        { file: 'video.html', dataName: 'galleryData', filter: item => item.type === 'video' && (item.path.startsWith('video/') || item.category === 'video') },
-        { file: 'audio.html', dataName: 'musicData', filter: item => item.type === 'audio' }
+        { file: 'index.html', dataName: 'featuredData', filter: item => item.featured === true && !item.hidden },
+        { file: 'art.html', dataName: 'characterData', filter: item => item.category === 'character-design' && !item.hidden },
+        { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' && !item.hidden },
+        { file: 'art.html', dataName: 'gameArtData', filter: item => (item.category === 'game-art' || item.category === 'props' || item.category === 'ui') && !item.hidden },
+        { file: 'art.html', dataName: 'tattooData', filter: item => item.category === 'tattoo' && !item.hidden },
+        { file: '3d.html', dataName: 'threeDData', filter: item => item.category === '3d' && !item.hidden },
+        { file: 'video.html', dataName: 'galleryData', filter: item => item.category === 'video' && !item.hidden },
+        { file: 'audio.html', dataName: 'musicData', filter: item => item.type === 'audio' && !item.hidden }
     ];
-    
-    // Scan all directories once - FIXED: Changed './music' to './audio'
-    const allItems = [
-        ...scanDirectory('./images'),
-        ...scanDirectory('./video'),
-        ...scanDirectory('./audio'), // ← FIXED: Now scans the correct directory!
-        ...scanDirectory('./3d')
-    ];
-    
-    console.log(`🔍 Found ${allItems.length} total media items\n`);
-    
+
     // Update each page with its filtered content
     pages.forEach(page => {
-        const items = allItems.filter(page.filter);
+        const items = database.content.filter(page.filter);
         updatePageData(page.file, page.dataName, items);
     });
-    
+
+    // Generate game development page
+    generateGameDevelopmentPage();
+
     // Generate SEO files
     generateSitemap();
     generateRobotsTxt();
-    
-    console.log('\n✅ All pages updated successfully with tag-based categorization!');
-    console.log('\n📋 Tag System:');
-    console.log('• Categories come from folder structure only');
-    console.log('• Content types come from explicit tags like -trailer, -promo, etc.');
-    console.log('• Work types come from tags like -professional, -client, etc.');
-    console.log('• No inference from filename content');
+
+    console.log('\n✅ All pages updated successfully from JSON database!');
+    console.log('\n📋 How it works:');
+    console.log('• Content is managed through the Content Manager desktop app');
+    console.log('• Tags, categories, and metadata are stored in content-database.json');
+    console.log('• This script reads the database and updates your HTML files');
+    console.log('• Run this script after making changes in the Content Manager');
 }
 
 // Export for testing
-module.exports = { generateAll, scanDirectory };
+module.exports = { generateAll, loadContentDatabase };
 
 // Run if called directly
 if (require.main === module) {

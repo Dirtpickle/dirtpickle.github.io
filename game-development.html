@@ -14,31 +14,33 @@
                 <h1>Game Development</h1>
                 <p>Interactive experiences and games</p>
             </div>
-            
+
             <section class="project-section">
                 <div class="project-showcase">
+
                     <div class="game-container">
-                        <div id="game-preview" class="game-preview">
+                        <div id="game-preview-0" class="game-preview">
                             <div class="game-thumbnail">
-                                <img src="images/illustration/Attack of the Pigmen Promo Art-professional-f.png" alt="Attack of the Pigmen" class="game-thumbnail-img">
-                                <div class="game-play-overlay" id="game-play-overlay">
+                                <img src="thumbnails/games/game_thumb.gif" alt="Attack of the Pigmen" class="game-thumbnail-img" style="transform: translate(0px, 0px);">
+                                <div class="game-play-overlay" data-game-index="0">
                                     <div class="game-play-icon"></div>
                                 </div>
-                            </div>
-                            <div class="game-info">
-                                <h3>Attack of the Pigmen</h3>
-                                <p>Top-down shooter game - Click to play on itch.io</p>
+                                <div class="game-title-overlay">
+                                    <h3>Attack of the Pigmen</h3>
+                                    <p>Top-Down Rogue-Like Shooter. Click to Play!</p>
+                                </div>
                             </div>
                         </div>
                         <iframe
-                            id="game-iframe"
+                            id="game-iframe-0"
                             src=""
+                            data-embed-url="https://itch.io/embed-upload/5666853?color=000000"
                             frameborder="0"
                             allowfullscreen
                             width="640"
                             height="380"
                             style="display:none;max-width:100%;border-radius:8px;">
-                            <a href="https://dirtpickle.itch.io/attackofthepigmen">Play Attack of the Pigmen on itch.io</a>
+                            <a href="https://itch.io/embed-upload/5666853?color=000000">Play Attack of the Pigmen on itch.io</a>
                         </iframe>
                     </div>
                 </div>
@@ -56,7 +58,6 @@
                 const navDiv = document.createElement('div');
                 navDiv.innerHTML = html;
                 document.body.insertBefore(navDiv, document.body.firstChild);
-                // Set active class on game-development link
                 const gameLinks = document.querySelectorAll('a[href="game-development.html"]');
                 gameLinks.forEach(link => link.classList.add('active'));
                 setTimeout(setupMobileMenu, 50);
@@ -64,20 +65,30 @@
     })();
     // Game loading functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const gamePlayOverlay = document.getElementById('game-play-overlay');
-        const gamePreview = document.getElementById('game-preview');
-        const gameIframe = document.getElementById('game-iframe');
+        const gameOverlays = document.querySelectorAll('.game-play-overlay');
 
-        if (gamePlayOverlay) {
-            gamePlayOverlay.addEventListener('click', function(e) {
+        gameOverlays.forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                const gameIndex = this.getAttribute('data-game-index');
+                const gamePreview = document.getElementById('game-preview-' + gameIndex);
+                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
+                const gameContainer = gamePreview.closest('.game-container');
+                const embedUrl = gameIframe.getAttribute('data-embed-url');
+
                 if (gamePreview) gamePreview.style.display = 'none';
-                if (gameIframe) {
-                    gameIframe.src = 'https://itch.io/embed-upload/5666853?color=2d3444';
+                if (gameIframe && embedUrl) {
+                    gameIframe.src = embedUrl;
                     gameIframe.style.display = 'block';
                 }
+                
+                // Add game-active class to disable hover animations
+                if (gameContainer) {
+                    gameContainer.classList.add('game-active');
+                }
             });
-        }
+        });
     });
     </script>
 </body>

@@ -105,10 +105,13 @@ let lightboxState = {
     startX: 0,
     startY: 0,
     lastX: 0,
-    lastY: 0
+    lastY: 0,
+    frames: [],
+    currentFrame: 0,
+    baseCaption: ''
 };
 
-function openLightbox(src, caption) {
+function openLightbox(src, caption, frames) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -131,10 +134,31 @@ function openLightbox(src, caption) {
             .replace(/\b\w/g, c => c.toUpperCase());
     }
 
+    // Setup frames if provided
+    // If frames exist and already include the src, use them as-is
+    // Otherwise, wrap src in an array
+    if (frames && frames.length > 0) {
+        lightboxState.frames = frames;
+        // Find the current frame index (in case src is not the first frame)
+        lightboxState.currentFrame = frames.indexOf(src);
+        if (lightboxState.currentFrame === -1) {
+            // If src not found in frames, add it at the beginning
+            lightboxState.frames = [src, ...frames];
+            lightboxState.currentFrame = 0;
+        }
+    } else {
+        lightboxState.frames = [src];
+        lightboxState.currentFrame = 0;
+    }
+    lightboxState.baseCaption = displayCaption;
+
     lightbox.style.display = 'block';
     lightboxImg.src = src;
-    lightboxCaption.textContent = displayCaption;
+    updateLightboxCaption();
     document.body.style.overflow = 'hidden';
+
+    // Show/hide frame navigation arrows
+    updateFrameNavigation();
 
     // Disable pointer events on navigation and other content
     const nav = document.querySelector('nav');
@@ -144,6 +168,77 @@ function openLightbox(src, caption) {
 
     // Setup zoom and pan events
     setupLightboxZoomPan();
+    
+    // Setup keyboard navigation
+    setupLightboxKeyboardNavigation();
+}
+
+function updateLightboxCaption() {
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    if (!lightboxCaption) return;
+
+    if (lightboxState.frames.length > 1) {
+        lightboxCaption.textContent = `${lightboxState.baseCaption} - Frame ${lightboxState.currentFrame + 1} of ${lightboxState.frames.length}`;
+    } else {
+        lightboxCaption.textContent = lightboxState.baseCaption;
+    }
+}
+
+function updateFrameNavigation() {
+    let prevBtn = document.getElementById('lightbox-prev');
+    let nextBtn = document.getElementById('lightbox-next');
+    const wrapper = document.getElementById('lightbox-img-wrapper');
+
+    if (!prevBtn || !nextBtn) {
+        // Create navigation buttons if they don't exist
+        if (wrapper && lightboxState.frames && lightboxState.frames.length > 1) {
+            if (!prevBtn) {
+                prevBtn = document.createElement('button');
+                prevBtn.id = 'lightbox-prev';
+                prevBtn.className = 'lightbox-nav-btn lightbox-prev';
+                prevBtn.innerHTML = '‹';
+                prevBtn.onclick = () => changeFrame(-1);
+                wrapper.appendChild(prevBtn);
+            }
+
+            if (!nextBtn) {
+                nextBtn = document.createElement('button');
+                nextBtn.id = 'lightbox-next';
+                nextBtn.className = 'lightbox-nav-btn lightbox-next';
+                nextBtn.innerHTML = '›';
+                nextBtn.onclick = () => changeFrame(1);
+                wrapper.appendChild(nextBtn);
+            }
+        }
+    }
+
+    // Show/hide based on frame count
+    const showNavigation = lightboxState.frames && lightboxState.frames.length > 1;
+    if (prevBtn) {
+        prevBtn.style.display = showNavigation ? 'flex' : 'none';
+    }
+    if (nextBtn) {
+        nextBtn.style.display = showNavigation ? 'flex' : 'none';
+    }
+}
+
+function changeFrame(direction) {
+    lightboxState.currentFrame += direction;
+
+    // Wrap around
+    if (lightboxState.currentFrame < 0) {
+        lightboxState.currentFrame = lightboxState.frames.length - 1;
+    } else if (lightboxState.currentFrame >= lightboxState.frames.length) {
+        lightboxState.currentFrame = 0;
+    }
+
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightboxImg) {
+        lightboxImg.src = lightboxState.frames[lightboxState.currentFrame];
+    }
+
+    updateLightboxCaption();
+    resetLightboxTransform();
 }
 
 function closeLightbox() {
@@ -161,11 +256,49 @@ function closeLightbox() {
         // Reset zoom and pan state
         resetLightboxTransform();
         removeLightboxZoomPanEvents();
+        removeLightboxKeyboardNavigation();
+    }
+}
+
+// Setup keyboard navigation for lightbox
+function setupLightboxKeyboardNavigation() {
+    document.addEventListener('keydown', handleLightboxKeydown);
+}
+
+// Remove keyboard navigation for lightbox
+function removeLightboxKeyboardNavigation() {
+    document.removeEventListener('keydown', handleLightboxKeydown);
+}
+
+// Handle keyboard events for lightbox
+function handleLightboxKeydown(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox || lightbox.style.display === 'none') return;
+    
+    switch(e.key) {
+        case 'Escape':
+            closeLightbox();
+            break;
+        case 'ArrowLeft':
+            if (lightboxState.frames && lightboxState.frames.length > 1) {
+                changeFrame(-1);
+            }
+            break;
+        case 'ArrowRight':
+            if (lightboxState.frames && lightboxState.frames.length > 1) {
+                changeFrame(1);
+            }
+            break;
     }
 }
 
 // Reset lightbox transform state
 function resetLightboxTransform() {
+    // Preserve frames and caption data during transform reset
+    const preservedFrames = lightboxState.frames;
+    const preservedCurrentFrame = lightboxState.currentFrame;
+    const preservedBaseCaption = lightboxState.baseCaption;
+    
     lightboxState = {
         scale: 1,
         translateX: 0,
@@ -174,12 +307,15 @@ function resetLightboxTransform() {
         startX: 0,
         startY: 0,
         lastX: 0,
-        lastY: 0
+        lastY: 0,
+        frames: preservedFrames,
+        currentFrame: preservedCurrentFrame,
+        baseCaption: preservedBaseCaption
     };
 
     const lightboxImg = document.getElementById('lightbox-img');
     if (lightboxImg) {
-        lightboxImg.style.transform = 'translate(-50%, -50%) scale(1) translate(0px, 0px)';
+        lightboxImg.style.transform = 'scale(1) translate(0px, 0px)';
         lightboxImg.style.cursor = 'zoom-in';
     }
 }
@@ -188,7 +324,7 @@ function resetLightboxTransform() {
 function updateLightboxTransform() {
     const lightboxImg = document.getElementById('lightbox-img');
     if (lightboxImg) {
-        lightboxImg.style.transform = `translate(-50%, -50%) scale(${lightboxState.scale}) translate(${lightboxState.translateX}px, ${lightboxState.translateY}px)`;
+        lightboxImg.style.transform = `scale(${lightboxState.scale}) translate(${lightboxState.translateX}px, ${lightboxState.translateY}px)`;
         lightboxImg.style.cursor = lightboxState.scale > 1 ? 'grab' : 'zoom-in';
         if (lightboxState.isDragging) {
             lightboxImg.style.cursor = 'grabbing';
@@ -595,7 +731,14 @@ function generateGallery(containerSelector, mediaData) {
         
         // Get work type
         const workType = item.workType || 'Creative Work';
-        
+
+        // Get tags
+        const tags = item.tags || [];
+        const tagsHTML = tags.length > 0 ?
+            `<div class="gallery-tags">
+                ${tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>` : '';
+
         // Handle videos and images
         if (item.video) {
             galleryItem.className += ' video-item';
@@ -603,21 +746,22 @@ function generateGallery(containerSelector, mediaData) {
             const thumbnailSrc = item.thumbnail ? item.thumbnail : '';
             galleryItem.innerHTML = `
                 <div class="video-thumb" onclick="openVideoModal('${item.video}', '${cleanTitle}')">
-                    ${thumbnailSrc ? 
+                    ${thumbnailSrc ?
                         `<img src="${item.thumbnail}" alt="${cleanTitle}" class="video-thumbnail" loading="lazy">` :
-                        `<video class="video-thumbnail lazy-video" 
-                               data-src="${item.video}" 
-                               preload="none" 
-                               muted 
+                        `<video class="video-thumbnail lazy-video"
+                               data-src="${item.video}"
+                               preload="none"
+                               muted
                                playsinline>
                             <source data-src="${item.video}" type="video/mp4">
                         </video>`
                     }
                     <div class="play-overlay"></div>
+                    <div class="gallery-title">${cleanTitle}</div>
                     <div class="gallery-overlay">
-                        <div class="gallery-title">${cleanTitle}</div>
                         <div class="gallery-type">${category}</div>
                         <div class="gallery-work-type">${workType}</div>
+                        ${tagsHTML}
                     </div>
                     ${item.nsfw ? '<div class="nsfw-overlay" onclick="toggleNSFWBlur(this)"><span>18+ Content<br>Click to View</span></div>' : ''}
                 </div>
@@ -625,15 +769,27 @@ function generateGallery(containerSelector, mediaData) {
         } else {
             // Use fullImage if available, otherwise fallback to image
             const fullImage = item.fullImage || item.image;
+            const frames = item.frames || [];
+
             galleryItem.innerHTML = `
-                <img src="${item.image}" alt="${cleanTitle}" loading="lazy" onclick="openLightbox('${fullImage}', '${cleanTitle}')">
+                <img src="${item.image}" alt="${cleanTitle}" loading="lazy" class="gallery-image" data-fullimage="${fullImage}" data-caption="${cleanTitle}">
+                <div class="gallery-title">${cleanTitle}</div>
                 <div class="gallery-overlay">
-                    <div class="gallery-title">${cleanTitle}</div>
                     <div class="gallery-type">${category}</div>
                     <div class="gallery-work-type">${workType}</div>
+                    ${tagsHTML}
                 </div>
                 ${item.nsfw ? '<div class="nsfw-overlay" onclick="toggleNSFWBlur(this)"><span>18+ Content<br>Click to View</span></div>' : ''}
             `;
+
+            // Store frames data and attach click event
+            const img = galleryItem.querySelector('.gallery-image');
+            if (img) {
+                img._frames = frames; // Store frames directly on the element
+                img.addEventListener('click', function() {
+                    openLightbox(this.dataset.fullimage, this.dataset.caption, this._frames);
+                });
+            }
         }
         
         // Add loading animation delay
@@ -804,8 +960,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    initializeNavigation();
-    
     // Close lightbox on outside click
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
@@ -816,17 +970,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close modals with escape key
+    // Close modals with escape key, navigate frames with arrow keys
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeLightbox();
             closeVideoModal();
         }
+
+        // Navigate frames with arrow keys when lightbox is open
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox && lightbox.style.display === 'block' && lightboxState.frames.length > 1) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeFrame(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeFrame(1);
+            }
+        }
     });
 });
 
 // Export functions for global access
-window.initializeNavigation = initializeNavigation;
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
 window.openVideoModal = openVideoModal;
@@ -834,3 +999,32 @@ window.closeVideoModal = closeVideoModal;
 window.generateGallery = generateGallery;
 window.generateEnhancedGallery = generateEnhancedGallery;
 window.generateConsolidatedMusicPlayer = generateConsolidatedMusicPlayer;
+
+// Simple Game Toggle Functionality
+function setupGameToggles() {
+    document.querySelectorAll('[data-game-index]').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            const gameIndex = this.dataset.gameIndex;
+            const preview = document.getElementById(`game-preview-${gameIndex}`);
+            const iframe = document.getElementById(`game-iframe-${gameIndex}`);
+            
+            if (preview && iframe) {
+                // Hide preview, show iframe
+                preview.style.display = 'none';
+                iframe.style.display = 'block';
+                
+                // Load the game if not already loaded
+                if (!iframe.src) {
+                    iframe.src = iframe.dataset.embedUrl;
+                }
+            }
+        });
+    });
+}
+
+// Initialize game toggles when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupGameToggles);
+} else {
+    setupGameToggles();
+}

@@ -47,7 +47,7 @@
         "mainEntity": {
             "@type": "Person",
             "name": "Dirtpickle",
-            "jobTitle": "Digital Artist & Game Developer",
+            "jobTitle": "Digital Artist & Game Designer",
             "knowsAbout": ["Game Art", "Character Design", "3D Modeling", "Digital Illustration"],
             "offers": {
                 "@type": "Offer",
@@ -193,7 +193,10 @@
                         // Set active nav link for this page
                         const contactLinks = document.querySelectorAll('a[href="contact.html"]');
                         contactLinks.forEach(link => link.classList.add('active'));
-                        setTimeout(setupMobileMenu, 50);
+                        setTimeout(() => {
+                            setupMobileMenu();
+                            setupDropdowns();
+                        }, 50);
                     });
 
         // Initialize page functionality

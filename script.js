@@ -62,9 +62,34 @@ function setupMobileMenu() {
     newBackdrop.addEventListener('click', closeMobileMenu);
 
     // Close menu when clicking on menu links
-    const mobileMenuLinks = mobileMenu.querySelectorAll('.nav-link');
+    const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-dropdown-item');
     mobileMenuLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Setup mobile dropdown toggles
+    const mobileDropdownToggles = mobileMenu.querySelectorAll('.mobile-dropdown-toggle');
+    mobileDropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = this.parentElement;
+            const menu = dropdown.querySelector('.mobile-dropdown-menu');
+            const isOpen = dropdown.classList.contains('open');
+            
+            // Close other mobile dropdowns
+            mobileMenu.querySelectorAll('.mobile-nav-dropdown').forEach(otherDropdown => {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('open');
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isOpen) {
+                dropdown.classList.remove('open');
+            } else {
+                dropdown.classList.add('open');
+            }
+        });
     });
 
     // Close menu on escape key
@@ -82,8 +107,55 @@ function setupMobileMenu() {
     });
 }
 
+// Setup dropdown functionality
+function setupDropdowns() {
+    // Handle desktop dropdown click for touch devices
+    const desktopDropdowns = document.querySelectorAll('.dropdown-toggle');
+    desktopDropdowns.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = this.parentElement;
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(otherDropdown => {
+                if (otherDropdown !== dropdown) {
+                    const otherMenu = otherDropdown.querySelector('.dropdown-menu');
+                    if (otherMenu) {
+                        otherMenu.classList.remove('show');
+                    }
+                }
+            });
+            
+            // Toggle current dropdown
+            if (menu) {
+                menu.classList.toggle('show');
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-dropdown')) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+    });
+
+    // Close dropdowns when scrolling
+    document.addEventListener('scroll', function() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
+}
+
 // Call setupMobileMenu on DOMContentLoaded (for static nav)
-document.addEventListener('DOMContentLoaded', setupMobileMenu);
+document.addEventListener('DOMContentLoaded', function() {
+    setupMobileMenu();
+    setupDropdowns();
+});
 
 // NSFW Blur Toggle
 function toggleNSFWBlur(overlayElement) {
@@ -710,11 +782,29 @@ function generateGallery(containerSelector, mediaData) {
     mediaData.forEach((item, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
-        
+
         // Add NSFW class if item is marked as NSFW
         if (item.nsfw) {
             galleryItem.className += ' nsfw';
         }
+
+        // Add data-categories attribute from tags AND category
+        const tags = item.tags || [];
+        const itemCategory = item.category || '';
+        
+        // Combine tags and category for filtering
+        const allCategories = [...tags];
+        if (itemCategory) {
+            allCategories.push(itemCategory);
+        }
+        
+        const categories = allCategories.map(cat => cat.toLowerCase()).join(',');
+        if (categories) {
+            galleryItem.setAttribute('data-categories', categories);
+        }
+        
+        // Add data-featured attribute
+        galleryItem.setAttribute('data-featured', item.featured ? 'true' : 'false');
         
         // Clean up the title
         const cleanTitle = item.title
@@ -732,8 +822,7 @@ function generateGallery(containerSelector, mediaData) {
         // Get work type
         const workType = item.workType || 'Creative Work';
 
-        // Get tags
-        const tags = item.tags || [];
+        // Generate tags HTML
         const tagsHTML = tags.length > 0 ?
             `<div class="gallery-tags">
                 ${tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
@@ -1027,4 +1116,91 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupGameToggles);
 } else {
     setupGameToggles();
+}
+
+// Filter functionality for homepage
+function initializeFilter() {
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const gallery = document.getElementById('featured-gallery');
+    const sectionTitle = document.getElementById('section-title');
+    const itemCount = document.getElementById('item-count');
+    
+    if (!filterButtons.length || !gallery) return;
+    
+    // Filter the data based on selected filter
+    function filterItems(filterValue) {
+        let filteredData;
+        
+        if (filterValue === 'all') {
+            // Show all items except audio (since that's for audio page)
+            filteredData = allData.filter(item => 
+                item.type !== 'audio' && 
+                !item.hidden &&
+                item.title !== 'dirtpickle-portrait'
+            );
+        } else if (filterValue === 'featured') {
+            // Show only featured items (excluding audio)
+            filteredData = allData.filter(item => 
+                item.featured && 
+                item.type !== 'audio' && 
+                !item.hidden &&
+                item.title !== 'dirtpickle-portrait'
+            );
+        } else {
+            // Filter by tag or category (excluding audio)
+            filteredData = allData.filter(item => {
+                if (item.type === 'audio' || item.hidden || item.title === 'dirtpickle-portrait') return false;
+                
+                const tags = item.tags || [];
+                const category = item.category || '';
+                const allCategories = [...tags, category].map(cat => cat.toLowerCase());
+                
+                return allCategories.includes(filterValue.toLowerCase());
+            });
+        }
+        
+        // Update section title and count
+        let title = filterValue === 'all' ? 'All Work' : 
+                   filterValue === 'featured' ? 'Featured Work' : 
+                   filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
+        
+        if (sectionTitle) sectionTitle.textContent = title;
+        if (itemCount) itemCount.textContent = `${filteredData.length} items`;
+        
+        // Regenerate gallery with filtered data
+        generateGallery('#featured-gallery', filteredData);
+    }
+    
+    // Add click event listeners to filter buttons
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Filter items
+            const filterValue = this.getAttribute('data-filter');
+            filterItems(filterValue);
+        });
+    });
+    
+    // Initialize with featured items
+    const activeButton = document.querySelector('.filter-pill.active');
+    if (activeButton) {
+        const initialFilter = activeButton.getAttribute('data-filter');
+        filterItems(initialFilter);
+    }
+}
+
+// Initialize filter when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        setupGameToggles();
+        initializeFilter();
+    });
+} else {
+    setupGameToggles();
+    initializeFilter();
 }

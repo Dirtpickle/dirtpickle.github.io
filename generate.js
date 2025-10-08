@@ -196,7 +196,9 @@ function transformItem(item) {
             ...transformed,
             image: (item.thumbnail || item.path) + cacheBuster,
             fullImage: item.path + cacheBuster,
-            ...(item.frames && item.frames.length > 0 && { frames: item.frames })
+            ...(item.frames && item.frames.length > 0 && { 
+                frames: item.frames.map(frame => frame + cacheBuster)
+            })
         };
     }
 }
@@ -214,35 +216,35 @@ function updatePageData(htmlFile, dataArrayName, items) {
         // Transform items to match expected format
         const transformedItems = items.map(transformItem);
 
-        // Special case for audio.html: update both this.tracks and the visible playlist
+        // Special case for audio.html: update only this.tracks (remove playlist update)
         if (htmlFile === 'audio.html' && dataArrayName === 'musicData') {
-            // Update the JS tracks array
-            const tracksPattern = /this\.tracks\s*=\s*\[[\s\S]*?\n\s*\];/;
-            const newTracksString = `this.tracks = ${JSON.stringify(transformedItems)}`;
-            if (tracksPattern.test(content)) {
-                content = content.replace(tracksPattern, newTracksString);
+            // Find the start of this.tracks assignment
+            const tracksStart = content.indexOf('this.tracks = [');
+            
+            if (tracksStart !== -1) {
+                // Find the end by looking for the next property assignment (this.audio)
+                const nextProperty = content.indexOf('this.audio', tracksStart);
+                
+                if (nextProperty !== -1) {
+                    // Extract everything before tracks assignment and after next property
+                    const beforeTracks = content.slice(0, tracksStart);
+                    const afterTracks = content.slice(nextProperty);
+                    
+                    // Create clean tracks assignment
+                    const newTracksString = `this.tracks = ${JSON.stringify(transformedItems, null, 16)};
+                
+                `;
+                    
+                    // Rebuild the file
+                    content = beforeTracks + newTracksString + afterTracks;
+                    fs.writeFileSync(htmlFile, content);
+                    console.log(`✅ Fixed audio data corruption (robust method) in ${htmlFile} with ${items.length} items`);
+                    return;
+                }
             }
-
-            // Update the visible playlist (replace only the inner HTML of the track-list div)
-            const trackListStart = '<!-- TRACK_LIST_START -->';
-            const trackListEnd = '<!-- TRACK_LIST_END -->';
-            const startIdx = content.indexOf(trackListStart);
-            const endIdx = content.indexOf(trackListEnd);
-            if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-                let playlistHTML = '';
-                transformedItems.forEach((track, i) => {
-                    playlistHTML += `    <div class=\"track-item${i === 0 ? ' active' : ''}\" data-track=\"${i}\">`;
-                    playlistHTML += `\n        <span class=\"track-number\">${String(i+1).padStart(2, '0')}</span>`;
-                    playlistHTML += `\n        <span class=\"track-title\">${track.title}</span>`;
-                    playlistHTML += `\n        <span class=\"track-duration\">--:--</span>`;
-                    playlistHTML += `\n    </div>\n`;
-                });
-                // Replace only the content between the markers
-                content = content.slice(0, startIdx + trackListStart.length) + '\n' + playlistHTML + content.slice(endIdx);
-            }
-
-            fs.writeFileSync(htmlFile, content);
-            console.log(`✅ Updated ${htmlFile} with ${items.length} items (JSON database)`);
+            
+            console.log(`⚠️ Could not find or fix this.tracks array in ${htmlFile}`);
+            console.log(`   File may need manual repair`);
             return;
         }
 
@@ -256,7 +258,15 @@ function updatePageData(htmlFile, dataArrayName, items) {
             console.log(`✅ Updated ${htmlFile} with ${items.length} items (JSON database)`);
         } else {
             console.log(`⚠️ Could not find ${dataArrayName} array in ${htmlFile}`);
+            console.log(`   Looking for pattern: const ${dataArrayName} = [`);
+            
+            // Try to find what data arrays do exist in the file
+            const existingArrays = content.match(/const \w+Data\s*=\s*\[/g);
+            if (existingArrays) {
+                console.log(`   Found these data arrays: ${existingArrays.join(', ')}`);
+            }
         }
+
     } catch (error) {
         console.error(`❌ Error updating ${htmlFile}:`, error.message);
     }
@@ -316,34 +326,65 @@ function generateGameDevelopmentPage() {
     const gamesDir = './games';
     let games = [];
 
+    // Load database to check for embed entries
+    const database = loadContentDatabase();
+    const embedEntries = database.content.filter(item => item.type === 'embed' && item.category === 'game-development');
+
     // Check if games directory exists and read games
     if (fs.existsSync(gamesDir)) {
         const gameFiles = fs.readdirSync(gamesDir).filter(file => file.endsWith('.json'));
 
         if (gameFiles.length > 0) {
-            // Load game data and find thumbnails from database
-            const database = loadContentDatabase();
-            games = gameFiles.map(file => {
-                const gameData = JSON.parse(fs.readFileSync(`${gamesDir}/${file}`, 'utf8'));
-                const gamePath = `games/${file}`;
+            // Only include games that exist in both the database and games folder
+            games = gameFiles
+                .map(file => {
+                    const gameData = JSON.parse(fs.readFileSync(`${gamesDir}/${file}`, 'utf8'));
+                    const gamePath = `games/${file}`;
 
-                // Find the game in database to get thumbnail
-                const dbEntry = database.content.find(item => item.path === gamePath);
+                    // Find the game in database to get thumbnail and verify it exists
+                    const dbEntry = embedEntries.find(item => item.path === gamePath);
+                    
+                    // Only include if it exists in database (not orphaned)
+                    if (!dbEntry) {
+                        console.log(`⚠️ Game file ${file} found but not in database - skipping`);
+                        return null;
+                    }
 
-                return {
-                    ...gameData,
-                    thumbnail: dbEntry?.thumbnail || null,
-                    thumbnailOffsetX: dbEntry?.thumbnailOffsetX || 0,
-                    thumbnailOffsetY: dbEntry?.thumbnailOffsetY || 0,
-                    description: gameData.description || 'Click to play on itch.io'
-                };
-            });
+                    return {
+                        ...gameData,
+                        thumbnail: dbEntry.thumbnail || null,
+                        thumbnailOffsetX: dbEntry.thumbnailOffsetX || 0,
+                        thumbnailOffsetY: dbEntry.thumbnailOffsetY || 0,
+                        description: gameData.description || 'Click to play on itch.io'
+                    };
+                })
+                .filter(game => game !== null); // Remove nulls (orphaned files)
         }
     }
 
-    // Generate HTML for each game
-    const gamesHTML = games.map((game, index) => `
-                    <div class="game-container">
+    // Check for database entries without corresponding game files
+    const orphanedEntries = embedEntries.filter(entry => {
+        const filename = path.basename(entry.path);
+        return !fs.existsSync(path.join(gamesDir, filename));
+    });
+
+    if (orphanedEntries.length > 0) {
+        console.log(`⚠️ Found ${orphanedEntries.length} embed(s) in database without game files:`);
+        orphanedEntries.forEach(entry => console.log(`   - ${entry.title} (${entry.path})`));
+    }
+
+    // Update existing game-development.html instead of overwriting it
+    const htmlFile = './game-development.html';
+    if (!fs.existsSync(htmlFile)) {
+        console.log(`⚠️ ${htmlFile} doesn't exist, skipping...`);
+        return;
+    }
+
+    try {
+        let content = fs.readFileSync(htmlFile, 'utf8');
+
+        // Generate HTML for each game
+        const gamesHTML = games.map((game, index) => `                    <div class="game-container">
                         <div id="game-preview-${index}" class="game-preview">
                             <div class="game-thumbnail">
                                 <img src="${game.thumbnail || 'images/placeholder.png'}" alt="${game.title}" class="game-thumbnail-img" style="transform: translate(${game.thumbnailOffsetX}px, ${game.thumbnailOffsetY}px);">
@@ -369,84 +410,63 @@ function generateGameDevelopmentPage() {
                         </iframe>
                     </div>`).join('\n');
 
-    // Generate the full page
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Development - Dirtpickle's Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-    <main class="main-content">
-        <div class="container">
-            <div class="hero">
-                <h1>Game Development</h1>
-                <p>Interactive experiences and games</p>
-            </div>
-
-            <section class="project-section">
-                <div class="project-showcase">
-${gamesHTML}
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-
-    <script src="script.js"></script>
-    <script>
-    // Dynamic nav.html loader
-    (function(){
-            fetch('nav.html').then(r=>r.text()).then(html=>{
-                const navDiv = document.createElement('div');
-                navDiv.innerHTML = html;
-                document.body.insertBefore(navDiv, document.body.firstChild);
-                const gameLinks = document.querySelectorAll('a[href="game-development.html"]');
-                gameLinks.forEach(link => link.classList.add('active'));
-                setTimeout(setupMobileMenu, 50);
-            });
-    })();
-    // Game loading functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const gameOverlays = document.querySelectorAll('.game-play-overlay');
-
-        gameOverlays.forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const gameIndex = this.getAttribute('data-game-index');
-                const gamePreview = document.getElementById('game-preview-' + gameIndex);
-                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
-                const gameContainer = gamePreview.closest('.game-container');
-                const embedUrl = gameIframe.getAttribute('data-embed-url');
-
-                if (gamePreview) gamePreview.style.display = 'none';
-                if (gameIframe && embedUrl) {
-                    gameIframe.src = embedUrl;
-                    gameIframe.style.display = 'block';
-                }
+        // Find and replace the project showcase content
+        const showcaseStart = '<div class="project-showcase">';
+        const showcaseEnd = '</div>';
+        const startIdx = content.indexOf(showcaseStart);
+        
+        if (startIdx !== -1) {
+            const startSearchIdx = startIdx + showcaseStart.length;
+            
+            // Find the matching closing div by counting nested divs
+            let divCount = 1;
+            let endIdx = startSearchIdx;
+            
+            while (divCount > 0 && endIdx < content.length) {
+                const nextOpenDiv = content.indexOf('<div', endIdx);
+                const nextCloseDiv = content.indexOf('</div>', endIdx);
                 
-                // Add game-active class to disable hover animations
-                if (gameContainer) {
-                    gameContainer.classList.add('game-active');
+                // If no more closing divs found, break
+                if (nextCloseDiv === -1) break;
+                
+                // Check if there's an opening div before the next closing div
+                if (nextOpenDiv !== -1 && nextOpenDiv < nextCloseDiv) {
+                    // Found opening div first, increment count
+                    divCount++;
+                    endIdx = nextOpenDiv + 4;
+                } else {
+                    // Found closing div, decrement count
+                    divCount--;
+                    endIdx = nextCloseDiv + 6;
+                    
+                    // If this is our matching closing div, we found the end
+                    if (divCount === 0) {
+                        endIdx = nextCloseDiv;
+                        break;
+                    }
                 }
-            });
-        });
-    });
-    </script>
-</body>
-</html>`;
-
-    fs.writeFileSync('./game-development.html', html);
-
-    if (games.length === 0) {
-        console.log('✅ game-development.html generated (no games)');
-    } else {
-        console.log(`✅ game-development.html generated with ${games.length} game(s)`);
+            }
+            
+            if (divCount === 0) {
+                const beforeShowcase = content.slice(0, startSearchIdx);
+                const afterShowcase = content.slice(endIdx);
+                content = beforeShowcase + '\n' + gamesHTML + '\n                ' + afterShowcase;
+                
+                fs.writeFileSync(htmlFile, content);
+                
+                if (games.length === 0) {
+                    console.log('✅ game-development.html updated (no games)');
+                } else {
+                    console.log(`✅ game-development.html updated with ${games.length} game(s)`);
+                }
+                return;
+            }
+        }
+        
+        console.log(`⚠️ Could not find project-showcase div in ${htmlFile}`);
+        
+    } catch (error) {
+        console.error(`❌ Error updating ${htmlFile}:`, error.message);
     }
 }
 
@@ -471,7 +491,7 @@ function generateAll() {
 
     // Define all the pages and what they should contain
     const pages = [
-        { file: 'index.html', dataName: 'featuredData', filter: item => item.featured === true && !item.hidden },
+        { file: 'index.html', dataName: 'allData', filter: item => !item.hidden && item.type !== 'audio' },
         { file: 'art.html', dataName: 'characterData', filter: item => item.category === 'character-design' && !item.hidden },
         { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' && !item.hidden },
         { file: 'art.html', dataName: 'gameArtData', filter: item => (item.category === 'game-art' || item.category === 'props' || item.category === 'ui') && !item.hidden },

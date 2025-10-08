@@ -15,14 +15,18 @@
     <meta property="og:url" content="https://dirtpickle.com/video.html">
     <meta property="og:title" content="Video Portfolio - Dirtpickle">
     <meta property="og:description" content="Motion graphics, game trailers, and professional video content.">
-    <meta property="og:image" content="https://dirtpickle.com/images/video-og-image.jpg">
-    
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dirtpickle video portfolio">
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://dirtpickle.com/video.html">
     <meta property="twitter:title" content="Video Portfolio - Dirtpickle">
     <meta property="twitter:description" content="Motion graphics, game trailers, and professional video content.">
-    <meta property="twitter:image" content="https://dirtpickle.com/images/video-og-image.jpg">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="Dirtpickle video portfolio">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://dirtpickle.com/video.html">
@@ -34,6 +38,21 @@
     <link rel="shortcut icon" href="/favicon-32x32.png">
 
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data for Video Portfolio -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Video Portfolio",
+        "description": "Motion graphics, game trailers, and professional video content",
+        "creator": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Motion Graphics Artist & Video Producer"
+        }
+    }
+    </script>
 </head>
 <body>
     <!-- NAV_INCLUDE -->
@@ -72,7 +91,7 @@
         "nsfw": false,
         "featured": true,
         "video": "video/Attack of the Pigmen Ad.mp4",
-        "thumbnail": "thumbnails/video/Attack of the Pigmen Ad_thumb.jpg?v=1759534868150",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Ad_thumb.jpg?v=1759964729850",
         "genre": "Creative Video",
         "duration": "PT2M"
     },
@@ -89,7 +108,7 @@
         "nsfw": false,
         "featured": false,
         "video": "video/Attack of the Pigmen Promo.mp4",
-        "thumbnail": "thumbnails/video/Attack of the Pigmen Promo_thumb.jpg?v=1759534868150",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Promo_thumb.jpg?v=1759964729850",
         "genre": "Creative Video",
         "duration": "PT2M"
     },
@@ -107,7 +126,7 @@
         "nsfw": false,
         "featured": false,
         "video": "video/Attack of the Pigmen Trailer.mp4",
-        "thumbnail": "thumbnails/video/Attack of the Pigmen Trailer_thumb.jpg?v=1759534868150",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Trailer_thumb.jpg?v=1759964729850",
         "genre": "Creative Video",
         "duration": "PT2M"
     },
@@ -124,7 +143,7 @@
         "nsfw": false,
         "featured": true,
         "video": "video/Floof Troop Motion Graphic.mp4",
-        "thumbnail": "thumbnails/video/Floof Troop Motion Graphic.png?v=1759534868150",
+        "thumbnail": "thumbnails/video/Floof Troop Motion Graphic.png?v=1759964729850",
         "genre": "Creative Video",
         "duration": "PT2M"
     }
@@ -159,7 +178,10 @@
                 // Set active class on video link
                 const videoLinks = document.querySelectorAll('a[href="video.html"]');
                 videoLinks.forEach(link => link.classList.add('active'));
-                setTimeout(setupMobileMenu, 50);
+                setTimeout(() => {
+                    setupMobileMenu();
+                    setupDropdowns();
+                }, 50);
             });
         })();
     </script>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>About - Dirtpickle | Artist & Designer Background</title>
+    <meta name="title" content="About - Dirtpickle | Artist & Designer Background">
+    <meta name="description" content="Learn about Dirtpickle's artistic journey, creative process, and passion for game art, character design, and digital illustration. Discover the story behind the portfolio.">
+    <meta name="keywords" content="about artist, creative background, artistic journey, game artist bio, character designer story, digital art process">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/about.html">
+    <meta property="og:title" content="About Dirtpickle - Artist & Designer">
+    <meta property="og:description" content="Learn about the creative journey and artistic process behind Dirtpickle's work.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="About Dirtpickle">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/about.html">
+    <meta property="twitter:title" content="About Dirtpickle - Artist & Designer">
+    <meta property="twitter:description" content="Learn about the creative journey and artistic process.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="About Dirtpickle">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/about.html">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data for About Page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About Dirtpickle",
+        "description": "Learn about the artist and designer behind the creative work",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Game Artist & Designer"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>About</h1>
+                <p>Creative journey and artistic process</p>
+            </div>
+            
+            <section class="content-section">
+                <div class="about-content">
+                    <div class="coming-soon">
+                        <h2>Coming Soon</h2>
+                        <p>I'm working on creating a comprehensive about section that will share more about my creative journey, artistic process, and the story behind my work.</p>
+                        <p>Check back soon for updates, or explore my portfolio to see the latest projects and creative work.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+        fetch('nav.html').then(r=>r.text()).then(html=>{
+            const navDiv = document.createElement('div');
+            navDiv.innerHTML = html;
+            document.body.insertBefore(navDiv, document.body.firstChild);
+            const aboutLinks = document.querySelectorAll('a[href="about.html"]');
+            aboutLinks.forEach(link => link.classList.add('active'));
+            setTimeout(() => {
+                setupMobileMenu();
+                setupDropdowns();
+            }, 50);
+        });
+    })();
+    </script>
+</body>
+</html>

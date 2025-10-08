@@ -3,14 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio - Dirtpickle's Portfolio</title>
 
+    <!-- Primary Meta Tags -->
+    <title>Audio - Dirtpickle's Portfolio | Original Music & Sound Design</title>
+    <meta name="title" content="Audio - Dirtpickle's Portfolio | Original Music & Sound Design">
+    <meta name="description" content="Explore original music compositions and sound design by Dirtpickle. Creative audio work for games, films, and multimedia projects featuring diverse musical styles and production techniques.">
+    <meta name="keywords" content="music composition, sound design, game audio, original music, audio production, multimedia sound, music licensing, custom compositions">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/audio.html">
+    <meta property="og:title" content="Audio Portfolio - Dirtpickle | Original Music & Sound Design">
+    <meta property="og:description" content="Original music compositions and sound design work for games, films, and creative projects.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dirtpickle audio portfolio">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/audio.html">
+    <meta property="twitter:title" content="Audio Portfolio - Dirtpickle">
+    <meta property="twitter:description" content="Original music compositions and sound design for creative projects.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="Dirtpickle audio portfolio">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/audio.html">
+
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="shortcut icon" href="/favicon-32x32.png">
 
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data for Audio Portfolio -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Audio Portfolio",
+        "description": "Original music compositions and sound design work",
+        "creator": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Composer & Sound Designer"
+        }
+    }
+    </script>
     <style>
         /* Music Player Container - Side by Side Layout */
         .music-section {
@@ -448,7 +492,19 @@
             constructor() {
                 this.currentTrack = 0;
                 this.isPlaying = false;
-                this.tracks = [{"title":"Mormon Boys","type":"audio","category":"audio","workType":"Personal Project","description":"Mormon Boys - Original audio composition demonstrating musical creativity and production skills","tags":[],"nsfw":false,"featured":false,"src":"audio/Mormon Boys.mp3"}]
+                this.tracks = [
+          {
+                    "title": "Mormon Boys",
+                    "type": "audio",
+                    "category": "audio",
+                    "workType": "Personal Project",
+                    "description": "Mormon Boys - Original audio composition demonstrating musical creativity and production skills",
+                    "tags": [],
+                    "nsfw": false,
+                    "featured": false,
+                    "src": "audio/Mormon Boys.mp3"
+          }
+];
                 
                 this.audio = document.getElementById('main-audio');
                 this.playPauseBtn = document.getElementById('play-pause-btn');
@@ -593,7 +649,12 @@
                             const audioLinks = document.querySelectorAll('a[href="audio.html"]');
                             audioLinks.forEach(link => link.classList.add('active'));
                             if (typeof setupMobileMenu === 'function') {
-                                setTimeout(setupMobileMenu, 50);
+                                setTimeout(() => {
+                                    setupMobileMenu();
+                                    if (typeof setupDropdowns === 'function') {
+                                        setupDropdowns();
+                                    }
+                                }, 50);
                             }
                         })
                         .catch(err => console.error('Failed to load nav:', err));

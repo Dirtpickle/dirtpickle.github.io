@@ -107,7 +107,8 @@
       "tags": [],
       "nsfw": false,
       "featured": false,
-      "created": "2025-10-02T17:22:01.614Z"
+      "created": "2025-10-02T17:22:01.614Z",
+      "hidden": true
     },
     {
       "id": "1759425721614-0.13341646914298377",
@@ -168,22 +169,6 @@
       "nsfw": false,
       "featured": false,
       "created": "2025-10-02T17:22:01.614Z"
-    },
-    {
-      "id": "1759425721614-0.14288219366026977",
-      "title": "Mothers Day Card",
-      "path": "images/illustration/Mothers Day Card.png",
-      "thumbnail": "thumbnails/images/illustration/Mothers Day Card_thumb.jpg",
-      "type": "image",
-      "category": "illustration",
-      "workType": "Personal Project",
-      "tags": [
-        "photoshop"
-      ],
-      "nsfw": true,
-      "featured": false,
-      "created": "2025-10-02T17:22:01.614Z",
-      "hidden": true
     },
     {
       "id": "1759425721614-0.07398986629042925",
@@ -476,7 +461,7 @@
       "path": "images/game-art/faces1.png",
       "thumbnail": "thumbnails/images/game-art/faces4.png",
       "type": "image",
-      "category": "images",
+      "category": "game-art",
       "workType": "Personal Project",
       "tags": [
         "aseprite",
@@ -569,6 +554,58 @@
       "featured": false,
       "created": "2025-10-03T23:09:51.263Z",
       "hidden": true
+    },
+    {
+      "id": "1759961879708-0.9276277698316795",
+      "title": "Dirtpickle",
+      "path": "images/character-design/dirt.png",
+      "thumbnail": "thumbnails/images/character-design/dirt_thumb.jpg",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Work in Progress",
+      "tags": [
+        "3d"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-08T22:17:59.708Z"
+    },
+    {
+      "id": "1759961880007-0.15192676773511105",
+      "title": "Tons of Cats!",
+      "path": "images/tattoo/cats1.jpg",
+      "thumbnail": "thumbnails/cats1_thumb.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Professional",
+      "tags": [
+        "tattoo"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-08T22:18:00.007Z",
+      "frames": [
+        "images/tattoo/cats1.jpg",
+        "images/tattoo/cats2.jpg",
+        "images/tattoo/cats3.jpg",
+        "images/tattoo/cats4.jpg"
+      ]
+    },
+    {
+      "id": "1759964323520-0.35786984022672996",
+      "title": "Super Bee",
+      "path": "images/illustration/Super Bee.jpg",
+      "thumbnail": "thumbnails/images/illustration/Super Bee_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "procreate"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-08T22:58:43.520Z"
     }
   ],
   "tags": [
@@ -589,7 +626,8 @@
     "indie",
     "multiple frames",
     "black and gray",
-    "ui"
+    "ui",
+    "tattoo"
   ],
   "categories": [
     "character-design",
@@ -607,5 +645,5 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-04T00:20:12.072Z"
+  "lastModified": "2025-10-08T23:00:27.326Z"
 }

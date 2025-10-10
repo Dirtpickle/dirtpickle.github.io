@@ -38,7 +38,7 @@
       "id": "1759425721574-0.48431686114169237",
       "title": "Eyeball Monster",
       "path": "images/character-design/Eyeball.png",
-      "thumbnail": "thumbnails/images/character-design/Eyeball.png",
+      "thumbnail": "thumbnails/images/character-design/Eyeball_thumb.png",
       "type": "image",
       "category": "character-design",
       "workType": "Professional",
@@ -70,9 +70,9 @@
       "id": "1759425721614-0.40985764592182394",
       "title": "dirtpickle portrait",
       "path": "images/dirtpickle-portrait.png",
-      "thumbnail": "thumbnails/dirtpickle-portrait_thumb.jpg",
+      "thumbnail": "images/dirtpickle-portrait.png",
       "type": "image",
-      "category": "images",
+      "category": "character-design",
       "workType": "Personal Project",
       "tags": [],
       "nsfw": false,
@@ -84,7 +84,7 @@
       "id": "1759425721614-0.13341646914298377",
       "title": "Arizona Volleyball Addicts Logo",
       "path": "images/illustration/Arizona Volleyball Addicts Logo.jpg",
-      "thumbnail": "thumbnails/images/illustration/Arizona Volleyball Addicts Logo.jpg",
+      "thumbnail": "thumbnails/images/illustration/Arizona Volleyball Addicts Logo_thumb.jpg",
       "type": "image",
       "category": "illustration",
       "workType": "Client Work",
@@ -114,7 +114,7 @@
       "id": "1759425721614-0.3728176566899406",
       "title": "Donut on a Unicorn",
       "path": "images/illustration/Donut on a Unicorn.png",
-      "thumbnail": "thumbnails/images/illustration/Donut on a Unicorn.png",
+      "thumbnail": "thumbnails/images/illustration/Donut on a Unicorn_thumb.png",
       "type": "image",
       "category": "illustration",
       "workType": "Personal Project",
@@ -129,7 +129,7 @@
       "id": "1759425721614-0.8031398965110621",
       "title": "Josh Morningstar Poster",
       "path": "images/illustration/Josh Morningstar Poster.jpg",
-      "thumbnail": "thumbnails/images/illustration/Josh Morningstar Poster.jpg",
+      "thumbnail": "thumbnails/images/illustration/Josh Morningstar Poster_thumb.jpg",
       "type": "image",
       "category": "illustration",
       "workType": "Client Work",
@@ -144,7 +144,7 @@
       "id": "1759425721614-0.07398986629042925",
       "title": "The Polititian",
       "path": "images/illustration/The Polititian.jpg",
-      "thumbnail": "thumbnails/images/illustration/The Polititian.jpg",
+      "thumbnail": "thumbnails/images/illustration/The Polititian_thumb.jpg",
       "type": "image",
       "category": "illustration",
       "workType": "Personal Project",
@@ -202,18 +202,24 @@
     },
     {
       "id": "1759425721614-0.38803159185904956",
-      "title": "Googly Eyes",
+      "title": "Googly Eyes (Flash and Final)",
       "path": "images/tattoo/Googly Eyes.jpg",
       "thumbnail": "thumbnails/images/tattoo/Googly Eyes.jpg",
       "type": "image",
       "category": "tattoo",
       "workType": "Client Work",
       "tags": [
-        "photoshop"
+        "photoshop",
+        "flash",
+        "tattoo"
       ],
       "nsfw": false,
       "featured": false,
-      "created": "2025-10-02T17:22:01.614Z"
+      "created": "2025-10-02T17:22:01.614Z",
+      "frames": [
+        "images/tattoo/Googly Eyes.jpg",
+        "images/tattoo/3.jpg"
+      ]
     },
     {
       "id": "1759425721614-0.6519558812177151",
@@ -292,7 +298,8 @@
       "tags": [],
       "nsfw": false,
       "featured": false,
-      "created": "2025-10-02T17:22:01.614Z"
+      "created": "2025-10-02T17:22:01.614Z",
+      "hidden": true
     },
     {
       "id": "1759425722122-0.8445407402906602",
@@ -346,19 +353,6 @@
       "created": "2025-10-02T17:22:02.122Z"
     },
     {
-      "id": "1759446816107-0.5380628504229985",
-      "title": "Googly Eyes Final",
-      "path": "images/tattoo/3.jpg",
-      "thumbnail": "thumbnails/images/tattoo/3_thumb.jpg",
-      "type": "image",
-      "category": "tattoo",
-      "workType": "Client Work",
-      "tags": [],
-      "nsfw": false,
-      "featured": false,
-      "created": "2025-10-02T23:13:36.107Z"
-    },
-    {
       "id": "1759446816177-0.7834900001077398",
       "title": "Vomit Punch",
       "path": "images/tattoo/6.jpg",
@@ -397,7 +391,7 @@
       "id": "1759497449661-0.5757195693232111",
       "title": "Screaming Horror",
       "path": "images/game-art/startScreenNewEyes.png",
-      "thumbnail": "thumbnails/startScreenNewEyes_thumb.jpg",
+      "thumbnail": "thumbnails/images/game-art/startScreenNewEyes_thumb.jpg",
       "type": "image",
       "category": "game-art",
       "workType": "Personal Project",
@@ -414,7 +408,7 @@
       "path": "images/game-art/Husky Walk Cycle.gif",
       "thumbnail": "images/game-art/Husky Walk Cycle.gif",
       "type": "image",
-      "category": "images",
+      "category": "game-art",
       "workType": "Professional",
       "tags": [
         "animation",
@@ -432,7 +426,7 @@
       "thumbnail": "thumbnails/images/game-art/faces4.png",
       "type": "image",
       "category": "game-art",
-      "workType": "Personal Project",
+      "workType": "Professional",
       "tags": [
         "aseprite",
         "construct 3"
@@ -481,10 +475,10 @@
       "id": "1759532991205-0.12844900131075132",
       "title": "Character Select UI",
       "path": "images/game-art/Character Select UI.png",
-      "thumbnail": "thumbnails/Character Select UI_thumb.jpg",
+      "thumbnail": "thumbnails/images/game-art/Character Select UI_thumb.jpg",
       "type": "image",
       "category": "game-art",
-      "workType": "Personal Project",
+      "workType": "Professional",
       "tags": [
         "aseprite",
         "construct 3",
@@ -498,10 +492,10 @@
       "id": "1759532991216-0.93103381238766",
       "title": "In Game Menu UI",
       "path": "images/game-art/In Game Menu UI.png",
-      "thumbnail": "thumbnails/In Game Menu UI_thumb.jpg",
+      "thumbnail": "thumbnails/images/game-art/In Game Menu UI_thumb.jpg",
       "type": "image",
       "category": "game-art",
-      "workType": "Personal Project",
+      "workType": "Professional",
       "tags": [
         "aseprite",
         "construct 3",
@@ -517,7 +511,7 @@
       "path": "images/game-art/game_thumb.gif",
       "thumbnail": "images/game-art/game_thumb.gif",
       "type": "image",
-      "category": "images",
+      "category": "game-art",
       "workType": "Personal Project",
       "tags": [],
       "nsfw": false,
@@ -541,27 +535,6 @@
       "created": "2025-10-08T22:17:59.708Z"
     },
     {
-      "id": "1759961880007-0.15192676773511105",
-      "title": "Tons of Cats!",
-      "path": "images/tattoo/cats1.jpg",
-      "thumbnail": "thumbnails/cats1_thumb.jpg",
-      "type": "image",
-      "category": "tattoo",
-      "workType": "Professional",
-      "tags": [
-        "tattoo"
-      ],
-      "nsfw": false,
-      "featured": false,
-      "created": "2025-10-08T22:18:00.007Z",
-      "frames": [
-        "images/tattoo/cats1.jpg",
-        "images/tattoo/cats2.jpg",
-        "images/tattoo/cats3.jpg",
-        "images/tattoo/cats4.jpg"
-      ]
-    },
-    {
       "id": "1759964323520-0.35786984022672996",
       "title": "Super Bee",
       "path": "images/illustration/Super Bee.jpg",
@@ -576,6 +549,29 @@
       "nsfw": false,
       "featured": false,
       "created": "2025-10-08T22:58:43.520Z"
+    },
+    {
+      "id": "1760104975951-0.6867257902218373",
+      "title": "Cat Flash",
+      "path": "images/tattoo/cats1.jpg",
+      "thumbnail": "thumbnails/images/tattoo/cats2.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Personal Project",
+      "tags": [
+        "tattoo",
+        "flash",
+        "ibis paint"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-10T14:02:55.951Z",
+      "frames": [
+        "images/tattoo/cats2.jpg",
+        "images/tattoo/cats3.jpg",
+        "images/tattoo/cats4.jpg",
+        "images/tattoo/cats1.jpg"
+      ]
     }
   ],
   "tags": [
@@ -597,7 +593,8 @@
     "multiple frames",
     "black and gray",
     "ui",
-    "tattoo"
+    "tattoo",
+    "flash"
   ],
   "categories": [
     "character-design",
@@ -615,5 +612,11 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-09T05:22:13.329Z"
+  "lastModified": "2025-10-10T17:53:52.954Z",
+  "settings": {
+    "folders": [
+      "images/tattoo"
+    ],
+    "autoGenerateThumbnails": false
+  }
 }

@@ -192,14 +192,24 @@ function transformItem(item) {
         };
     } else {
         // Image
-        return {
-            ...transformed,
-            image: (item.thumbnail || item.path) + cacheBuster,
-            fullImage: item.path + cacheBuster,
-            ...(item.frames && item.frames.length > 0 && { 
-                frames: item.frames.map(frame => frame + cacheBuster)
-            })
-        };
+        const hasFrames = item.frames && item.frames.length > 0;
+        if (hasFrames) {
+            // Normalize frame paths to include cache buster and ensure ordering.
+            const normalizedFrames = item.frames.map(f => f + cacheBuster);
+            return {
+                ...transformed,
+                image: (item.thumbnail || item.path) + cacheBuster,
+                frames: normalizedFrames,
+                // Use the first frame as the main fullImage so the lightbox opens on an expected image
+                fullImage: normalizedFrames[0]
+            };
+        } else {
+            return {
+                ...transformed,
+                image: (item.thumbnail || item.path) + cacheBuster,
+                fullImage: item.path + cacheBuster
+            };
+        }
     }
 }
 
@@ -491,7 +501,7 @@ function generateAll() {
 
     // Define all the pages and what they should contain
     const pages = [
-        { file: 'index.html', dataName: 'allData', filter: item => !item.hidden && item.type !== 'audio' },
+        { file: 'index.html', dataName: 'allData', filter: item => !item.hidden }, // Changed to include all items
         { file: 'art.html', dataName: 'characterData', filter: item => item.category === 'character-design' && !item.hidden },
         { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' && !item.hidden },
         { file: 'art.html', dataName: 'gameArtData', filter: item => (item.category === 'game-art' || item.category === 'props' || item.category === 'ui') && !item.hidden },

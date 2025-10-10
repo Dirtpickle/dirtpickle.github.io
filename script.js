@@ -207,16 +207,27 @@ function openLightbox(src, caption, frames) {
     }
 
     // Setup frames if provided
-    // If frames exist and already include the src, use them as-is
-    // Otherwise, wrap src in an array
+    // If frames exist and include the src, start there. If src isn't in frames,
+    // default to the first frame (do NOT prepend the thumbnail). This avoids
+    // showing the thumbnail twice when frames are separate full-size images.
     if (frames && frames.length > 0) {
-        lightboxState.frames = frames;
-        // Find the current frame index (in case src is not the first frame)
-        lightboxState.currentFrame = frames.indexOf(src);
-        if (lightboxState.currentFrame === -1) {
-            // If src not found in frames, add it at the beginning
+        // Normalize helper to strip cache busters and query strings
+        const stripQuery = (s) => (s || '').split('?')[0];
+        const basename = (s) => stripQuery(s).split('/').pop();
+
+        const framesBasenames = frames.map(f => basename(f));
+        const srcBasename = basename(src);
+
+        if (!framesBasenames.includes(srcBasename)) {
+            // src isn't present in frames — include it at the front
             lightboxState.frames = [src, ...frames];
             lightboxState.currentFrame = 0;
+        } else {
+            // src exists in frames already — use frames as-is and start at that index
+            lightboxState.frames = frames;
+            lightboxState.currentFrame = framesBasenames.indexOf(srcBasename);
+            // ensure src points to the matching frames entry (may include cache-buster)
+            src = lightboxState.frames[lightboxState.currentFrame];
         }
     } else {
         lightboxState.frames = [src];
@@ -876,7 +887,31 @@ function generateGallery(containerSelector, mediaData) {
             if (img) {
                 img._frames = frames; // Store frames directly on the element
                 img.addEventListener('click', function() {
-                    openLightbox(this.dataset.fullimage, this.dataset.caption, this._frames);
+                    // Pass the actual clicked image src so the lightbox can include it
+                    // If the clicked image is a custom thumbnail (e.g. thumbnails/..._thumb.jpg),
+                    // map it to its full-size image (remove '/thumbnails/' and '_thumb') so
+                    // the lightbox uses the large image and can match frames correctly.
+                    const rawSrc = this.getAttribute('src') || this.src || this.dataset.fullimage;
+                    let clickedSrc = rawSrc;
+
+                    try {
+                        // Separate path and querystring
+                        const parts = rawSrc.split('?');
+                        const pathOnly = parts[0] || '';
+                        const query = parts[1] ? '?' + parts[1] : '';
+
+                        // If the path contains a thumbnails directory or filename suffix, map it
+                        if (/\/thumbnails\//.test(pathOnly) || /_thumb\.[^/.]+$/.test(pathOnly)) {
+                            // Replace '/thumbnails/' with '/' and remove '_thumb' before extension
+                            const mapped = pathOnly.replace('/thumbnails/', '/').replace(/_thumb(?=\.[^/.]+$)/, '');
+                            clickedSrc = mapped + query;
+                        }
+                    } catch (e) {
+                        // fallback to rawSrc on any error
+                        clickedSrc = rawSrc;
+                    }
+
+                    openLightbox(clickedSrc, this.dataset.caption, this._frames);
                 });
             }
         }

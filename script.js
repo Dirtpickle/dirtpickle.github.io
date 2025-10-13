@@ -896,7 +896,7 @@ function generateGallery(containerSelector, mediaData) {
             // Use placeholder image or create a data-src for lazy loading
             const thumbnailSrc = item.thumbnail ? item.thumbnail : '';
             galleryItem.innerHTML = `
-                <div class="video-thumb" onclick="openVideoModal('${item.video}', '${cleanTitle}')">
+                <div class="video-thumb">
                     ${thumbnailSrc ?
                         `<img src="${item.thumbnail}" alt="${cleanTitle}" class="video-thumbnail" loading="lazy">` :
                         `<video class="video-thumbnail lazy-video"
@@ -917,6 +917,24 @@ function generateGallery(containerSelector, mediaData) {
                     ${item.nsfw ? '<div class="nsfw-overlay" onclick="toggleNSFWBlur(this)"><span>18+ Content<br>Click to View</span></div>' : ''}
                 </div>
             `;
+
+            // Add click handler for video items
+            const videoThumb = galleryItem.querySelector('.video-thumb');
+            if (videoThumb) {
+                videoThumb.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on NSFW overlay
+                    if (e.target.closest('.nsfw-overlay')) return;
+                    
+                    // Check if this is a game item that should redirect to game-development page
+                    if (item.category === 'game-development' || (item.tags && item.tags.includes('game development'))) {
+                        window.location.href = 'game-development.html';
+                        return;
+                    }
+                    
+                    // Otherwise open video modal as normal
+                    openVideoModal(item.video, cleanTitle);
+                });
+            }
         } else {
             // Use fullImage if available, otherwise fallback to image
             const fullImage = item.fullImage || item.image;
@@ -938,6 +956,12 @@ function generateGallery(containerSelector, mediaData) {
             if (img) {
                 img._frames = frames; // Store frames directly on the element
                 img.addEventListener('click', function() {
+                    // Check if this is a game item that should redirect to game-development page
+                    if (item.category === 'game-development' || (item.tags && item.tags.includes('game development'))) {
+                        window.location.href = 'game-development.html';
+                        return;
+                    }
+                    
                     // Always use the fullImage property for the lightbox, not the thumbnail
                     const fullImageSrc = this.dataset.fullimage;
                     const caption = this.dataset.caption;

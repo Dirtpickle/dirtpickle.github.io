@@ -83,7 +83,7 @@
       "id": "1759425721614-0.3133880258787518",
       "title": "Attack of the Pigmen Promo Art",
       "path": "images/illustration/Attack of the Pigmen Promo Art.png",
-      "thumbnail": "thumbnails/images/illustration/Attack of the Pigmen Promo Art.png",
+      "thumbnail": "thumbnails/images/illustration/Attack of the Pigmen Promo Art_thumb.png",
       "type": "image",
       "category": "illustration",
       "workType": "Professional",
@@ -219,7 +219,7 @@
         "construct 3"
       ],
       "nsfw": false,
-      "featured": true,
+      "featured": false,
       "created": "2025-10-02T17:22:01.614Z"
     },
     {
@@ -449,9 +449,13 @@
       "type": "embed",
       "category": "game-development",
       "workType": "Professional",
-      "tags": [],
+      "tags": [
+        "aseprite",
+        "construct 3",
+        "game development"
+      ],
       "nsfw": false,
-      "featured": false,
+      "featured": true,
       "created": "2025-10-03T22:44:24.079Z",
       "description": "Top-Down Rogue-Like Shooter. Click to Play!"
     },
@@ -488,20 +492,6 @@
       "nsfw": false,
       "featured": false,
       "created": "2025-10-03T23:09:51.216Z"
-    },
-    {
-      "id": "1759532991263-0.22238829388678183",
-      "title": "game thumb",
-      "path": "images/game-art/game_thumb.gif",
-      "thumbnail": "images/game-art/game_thumb.gif",
-      "type": "image",
-      "category": "game-art",
-      "workType": "Personal Project",
-      "tags": [],
-      "nsfw": false,
-      "featured": false,
-      "created": "2025-10-03T23:09:51.263Z",
-      "hidden": true
     },
     {
       "id": "1759961879708-0.9276277698316795",
@@ -594,11 +584,13 @@
     "black and gray",
     "ui",
     "tattoo",
-    "flash"
+    "flash",
+    "game development"
   ],
   "categories": [
     "character-design",
     "game-art",
+    "game-development",
     "illustration",
     "tattoo",
     "3d",
@@ -612,7 +604,7 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-13T20:24:28.779Z",
+  "lastModified": "2025-10-13T21:49:20.705Z",
   "settings": {
     "folders": [
       "images/tattoo"

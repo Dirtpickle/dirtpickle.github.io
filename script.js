@@ -168,28 +168,6 @@ function toggleNSFWBlur(overlayElement) {
     }
 }
 
-// Utility function to properly encode image paths for URLs while preserving query strings
-function encodeImagePath(src) {
-    if (!src) return src;
-    
-    try {
-        // Split the URL into path and query string parts
-        const [pathPart, ...queryParts] = src.split('?');
-        const queryString = queryParts.length > 0 ? '?' + queryParts.join('?') : '';
-        
-        // Split path into segments and encode each segment
-        const pathSegments = pathPart.split('/');
-        const encodedSegments = pathSegments.map(segment => encodeURIComponent(segment));
-        const encodedPath = encodedSegments.join('/');
-        
-        return encodedPath + queryString;
-    } catch (e) {
-        // Fallback to original src if encoding fails
-        console.warn('Failed to encode image path:', src, e);
-        return src;
-    }
-}
-
 // Lightbox functionality with zoom and pan
 let lightboxState = {
     scale: 1,
@@ -200,10 +178,6 @@ let lightboxState = {
     startY: 0,
     lastX: 0,
     lastY: 0,
-    touchStartX: 0,
-    touchStartY: 0,
-    touchStartTime: 0,
-    hasMoved: false,
     frames: [],
     currentFrame: 0,
     baseCaption: ''
@@ -262,10 +236,7 @@ function openLightbox(src, caption, frames) {
     lightboxState.baseCaption = displayCaption;
 
     lightbox.style.display = 'block';
-    
-    // URL encode the path part while preserving query strings
-    const encodedSrc = encodeImagePath(src);
-    lightboxImg.src = encodedSrc;
+    lightboxImg.src = src;
     updateLightboxCaption();
     document.body.style.overflow = 'hidden';
 
@@ -294,6 +265,43 @@ function updateLightboxCaption() {
     } else {
         lightboxCaption.textContent = lightboxState.baseCaption;
     }
+}
+
+function updateLightboxItemInfo() {
+    let lightboxItemInfo = document.getElementById('lightbox-item-info');
+
+    // Create element if it doesn't exist
+    if (!lightboxItemInfo) {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+
+        lightboxItemInfo = document.createElement('div');
+        lightboxItemInfo.id = 'lightbox-item-info';
+        lightboxItemInfo.className = 'lightbox-item-info';
+        lightbox.appendChild(lightboxItemInfo);
+    }
+
+    // Update content or hide if no itemInfo
+    if (!lightboxState.itemInfo) {
+        lightboxItemInfo.style.display = 'none';
+        return;
+    }
+
+    const { category, workType, tags } = lightboxState.itemInfo;
+
+    // Generate tags HTML
+    const tagsHTML = tags && tags.length > 0 ?
+        `<div class="lightbox-tags">
+            ${tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+        </div>` : '';
+
+    // Display category, workType, and tags
+    lightboxItemInfo.innerHTML = `
+        <div class="lightbox-type">${category || ''}</div>
+        <div class="lightbox-work-type">${workType || ''}</div>
+        ${tagsHTML}
+    `;
+    lightboxItemInfo.style.display = 'flex';
 }
 
 function updateFrameNavigation() {
@@ -332,15 +340,6 @@ function updateFrameNavigation() {
     if (nextBtn) {
         nextBtn.style.display = showNavigation ? 'flex' : 'none';
     }
-    
-    // Add/remove class for multi-frame galleries to control swipe hint visibility
-    if (wrapper) {
-        if (showNavigation) {
-            wrapper.classList.add('has-multiple-frames');
-        } else {
-            wrapper.classList.remove('has-multiple-frames');
-        }
-    }
 }
 
 function changeFrame(direction) {
@@ -355,8 +354,7 @@ function changeFrame(direction) {
 
     const lightboxImg = document.getElementById('lightbox-img');
     if (lightboxImg) {
-        const encodedSrc = encodeImagePath(lightboxState.frames[lightboxState.currentFrame]);
-        lightboxImg.src = encodedSrc;
+        lightboxImg.src = lightboxState.frames[lightboxState.currentFrame];
     }
 
     updateLightboxCaption();
@@ -430,10 +428,6 @@ function resetLightboxTransform() {
         startY: 0,
         lastX: 0,
         lastY: 0,
-        touchStartX: 0,
-        touchStartY: 0,
-        touchStartTime: 0,
-        hasMoved: false,
         frames: preservedFrames,
         currentFrame: preservedCurrentFrame,
         baseCaption: preservedBaseCaption
@@ -464,9 +458,6 @@ function setupLightboxZoomPan() {
     const lightbox = document.getElementById('lightbox');
 
     if (!lightboxImg || !lightbox) return;
-
-    // Remove any existing event listeners first to prevent duplicates
-    removeLightboxZoomPanEvents();
 
     // Mouse wheel zoom
     const handleWheel = (e) => {
@@ -517,77 +508,32 @@ function setupLightboxZoomPan() {
         updateLightboxTransform();
     };
 
-    // Touch events for mobile - enhanced with swipe detection
+    // Touch events for mobile
     const handleTouchStart = (e) => {
-        if (e.touches.length === 1) {
-            // Store initial touch position for both panning and swiping
-            lightboxState.touchStartX = e.touches[0].clientX;
-            lightboxState.touchStartY = e.touches[0].clientY;
-            lightboxState.touchStartTime = Date.now();
-            lightboxState.hasMoved = false;
-            
-            if (lightboxState.scale > 1) {
-                e.preventDefault();
-                lightboxState.isDragging = true;
-                lightboxState.startX = e.touches[0].clientX;
-                lightboxState.startY = e.touches[0].clientY;
-                lightboxState.lastX = lightboxState.translateX;
-                lightboxState.lastY = lightboxState.translateY;
-            }
+        if (e.touches.length === 1 && lightboxState.scale > 1) {
+            e.preventDefault();
+            lightboxState.isDragging = true;
+            lightboxState.startX = e.touches[0].clientX;
+            lightboxState.startY = e.touches[0].clientY;
+            lightboxState.lastX = lightboxState.translateX;
+            lightboxState.lastY = lightboxState.translateY;
         }
     };
 
     const handleTouchMove = (e) => {
-        if (e.touches.length === 1) {
-            const deltaX = e.touches[0].clientX - lightboxState.touchStartX;
-            const deltaY = e.touches[0].clientY - lightboxState.touchStartY;
-            
-            // Mark as moved if significant distance
-            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
-                lightboxState.hasMoved = true;
-            }
-            
-            if (lightboxState.isDragging && lightboxState.scale > 1) {
-                e.preventDefault();
-                lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
-                lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
-                updateLightboxTransform();
-            }
+        if (e.touches.length === 1 && lightboxState.isDragging && lightboxState.scale > 1) {
+            e.preventDefault();
+            const deltaX = e.touches[0].clientX - lightboxState.startX;
+            const deltaY = e.touches[0].clientY - lightboxState.startY;
+            lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
+            lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
+            updateLightboxTransform();
         }
     };
 
-    const handleTouchEnd = (e) => {
-        if (lightboxState.isDragging) {
-            lightboxState.isDragging = false;
-            updateLightboxTransform();
-        }
-        
-        // Handle swipe gestures for navigation (only if image is not zoomed)
-        if (lightboxState.scale === 1 && lightboxState.frames.length > 1) {
-            const touchEndTime = Date.now();
-            const touchDuration = touchEndTime - lightboxState.touchStartTime;
-            const deltaX = (e.changedTouches[0]?.clientX || lightboxState.touchStartX) - lightboxState.touchStartX;
-            const deltaY = Math.abs((e.changedTouches[0]?.clientY || lightboxState.touchStartY) - lightboxState.touchStartY);
-            
-            // Swipe detection: fast horizontal movement, limited vertical movement
-            const isSwipe = touchDuration < 300 && Math.abs(deltaX) > 50 && deltaY < 100;
-            
-            if (isSwipe) {
-                if (deltaX > 0) {
-                    // Swipe right - go to previous frame
-                    changeFrame(-1);
-                } else {
-                    // Swipe left - go to next frame
-                    changeFrame(1);
-                }
-            }
-        }
-        
-        // Reset touch tracking
-        lightboxState.touchStartX = 0;
-        lightboxState.touchStartY = 0;
-        lightboxState.touchStartTime = 0;
-        lightboxState.hasMoved = false;
+    const handleTouchEnd = () => {
+        lightboxState.isDragging = false;
+        updateLightboxTransform();
     };
 
     // Double click/tap to toggle zoom
@@ -978,31 +924,28 @@ function generateGallery(containerSelector, mediaData) {
             if (img) {
                 img._frames = frames; // Store frames directly on the element
                 img.addEventListener('click', function() {
-                    // Use the data-fullimage attribute if available, otherwise try to map thumbnail paths
-                    const fullImageSrc = this.dataset.fullimage;
-                    let clickedSrc = fullImageSrc;
-                    
-                    if (!clickedSrc) {
-                        // Fallback: try to map thumbnail to full image
-                        const rawSrc = this.getAttribute('src') || this.src;
-                        clickedSrc = rawSrc;
+                    // Pass the actual clicked image src so the lightbox can include it
+                    // If the clicked image is a custom thumbnail (e.g. thumbnails/..._thumb.jpg),
+                    // map it to its full-size image (remove '/thumbnails/' and '_thumb') so
+                    // the lightbox uses the large image and can match frames correctly.
+                    const rawSrc = this.getAttribute('src') || this.src || this.dataset.fullimage;
+                    let clickedSrc = rawSrc;
 
-                        try {
-                            // Separate path and querystring
-                            const parts = rawSrc.split('?');
-                            const pathOnly = parts[0] || '';
-                            const query = parts[1] ? '?' + parts[1] : '';
+                    try {
+                        // Separate path and querystring
+                        const parts = rawSrc.split('?');
+                        const pathOnly = parts[0] || '';
+                        const query = parts[1] ? '?' + parts[1] : '';
 
-                            // If the path contains a thumbnails directory or filename suffix, map it
-                            if (/\/thumbnails\//.test(pathOnly) || /_thumb\.[^/.]+$/.test(pathOnly)) {
-                                // Replace '/thumbnails/' with '/' and remove '_thumb' before extension
-                                const mapped = pathOnly.replace('/thumbnails/', '/').replace(/_thumb(?=\.[^/.]+$)/, '');
-                                clickedSrc = mapped + query;
-                            }
-                        } catch (e) {
-                            // fallback to rawSrc on any error
-                            clickedSrc = rawSrc;
+                        // If the path contains a thumbnails directory or filename suffix, map it
+                        if (/\/thumbnails\//.test(pathOnly) || /_thumb\.[^/.]+$/.test(pathOnly)) {
+                            // Replace '/thumbnails/' with '/' and remove '_thumb' before extension
+                            const mapped = pathOnly.replace('/thumbnails/', '/').replace(/_thumb(?=\.[^/.]+$)/, '');
+                            clickedSrc = mapped + query;
                         }
+                    } catch (e) {
+                        // fallback to rawSrc on any error
+                        clickedSrc = rawSrc;
                     }
 
                     openLightbox(clickedSrc, this.dataset.caption, this._frames);

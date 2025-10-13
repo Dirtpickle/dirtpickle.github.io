@@ -51,22 +51,6 @@
       "description": "blah blah blah"
     },
     {
-      "id": "1759425721574-0.4028780799025906",
-      "title": "Walker Hayes",
-      "path": "images/character-design/Walker Hayes.jpg",
-      "thumbnail": "thumbnails/images/character-design/Walker Hayes.jpg",
-      "type": "image",
-      "category": "character-design",
-      "workType": "Client Work",
-      "tags": [
-        "photoshop",
-        "ibis paint"
-      ],
-      "nsfw": false,
-      "featured": true,
-      "created": "2025-10-02T17:22:01.574Z"
-    },
-    {
       "id": "1759425721614-0.40985764592182394",
       "title": "dirtpickle portrait",
       "path": "images/dirtpickle-portrait.png",
@@ -572,6 +556,22 @@
         "images/tattoo/cats4.jpg",
         "images/tattoo/cats1.jpg"
       ]
+    },
+    {
+      "id": "1760380869076-0.10691554581719531",
+      "title": "Walker Hayes",
+      "path": "images/Walker Hayes.jpg",
+      "thumbnail": "thumbnails/images/Walker Hayes.jpg",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "ibis paint"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-13T18:41:09.076Z"
     }
   ],
   "tags": [
@@ -612,7 +612,7 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-13T18:19:52.277Z",
+  "lastModified": "2025-10-13T20:24:28.779Z",
   "settings": {
     "folders": [
       "images/tattoo"

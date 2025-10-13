@@ -236,7 +236,20 @@ function openLightbox(src, caption, frames) {
     lightboxState.baseCaption = displayCaption;
 
     lightbox.style.display = 'block';
+    lightbox.setAttribute('aria-hidden', 'false');
+    
+    console.log('Setting lightbox image source to:', src);
+    
+    // Clear previous image and add loading handling
+    lightboxImg.src = '';
+    lightboxImg.onload = function() {
+        console.log('Lightbox image loaded successfully:', src);
+    };
+    lightboxImg.onerror = function() {
+        console.error('Failed to load lightbox image:', src);
+    };
     lightboxImg.src = src;
+    
     updateLightboxCaption();
     document.body.style.overflow = 'hidden';
 
@@ -365,6 +378,7 @@ function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         lightbox.style.display = 'none';
+        lightbox.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = 'auto';
 
         // Re-enable pointer events on navigation and other content
@@ -924,31 +938,21 @@ function generateGallery(containerSelector, mediaData) {
             if (img) {
                 img._frames = frames; // Store frames directly on the element
                 img.addEventListener('click', function() {
-                    // Pass the actual clicked image src so the lightbox can include it
-                    // If the clicked image is a custom thumbnail (e.g. thumbnails/..._thumb.jpg),
-                    // map it to its full-size image (remove '/thumbnails/' and '_thumb') so
-                    // the lightbox uses the large image and can match frames correctly.
-                    const rawSrc = this.getAttribute('src') || this.src || this.dataset.fullimage;
-                    let clickedSrc = rawSrc;
-
-                    try {
-                        // Separate path and querystring
-                        const parts = rawSrc.split('?');
-                        const pathOnly = parts[0] || '';
-                        const query = parts[1] ? '?' + parts[1] : '';
-
-                        // If the path contains a thumbnails directory or filename suffix, map it
-                        if (/\/thumbnails\//.test(pathOnly) || /_thumb\.[^/.]+$/.test(pathOnly)) {
-                            // Replace '/thumbnails/' with '/' and remove '_thumb' before extension
-                            const mapped = pathOnly.replace('/thumbnails/', '/').replace(/_thumb(?=\.[^/.]+$)/, '');
-                            clickedSrc = mapped + query;
-                        }
-                    } catch (e) {
-                        // fallback to rawSrc on any error
-                        clickedSrc = rawSrc;
+                    // Always use the fullImage property for the lightbox, not the thumbnail
+                    const fullImageSrc = this.dataset.fullimage;
+                    const caption = this.dataset.caption;
+                    
+                    console.log('Opening lightbox with:', {
+                        fullImage: fullImageSrc,
+                        caption: caption,
+                        frames: this._frames
+                    });
+                    
+                    if (fullImageSrc) {
+                        openLightbox(fullImageSrc, caption, this._frames);
+                    } else {
+                        console.error('No fullImage source available for lightbox');
                     }
-
-                    openLightbox(clickedSrc, this.dataset.caption, this._frames);
                 });
             }
         }
@@ -1155,6 +1159,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Export functions for global access
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
+window.changeFrame = changeFrame;
 window.openVideoModal = openVideoModal;
 window.closeVideoModal = closeVideoModal;
 window.generateGallery = generateGallery;

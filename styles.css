@@ -2264,21 +2264,19 @@ section, .featured-section, .art-section {
 }
 
 .lightbox-content {
-    display: block;
-    max-width: 80vw;
-    max-height: 80vh;
+    max-width: 90vw;
+    max-height: 85vh;
     width: auto;
     height: auto;
     border-radius: 8px;
     animation: lightboxZoom 0.3s ease;
     object-fit: contain;
-    transition: transform 0.2s ease-out;
-    transform-origin: center center;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     cursor: zoom-in;
+    display: block;
 }
 
 @keyframes lightboxZoom {
@@ -2338,29 +2336,30 @@ section, .featured-section, .art-section {
 
 .lightbox-caption {
     position: absolute;
-    bottom: 80px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     color: var(--white);
     text-align: center;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.6);
     padding: 12px 24px;
     border-radius: 8px;
     font-size: 1rem;
     max-width: 80%;
+    z-index: 10001;
 }
 
 /* Lightbox item info - similar to gallery overlay but no gradient/animation */
 .lightbox-item-info {
     position: absolute;
-    bottom: 20px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
-    background: transparent;
+    background: rgba(0, 0, 0, 0.6);
     padding: 12px 24px;
     border-radius: 8px;
     text-align: center;
-    z-index: 1001;
+    z-index: 10001;
     max-width: 80%;
     display: flex;
     flex-direction: column;
@@ -2403,6 +2402,43 @@ section, .featured-section, .art-section {
     text-transform: lowercase;
 }
 
+/* Lightbox Navigation Arrows */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10003;
+    user-select: none;
+    backdrop-filter: blur(10px);
+}
+
+.lightbox-prev {
+    left: 30px;
+}
+
+.lightbox-next {
+    right: 30px;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 45, 85, 0.9);
+    border-color: var(--accent);
+    transform: translateY(-50%) scale(1.1);
+}
+
 /* Lightbox image wrapper for frame navigation */
 .lightbox-img-wrapper {
     position: absolute;
@@ -2413,7 +2449,9 @@ section, .featured-section, .art-section {
     align-items: center;
     justify-content: center;
     max-width: 90vw;
-    max-height: 90vh;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
 }
 
 /* Lightbox navigation buttons for frames */
@@ -2533,6 +2571,50 @@ section, .featured-section, .art-section {
 .video-modal .video-close:hover {
     background: var(--accent) !important;
     transform: scale(1.05); /* Match the base hover behavior */
+}
+
+/* Video modal specific caption positioning */
+.video-modal .lightbox-caption {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    max-width: 80%;
+    z-index: 10002;
+    text-align: center;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .lightbox-caption,
+    .video-modal .lightbox-caption {
+        top: 10px;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        max-width: 90%;
+    }
+    
+    .lightbox-item-info {
+        top: 50px;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        max-width: 90%;
+    }
+    
+    .lightbox-content {
+        max-width: 95vw;
+        max-height: 90vh;
+    }
+    
+    .video-modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
 }
 
 /* Footer */

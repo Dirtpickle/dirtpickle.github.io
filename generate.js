@@ -506,14 +506,30 @@ function generateAll() {
         { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' && !item.hidden },
         { file: 'art.html', dataName: 'gameArtData', filter: item => (item.category === 'game-art' || item.category === 'props' || item.category === 'ui') && !item.hidden },
         { file: 'art.html', dataName: 'tattooData', filter: item => item.category === 'tattoo' && !item.hidden },
+        { file: 'character-design.html', dataName: 'galleryData', filter: item => item.category === 'character-design' && !item.hidden },
+        { file: 'illustration.html', dataName: 'galleryData', filter: item => item.category === 'illustration' && !item.hidden },
         { file: '3d.html', dataName: 'threeDData', filter: item => item.category === '3d' && !item.hidden },
         { file: 'video.html', dataName: 'galleryData', filter: item => item.category === 'video' && !item.hidden },
         { file: 'audio.html', dataName: 'musicData', filter: item => item.type === 'audio' && !item.hidden }
     ];
 
-    // Update each page with its filtered content
+    // Update each page with its filtered and sorted content
     pages.forEach(page => {
-        const items = database.content.filter(page.filter);
+        const items = database.content
+            .filter(page.filter)
+            .sort((a, b) => {
+                // 1. Featured items first
+                if (a.featured && !b.featured) return -1;
+                if (!a.featured && b.featured) return 1;
+
+                // 2. Sort by sortOrder (lower numbers first)
+                const aOrder = a.sortOrder !== undefined ? a.sortOrder : 999999;
+                const bOrder = b.sortOrder !== undefined ? b.sortOrder : 999999;
+                if (aOrder !== bOrder) return aOrder - bOrder;
+
+                // 3. Fall back to creation date (newest first)
+                return new Date(b.created || 0) - new Date(a.created || 0);
+            });
         updatePageData(page.file, page.dataName, items);
     });
 

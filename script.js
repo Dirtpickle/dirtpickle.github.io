@@ -178,6 +178,10 @@ let lightboxState = {
     startY: 0,
     lastX: 0,
     lastY: 0,
+    touchStartX: 0,
+    touchStartY: 0,
+    touchStartTime: 0,
+    hasMoved: false,
     frames: [],
     currentFrame: 0,
     baseCaption: ''
@@ -353,6 +357,15 @@ function updateFrameNavigation() {
     if (nextBtn) {
         nextBtn.style.display = showNavigation ? 'flex' : 'none';
     }
+
+    // Add/remove class for multi-frame galleries to control swipe hint visibility
+    if (wrapper) {
+        if (showNavigation) {
+            wrapper.classList.add('has-multiple-frames');
+        } else {
+            wrapper.classList.remove('has-multiple-frames');
+        }
+    }
 }
 
 function changeFrame(direction) {
@@ -432,7 +445,7 @@ function resetLightboxTransform() {
     const preservedFrames = lightboxState.frames;
     const preservedCurrentFrame = lightboxState.currentFrame;
     const preservedBaseCaption = lightboxState.baseCaption;
-    
+
     lightboxState = {
         scale: 1,
         translateX: 0,
@@ -442,6 +455,10 @@ function resetLightboxTransform() {
         startY: 0,
         lastX: 0,
         lastY: 0,
+        touchStartX: 0,
+        touchStartY: 0,
+        touchStartTime: 0,
+        hasMoved: false,
         frames: preservedFrames,
         currentFrame: preservedCurrentFrame,
         baseCaption: preservedBaseCaption
@@ -522,32 +539,77 @@ function setupLightboxZoomPan() {
         updateLightboxTransform();
     };
 
-    // Touch events for mobile
+    // Touch events for mobile - enhanced with swipe detection
     const handleTouchStart = (e) => {
-        if (e.touches.length === 1 && lightboxState.scale > 1) {
-            e.preventDefault();
-            lightboxState.isDragging = true;
-            lightboxState.startX = e.touches[0].clientX;
-            lightboxState.startY = e.touches[0].clientY;
-            lightboxState.lastX = lightboxState.translateX;
-            lightboxState.lastY = lightboxState.translateY;
+        if (e.touches.length === 1) {
+            // Store initial touch position for both panning and swiping
+            lightboxState.touchStartX = e.touches[0].clientX;
+            lightboxState.touchStartY = e.touches[0].clientY;
+            lightboxState.touchStartTime = Date.now();
+            lightboxState.hasMoved = false;
+
+            if (lightboxState.scale > 1) {
+                e.preventDefault();
+                lightboxState.isDragging = true;
+                lightboxState.startX = e.touches[0].clientX;
+                lightboxState.startY = e.touches[0].clientY;
+                lightboxState.lastX = lightboxState.translateX;
+                lightboxState.lastY = lightboxState.translateY;
+            }
         }
     };
 
     const handleTouchMove = (e) => {
-        if (e.touches.length === 1 && lightboxState.isDragging && lightboxState.scale > 1) {
-            e.preventDefault();
-            const deltaX = e.touches[0].clientX - lightboxState.startX;
-            const deltaY = e.touches[0].clientY - lightboxState.startY;
-            lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
-            lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
-            updateLightboxTransform();
+        if (e.touches.length === 1) {
+            const deltaX = e.touches[0].clientX - lightboxState.touchStartX;
+            const deltaY = e.touches[0].clientY - lightboxState.touchStartY;
+
+            // Mark as moved if significant distance
+            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+                lightboxState.hasMoved = true;
+            }
+
+            if (lightboxState.isDragging && lightboxState.scale > 1) {
+                e.preventDefault();
+                lightboxState.translateX = lightboxState.lastX + deltaX / lightboxState.scale;
+                lightboxState.translateY = lightboxState.lastY + deltaY / lightboxState.scale;
+                updateLightboxTransform();
+            }
         }
     };
 
-    const handleTouchEnd = () => {
-        lightboxState.isDragging = false;
-        updateLightboxTransform();
+    const handleTouchEnd = (e) => {
+        if (lightboxState.isDragging) {
+            lightboxState.isDragging = false;
+            updateLightboxTransform();
+        }
+
+        // Handle swipe gestures for navigation (only if image is not zoomed)
+        if (lightboxState.scale === 1 && lightboxState.frames.length > 1) {
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - lightboxState.touchStartTime;
+            const deltaX = (e.changedTouches[0]?.clientX || lightboxState.touchStartX) - lightboxState.touchStartX;
+            const deltaY = Math.abs((e.changedTouches[0]?.clientY || lightboxState.touchStartY) - lightboxState.touchStartY);
+
+            // Swipe detection: fast horizontal movement, limited vertical movement
+            const isSwipe = touchDuration < 300 && Math.abs(deltaX) > 50 && deltaY < 100;
+
+            if (isSwipe) {
+                if (deltaX > 0) {
+                    // Swipe right - go to previous frame
+                    changeFrame(-1);
+                } else {
+                    // Swipe left - go to next frame
+                    changeFrame(1);
+                }
+            }
+        }
+
+        // Reset touch tracking
+        lightboxState.touchStartX = 0;
+        lightboxState.touchStartY = 0;
+        lightboxState.touchStartTime = 0;
+        lightboxState.hasMoved = false;
     };
 
     // Double click/tap to toggle zoom

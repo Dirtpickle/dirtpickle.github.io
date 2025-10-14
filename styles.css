@@ -2169,23 +2169,36 @@ section, .featured-section, .art-section {
     top: 10px;
     right: 10px;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid #333;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--white);
     cursor: pointer;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    line-height: 1;
 }
 
 .game-close-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 45, 85, 0.4);
+}
+
+/* Game iframe wrapper */
+.game-iframe-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 /* Navigation notice for active games */
@@ -2514,10 +2527,45 @@ section, .featured-section, .art-section {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     max-width: 90vw;
     max-height: 85vh;
     width: auto;
     height: auto;
+}
+
+/* Swipe hint for mobile users */
+.swipe-hint {
+    position: relative;
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
+}
+
+/* Show swipe hint only when there are multiple frames */
+.lightbox-img-wrapper.has-multiple-frames .swipe-hint {
+    opacity: 1;
+}
+
+/* Optionally hide swipe hint on desktop (remove this to show on all devices) */
+@media (hover: hover) and (pointer: fine) {
+    .swipe-hint {
+        opacity: 0.5;  /* Show dimmed on desktop instead of hiding completely */
+    }
+
+    .lightbox-img-wrapper.has-multiple-frames .swipe-hint {
+        opacity: 0.5;
+    }
 }
 
 /* Lightbox navigation buttons for frames */

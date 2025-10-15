@@ -184,10 +184,12 @@ let lightboxState = {
     hasMoved: false,
     frames: [],
     currentFrame: 0,
-    baseCaption: ''
+    baseCaption: '',
+    galleryItems: [],      // All gallery items for navigation
+    currentItemIndex: -1   // Current gallery item index
 };
 
-function openLightbox(src, caption, frames) {
+function openLightbox(src, caption, frames, galleryItems = [], itemIndex = -1) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -195,6 +197,10 @@ function openLightbox(src, caption, frames) {
     if (!lightbox || !lightboxImg || !lightboxCaption) {
         return;
     }
+
+    // Store gallery context for navigation
+    lightboxState.galleryItems = galleryItems;
+    lightboxState.currentItemIndex = itemIndex;
 
     // Reset zoom and pan state
     resetLightboxTransform();
@@ -322,45 +328,40 @@ function updateLightboxItemInfo() {
 }
 
 function updateFrameNavigation() {
+    const lightbox = document.getElementById('lightbox');
+    const wrapper = document.getElementById('lightbox-img-wrapper');
     let prevBtn = document.getElementById('lightbox-prev');
     let nextBtn = document.getElementById('lightbox-next');
-    const wrapper = document.getElementById('lightbox-img-wrapper');
 
-    if (!prevBtn || !nextBtn) {
-        // Create navigation buttons if they don't exist
-        if (wrapper && lightboxState.frames && lightboxState.frames.length > 1) {
-            if (!prevBtn) {
-                prevBtn = document.createElement('button');
-                prevBtn.id = 'lightbox-prev';
-                prevBtn.className = 'lightbox-nav-btn lightbox-prev';
-                prevBtn.innerHTML = '‹';
-                prevBtn.onclick = () => changeFrame(-1);
-                wrapper.appendChild(prevBtn);
-            }
-
-            if (!nextBtn) {
-                nextBtn = document.createElement('button');
-                nextBtn.id = 'lightbox-next';
-                nextBtn.className = 'lightbox-nav-btn lightbox-next';
-                nextBtn.innerHTML = '›';
-                nextBtn.onclick = () => changeFrame(1);
-                wrapper.appendChild(nextBtn);
-            }
-        }
+    // Ensure navigation buttons exist
+    if (!prevBtn && lightbox) {
+        prevBtn = document.createElement('div');
+        prevBtn.id = 'lightbox-prev';
+        prevBtn.className = 'lightbox-nav lightbox-prev';
+        prevBtn.innerHTML = '<span>&#8249;</span>';
+        prevBtn.onclick = () => navigateLightbox(-1);
+        // Append to lightbox (will position relative to wrapper via CSS)
+        lightbox.appendChild(prevBtn);
     }
 
-    // Show/hide based on frame count
-    const showNavigation = lightboxState.frames && lightboxState.frames.length > 1;
-    if (prevBtn) {
-        prevBtn.style.display = showNavigation ? 'flex' : 'none';
+    if (!nextBtn && lightbox) {
+        nextBtn = document.createElement('div');
+        nextBtn.id = 'lightbox-next';
+        nextBtn.className = 'lightbox-nav lightbox-next';
+        nextBtn.innerHTML = '<span>&#8250;</span>';
+        nextBtn.onclick = () => navigateLightbox(1);
+        // Append to lightbox (will position relative to wrapper via CSS)
+        lightbox.appendChild(nextBtn);
     }
-    if (nextBtn) {
-        nextBtn.style.display = showNavigation ? 'flex' : 'none';
-    }
+
+    // Update onclick handlers to use new navigation function
+    if (prevBtn) prevBtn.onclick = () => navigateLightbox(-1);
+    if (nextBtn) nextBtn.onclick = () => navigateLightbox(1);
 
     // Add/remove class for multi-frame galleries to control swipe hint visibility
+    const hasMultipleFrames = lightboxState.frames && lightboxState.frames.length > 1;
     if (wrapper) {
-        if (showNavigation) {
+        if (hasMultipleFrames) {
             wrapper.classList.add('has-multiple-frames');
         } else {
             wrapper.classList.remove('has-multiple-frames');
@@ -384,6 +385,103 @@ function changeFrame(direction) {
     }
 
     updateLightboxCaption();
+    resetLightboxTransform();
+}
+
+// Smart navigation that handles both frames and gallery items
+function navigateLightbox(direction) {
+    const hasMultipleFrames = lightboxState.frames && lightboxState.frames.length > 1;
+    const hasGalleryItems = lightboxState.galleryItems && lightboxState.galleryItems.length > 1;
+
+    // If we have multiple frames, navigate through them first
+    if (hasMultipleFrames) {
+        const nextFrame = lightboxState.currentFrame + direction;
+
+        // If we're within frame bounds, just navigate frames
+        if (nextFrame >= 0 && nextFrame < lightboxState.frames.length) {
+            changeFrame(direction);
+            return;
+        }
+
+        // If we're at the edge of frames, wrap around frames first
+        changeFrame(direction);
+        
+        // Note: changeFrame() already handles wrapping, so we don't need gallery navigation here
+        return;
+    } else if (hasGalleryItems) {
+        // No multiple frames, just navigate gallery
+        changeGalleryItem(direction);
+    }
+}
+
+// Navigate to previous/next gallery item
+function changeGalleryItem(direction) {
+    // Check if we have gallery items to navigate
+    if (!lightboxState.galleryItems || lightboxState.galleryItems.length === 0) {
+        return;
+    }
+
+    // Calculate new index with wrapping
+    let newIndex = lightboxState.currentItemIndex + direction;
+
+    if (newIndex < 0) {
+        newIndex = lightboxState.galleryItems.length - 1;
+    } else if (newIndex >= lightboxState.galleryItems.length) {
+        newIndex = 0;
+    }
+
+    const newItem = lightboxState.galleryItems[newIndex];
+
+    // Skip video items - only show image items in lightbox gallery navigation
+    if (newItem && newItem.video) {
+        // Recursively try next item
+        lightboxState.currentItemIndex = newIndex;
+        changeGalleryItem(direction);
+        return;
+    }
+
+    if (!newItem) return;
+
+    // Update current index
+    lightboxState.currentItemIndex = newIndex;
+
+    // Get the new item's data
+    const fullImage = newItem.fullImage || newItem.image;
+    const frames = newItem.frames || [];
+    const cleanTitle = newItem.title
+        .replace(/-f$/, '')
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+
+    // Setup frames for new item
+    if (frames && frames.length > 0) {
+        const stripQuery = (s) => (s || '').split('?')[0];
+        const basename = (s) => stripQuery(s).split('/').pop();
+        const framesBasenames = frames.map(f => basename(f));
+        const srcBasename = basename(fullImage);
+
+        if (!framesBasenames.includes(srcBasename)) {
+            lightboxState.frames = [fullImage, ...frames];
+            lightboxState.currentFrame = 0;
+        } else {
+            lightboxState.frames = frames;
+            lightboxState.currentFrame = framesBasenames.indexOf(srcBasename);
+        }
+    } else {
+        lightboxState.frames = [fullImage];
+        lightboxState.currentFrame = 0;
+    }
+
+    lightboxState.baseCaption = cleanTitle;
+
+    // Update lightbox image and caption
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (lightboxImg) {
+        lightboxImg.src = lightboxState.frames[lightboxState.currentFrame];
+    }
+
+    updateLightboxCaption();
+    updateFrameNavigation();
     resetLightboxTransform();
 }
 
@@ -421,19 +519,43 @@ function removeLightboxKeyboardNavigation() {
 function handleLightboxKeydown(e) {
     const lightbox = document.getElementById('lightbox');
     if (!lightbox || lightbox.style.display === 'none') return;
-    
+
     switch(e.key) {
         case 'Escape':
             closeLightbox();
             break;
         case 'ArrowLeft':
-            if (lightboxState.frames && lightboxState.frames.length > 1) {
+            // Shift + Arrow = navigate gallery items
+            if (e.shiftKey && lightboxState.galleryItems && lightboxState.galleryItems.length > 0) {
+                e.preventDefault();
+                changeGalleryItem(-1);
+            }
+            // Plain Arrow = navigate frames
+            else if (lightboxState.frames && lightboxState.frames.length > 1) {
+                e.preventDefault();
                 changeFrame(-1);
+            }
+            // If no frames and gallery exists, navigate gallery
+            else if (lightboxState.galleryItems && lightboxState.galleryItems.length > 0) {
+                e.preventDefault();
+                changeGalleryItem(-1);
             }
             break;
         case 'ArrowRight':
-            if (lightboxState.frames && lightboxState.frames.length > 1) {
+            // Shift + Arrow = navigate gallery items
+            if (e.shiftKey && lightboxState.galleryItems && lightboxState.galleryItems.length > 0) {
+                e.preventDefault();
+                changeGalleryItem(1);
+            }
+            // Plain Arrow = navigate frames
+            else if (lightboxState.frames && lightboxState.frames.length > 1) {
+                e.preventDefault();
                 changeFrame(1);
+            }
+            // If no frames and gallery exists, navigate gallery
+            else if (lightboxState.galleryItems && lightboxState.galleryItems.length > 0) {
+                e.preventDefault();
+                changeGalleryItem(1);
             }
             break;
     }
@@ -441,10 +563,12 @@ function handleLightboxKeydown(e) {
 
 // Reset lightbox transform state
 function resetLightboxTransform() {
-    // Preserve frames and caption data during transform reset
+    // Preserve frames, caption, and gallery data during transform reset
     const preservedFrames = lightboxState.frames;
     const preservedCurrentFrame = lightboxState.currentFrame;
     const preservedBaseCaption = lightboxState.baseCaption;
+    const preservedGalleryItems = lightboxState.galleryItems;
+    const preservedCurrentItemIndex = lightboxState.currentItemIndex;
 
     lightboxState = {
         scale: 1,
@@ -461,7 +585,9 @@ function resetLightboxTransform() {
         hasMoved: false,
         frames: preservedFrames,
         currentFrame: preservedCurrentFrame,
-        baseCaption: preservedBaseCaption
+        baseCaption: preservedBaseCaption,
+        galleryItems: preservedGalleryItems,
+        currentItemIndex: preservedCurrentItemIndex
     };
 
     const lightboxImg = document.getElementById('lightbox-img');
@@ -1002,8 +1128,13 @@ function generateGallery(containerSelector, mediaData) {
             const fullImage = item.fullImage || item.image;
             const frames = item.frames || [];
 
+            // Calculate total frame count (including main image if not in frames)
+            const totalFrames = frames.length > 0 ? (frames.includes(fullImage) ? frames.length : frames.length + 1) : 0;
+            const frameCountHTML = totalFrames > 1 ? `<div class="frame-count-badge">${totalFrames}</div>` : '';
+
             galleryItem.innerHTML = `
                 <img src="${item.image}" alt="${cleanTitle}" loading="lazy" class="gallery-image" data-fullimage="${fullImage}" data-caption="${cleanTitle}">
+                ${frameCountHTML}
                 <div class="gallery-title">${cleanTitle}</div>
                 <div class="gallery-overlay">
                     <div class="gallery-type">${category}</div>
@@ -1017,25 +1148,47 @@ function generateGallery(containerSelector, mediaData) {
             const img = galleryItem.querySelector('.gallery-image');
             if (img) {
                 img._frames = frames; // Store frames directly on the element
+                img._itemData = item; // Store item data for later
+                img._mediaData = mediaData; // Store reference to full array
                 img.addEventListener('click', function() {
                     // Check if this is a game item that should redirect to game-development page
                     if (item.category === 'game-development' || (item.tags && item.tags.includes('game development'))) {
                         window.location.href = 'game-development.html';
                         return;
                     }
-                    
+
                     // Always use the fullImage property for the lightbox, not the thumbnail
                     const fullImageSrc = this.dataset.fullimage;
                     const caption = this.dataset.caption;
-                    
+
+                    // Get only gallery items from the SAME CONTAINER (specific gallery section)
+                    const container = document.querySelector(containerSelector);
+                    const containerGalleryItems = container ? container.querySelectorAll('.gallery-item') : [];
+                    const visibleItems = [];
+                    let currentVisibleIndex = -1;
+
+                    containerGalleryItems.forEach((galleryEl, idx) => {
+                        if (!galleryEl.classList.contains('hidden')) {
+                            const imgEl = galleryEl.querySelector('.gallery-image');
+                            if (imgEl && imgEl._itemData) {
+                                visibleItems.push(imgEl._itemData);
+                                if (imgEl === this) {
+                                    currentVisibleIndex = visibleItems.length - 1;
+                                }
+                            }
+                        }
+                    });
+
                     console.log('Opening lightbox with:', {
                         fullImage: fullImageSrc,
                         caption: caption,
-                        frames: this._frames
+                        frames: this._frames,
+                        visibleItems: visibleItems.length,
+                        currentVisibleIndex: currentVisibleIndex
                     });
-                    
+
                     if (fullImageSrc) {
-                        openLightbox(fullImageSrc, caption, this._frames);
+                        openLightbox(fullImageSrc, caption, this._frames, visibleItems, currentVisibleIndex);
                     } else {
                         console.error('No fullImage source available for lightbox');
                     }
@@ -1246,6 +1399,8 @@ document.addEventListener('DOMContentLoaded', function() {
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
 window.changeFrame = changeFrame;
+window.changeGalleryItem = changeGalleryItem;
+window.navigateLightbox = navigateLightbox;
 window.openVideoModal = openVideoModal;
 window.closeVideoModal = closeVideoModal;
 window.generateGallery = generateGallery;

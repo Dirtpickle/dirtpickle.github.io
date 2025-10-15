@@ -1489,6 +1489,25 @@ section, .featured-section, .art-section {
     border-radius: 4px;
 }
 
+/* Frame count badge for gallery items with multiple images */
+.frame-count-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    z-index: 2;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Play overlay enhancements */
 .play-overlay {
     position: absolute;
@@ -2343,8 +2362,8 @@ section, .featured-section, .art-section {
 }
 
 .lightbox-content {
-    max-width: 90vw;
-    max-height: 85vh;
+    max-width: 70vw;
+    max-height: 65vh;
     width: auto;
     height: auto;
     border-radius: 8px;
@@ -2420,9 +2439,7 @@ section, .featured-section, .art-section {
     transform: translateX(-50%);
     color: var(--white);
     text-align: center;
-    background: rgba(0, 0, 0, 0.6);
     padding: 12px 24px;
-    border-radius: 8px;
     font-size: 1rem;
     max-width: 80%;
     z-index: 10001;
@@ -2481,41 +2498,46 @@ section, .featured-section, .art-section {
     text-transform: lowercase;
 }
 
-/* Lightbox Navigation Arrows */
+/* Lightbox Navigation Arrows - Desktop only, positioned next to artwork */
 .lightbox-nav {
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     color: var(--white);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    width: 50px;
-    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    font-size: 1.5rem;
+    font-size: 3rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
+    display: none !important; /* Hidden by default, shown on desktop via media query */
     align-items: center;
     justify-content: center;
     z-index: 10003;
     user-select: none;
     backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+    opacity: 0.9;
 }
 
 .lightbox-prev {
-    left: 30px;
+    left: calc(50% - 45vw + 80px);
 }
 
 .lightbox-next {
-    right: 30px;
+    right: calc(50% - 45vw + 80px);
 }
 
 .lightbox-nav:hover {
-    background: rgba(255, 45, 85, 0.9);
+    background: var(--accent);
     border-color: var(--accent);
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-50%) scale(1.2);
+    box-shadow: 0 6px 20px rgba(255, 45, 85, 0.4);
+    opacity: 1;
 }
 
 /* Lightbox image wrapper for frame navigation */
@@ -2529,7 +2551,7 @@ section, .featured-section, .art-section {
     justify-content: center;
     flex-direction: column;
     max-width: 90vw;
-    max-height: 85vh;
+    max-height: 70vh;
     width: auto;
     height: auto;
 }
@@ -2557,86 +2579,21 @@ section, .featured-section, .art-section {
     opacity: 1;
 }
 
-/* Optionally hide swipe hint on desktop (remove this to show on all devices) */
+/* Hide swipe hint on desktop devices (devices with hover support and fine pointers) */
 @media (hover: hover) and (pointer: fine) {
     .swipe-hint {
-        opacity: 0.5;  /* Show dimmed on desktop instead of hiding completely */
+        display: none !important;
     }
 
     .lightbox-img-wrapper.has-multiple-frames .swipe-hint {
-        opacity: 0.5;
+        display: none !important;
     }
 }
 
-/* Lightbox navigation buttons for frames */
-.lightbox-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: var(--white);
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 2.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1002;
-    line-height: 1;
-    user-select: none;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.lightbox-nav-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 45, 85, 0.4);
-}
-
-.lightbox-prev {
-    left: -100px;
-}
-
-.lightbox-next {
-    right: -100px;
-}
-
-@media (max-width: 768px) {
-    .lightbox-nav-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.8rem;
-    }
-
-    .lightbox-prev {
-        left: -55px;
-    }
-
-    .lightbox-next {
-        right: -55px;
-    }
-}
-
-@media (max-width: 480px) {
-    .lightbox-nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-    }
-
-    .lightbox-prev {
-        left: -50px;
-    }
-
-    .lightbox-next {
-        right: -50px;
+/* Desktop only - show arrows on larger screens */
+@media (min-width: 1025px) {
+    .lightbox-nav {
+        display: flex !important;
     }
 }
 
@@ -2721,8 +2678,8 @@ section, .featured-section, .art-section {
     }
     
     .lightbox-content {
-        max-width: 95vw;
-        max-height: 90vh;
+        max-width: 85vw;
+        max-height: 75vh;
     }
     
     .video-modal-content {

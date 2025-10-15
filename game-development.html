@@ -117,6 +117,8 @@
     })();
     // Game loading functionality
     document.addEventListener('DOMContentLoaded', function() {
+        let gameIsOpen = false;
+
         const gameOverlays = document.querySelectorAll('.game-play-overlay');
 
         gameOverlays.forEach(overlay => {
@@ -126,47 +128,31 @@
                 const gameIndex = this.getAttribute('data-game-index');
                 const gamePreview = document.getElementById('game-preview-' + gameIndex);
                 const gameIframe = document.getElementById('game-iframe-' + gameIndex);
-                const gameIframeWrapper = document.getElementById('game-iframe-wrapper-' + gameIndex);
                 const gameContainer = gamePreview.closest('.game-container');
                 const embedUrl = gameIframe.getAttribute('data-embed-url');
 
                 if (gamePreview) gamePreview.style.display = 'none';
-                if (gameIframeWrapper) gameIframeWrapper.style.display = 'block';
                 if (gameIframe && embedUrl) {
                     gameIframe.src = embedUrl;
+                    gameIframe.style.display = 'block';
                 }
 
                 // Add game-active class to disable hover animations
                 if (gameContainer) {
                     gameContainer.classList.add('game-active');
                 }
+
+                gameIsOpen = true;
+                // Push a history state so back button can be intercepted
+                history.pushState({ game: true }, '');
             });
         });
 
-        // Close button functionality
-        const closeButtons = document.querySelectorAll('.game-close-btn');
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const gameIndex = this.getAttribute('data-game-index');
-                const gamePreview = document.getElementById('game-preview-' + gameIndex);
-                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
-                const gameIframeWrapper = document.getElementById('game-iframe-wrapper-' + gameIndex);
-                const gameContainer = gamePreview.closest('.game-container');
-
-                if (gameIframeWrapper) gameIframeWrapper.style.display = 'none';
-                if (gamePreview) gamePreview.style.display = 'block';
-                if (gameIframe) {
-                    // Stop the game by removing the src
-                    gameIframe.src = '';
-                }
-
-                // Remove game-active class to re-enable hover animations
-                if (gameContainer) {
-                    gameContainer.classList.remove('game-active');
-                }
-            });
+        // Navigate to index when back is pressed
+        window.addEventListener('popstate', function(e) {
+            if (gameIsOpen) {
+                window.location.href = 'index.html';
+            }
         });
     });
     </script>

@@ -36,8 +36,61 @@ const SEO_DESCRIPTIONS = {
     }
 };
 
+// Generate filter buttons HTML based on filter mappings
+function generateFilterButtons(filterMappings, pageType = 'home') {
+    if (!filterMappings || Object.keys(filterMappings).length === 0) {
+        // Fallback to default filters if no mappings exist
+        const defaultFilters = {
+            home: ['all', 'featured', 'game-development', 'tattoo', 'aseprite', 'after effects', 'animation', '3d', 'illustration'],
+            art: ['all', 'traditional', 'flash', 'aseprite', 'after effects', 'animation', 'illustration'],
+            character: ['all', 'traditional', 'flash', 'aseprite']
+        };
+        
+        const filters = defaultFilters[pageType] || defaultFilters.home;
+        return filters.map(filter => {
+            const displayName = filter === 'all' ? 'All' :
+                               filter === 'featured' ? 'Featured' :
+                               filter === 'game-development' ? 'Game Development' :
+                               filter === 'aseprite' ? 'Pixel Art' :
+                               filter === 'after effects' ? 'Motion Graphics' :
+                               filter.charAt(0).toUpperCase() + filter.slice(1);
+            
+            const activeClass = (pageType === 'home' && filter === 'featured') || 
+                              (pageType !== 'home' && filter === 'all') ? ' active' : '';
+            
+            return `                    <button class="filter-pill${activeClass}" data-filter="${filter}">${displayName}</button>`;
+        }).join('\n');
+    }
+    
+    // Generate buttons from filter mappings
+    const buttons = [];
+    
+    // Always include 'All' button first
+    const allActiveClass = pageType !== 'home' ? ' active' : '';
+    buttons.push(`                    <button class="filter-pill${allActiveClass}" data-filter="all">All</button>`);
+    
+    // Add 'Featured' button for home page
+    if (pageType === 'home') {
+        buttons.push(`                    <button class="filter-pill active" data-filter="featured">Featured</button>`);
+    }
+    
+    // Add buttons based on filter mappings
+    Object.keys(filterMappings).forEach(filterKey => {
+        const displayName = filterKey.replace(/-/g, ' ')
+                                   .replace(/\b\w/g, c => c.toUpperCase())
+                                   .replace('Tattoo Flash', 'Tattoo Flash')
+                                   .replace('Motion Graphics', 'Motion Graphics')
+                                   .replace('Pixel Art', 'Pixel Art')
+                                   .replace('3d', '3D');
+        
+        buttons.push(`                    <button class="filter-pill" data-filter="${filterKey}">${displayName}</button>`);
+    });
+    
+    return buttons.join('\n');
+}
+
 // Video-specific genre detection - from JSON tags
-function getVideoGenre(category, tags) {
+function getVideoGenre(tags) {
     // Check explicit tags first
     for (const tag of tags) {
         if (tag === 'trailer' || tag === 'game-trailer') return 'Game Trailer';
@@ -48,8 +101,8 @@ function getVideoGenre(category, tags) {
         if (tag === 'demo' || tag === 'gameplay') return 'Gameplay Demo';
     }
 
-    // If no explicit tags, use folder-based defaults
-    if (category === '3d') return '3D Animation';
+    // If no explicit tags, check for 3D workType
+    if (tags.includes('3d') || tags.includes('modeling') || tags.includes('render')) return '3D Animation';
 
     return 'Creative Video'; // Default
 }
@@ -68,7 +121,7 @@ function get3DTechnique(tags) {
         if (tag === 'texture' || tag === 'texturing' || tag === 'material') return 'Texturing & Materials';
     }
 
-    return '3D Modeling'; // Default for 3D category
+    return '3D Modeling'; // Default for 3D workType
 }
 
 // 3D software detection - from JSON tags
@@ -104,8 +157,20 @@ function estimateVideoDuration(tags) {
 }
 
 // Generate SEO-optimized description
-function generateDescription(title, category, tags) {
-    const categoryData = SEO_DESCRIPTIONS[category] || SEO_DESCRIPTIONS['illustration'];
+function generateDescription(title, workType, tags) {
+    // Use workType to determine description category
+    let descriptionCategory = 'illustration'; // default
+    if (workType) {
+        const workTypeLower = workType.toLowerCase();
+        if (workTypeLower.includes('character')) descriptionCategory = 'character-design';
+        else if (workTypeLower.includes('game')) descriptionCategory = 'game-art';
+        else if (workTypeLower.includes('tattoo')) descriptionCategory = 'tattoo';
+        else if (workTypeLower.includes('3d')) descriptionCategory = '3d';
+        else if (workTypeLower.includes('video')) descriptionCategory = 'video';
+        else if (workTypeLower.includes('audio') || workTypeLower.includes('music')) descriptionCategory = 'audio';
+    }
+    
+    const categoryData = SEO_DESCRIPTIONS[descriptionCategory] || SEO_DESCRIPTIONS['illustration'];
 
     // Check for explicit content tags to create specific descriptions
     for (const tag of tags) {
@@ -138,7 +203,7 @@ function loadContentDatabase() {
     if (!fs.existsSync(DATABASE_PATH)) {
         console.log(`⚠️ Database not found at ${DATABASE_PATH}`);
         console.log('📝 Please use the Content Manager app to create and manage your content.');
-        return { content: [], tags: [], categories: [], workTypes: [] };
+        return { content: [], tags: [], workTypes: [] };
     }
 
     try {
@@ -148,14 +213,13 @@ function loadContentDatabase() {
         return database;
     } catch (error) {
         console.error(`❌ Error loading database: ${error.message}`);
-        return { content: [], tags: [], categories: [], workTypes: [] };
+        return { content: [], tags: [], workTypes: [] };
     }
 }
 
 // Transform CMS database item to website format
 function transformItem(item) {
     const tags = item.tags || [];
-    const category = item.category || 'uncategorized';
 
     // Add cache buster based on file modification time or database timestamp
     const cacheBuster = `?v=${Date.now()}`;
@@ -164,12 +228,12 @@ function transformItem(item) {
     const transformed = {
         title: item.title,
         type: item.type,
-        category: category,
         workType: item.workType || 'Creative Work',
-        description: generateDescription(item.title, category, tags),
+        description: generateDescription(item.title, item.workType, tags),
         tags: tags,
         nsfw: item.nsfw || false,
-        featured: item.featured || false
+        featured: item.featured || false,
+        ...(item.linkUrl && { linkUrl: item.linkUrl })
     };
 
     // Type-specific transformations
@@ -183,9 +247,9 @@ function transformItem(item) {
             ...transformed,
             video: item.path,
             thumbnail: (item.thumbnail || item.path) + cacheBuster,
-            genre: getVideoGenre(category, tags),
+            genre: getVideoGenre(tags),
             duration: estimateVideoDuration(tags),
-            ...(category === '3d' && {
+            ...(tags.includes('3d') && {
                 technique: get3DTechnique(tags),
                 software: detect3DSoftware(tags)
             })
@@ -282,6 +346,50 @@ function updatePageData(htmlFile, dataArrayName, items) {
     }
 }
 
+// Update filter buttons in HTML files based on filter mappings
+function updateFilterButtons(htmlFile, filterMappings, pageType) {
+    if (!fs.existsSync(htmlFile)) {
+        console.log(`⚠️ ${htmlFile} doesn't exist, skipping filter button update...`);
+        return;
+    }
+
+    try {
+        let content = fs.readFileSync(htmlFile, 'utf8');
+        
+        // Find the filter container section
+        const filterContainerStart = content.indexOf('<div class="filter-container">');
+        if (filterContainerStart === -1) {
+            console.log(`⚠️ No filter container found in ${htmlFile}`);
+            return;
+        }
+        
+        const filterContainerEnd = content.indexOf('</div>', filterContainerStart);
+        if (filterContainerEnd === -1) {
+            console.log(`⚠️ Malformed filter container in ${htmlFile}`);
+            return;
+        }
+        
+        // Generate new filter buttons
+        const newFilterButtons = generateFilterButtons(filterMappings, pageType);
+        
+        // Replace the content inside filter-container
+        const beforeContainer = content.slice(0, filterContainerStart);
+        const afterContainer = content.slice(filterContainerEnd);
+        
+        const newFilterSection = `<div class="filter-container">
+${newFilterButtons}
+                </div>`;
+        
+        content = beforeContainer + newFilterSection + afterContainer;
+        
+        fs.writeFileSync(htmlFile, content);
+        console.log(`✅ Updated filter buttons in ${htmlFile}`);
+        
+    } catch (error) {
+        console.error(`❌ Error updating filter buttons in ${htmlFile}:`, error.message);
+    }
+}
+
 // Generate sitemap.xml for better SEO
 function generateSitemap() {
     const baseUrl = 'https://dirtpickle.com';
@@ -338,7 +446,7 @@ function generateGameDevelopmentPage() {
 
     // Load database to check for embed entries
     const database = loadContentDatabase();
-    const embedEntries = database.content.filter(item => item.type === 'embed' && item.category === 'game-development');
+    const embedEntries = database.content.filter(item => item.type === 'embed' && item.workType === 'Game Development');
 
     // Check if games directory exists and read games
     if (fs.existsSync(gamesDir)) {
@@ -495,21 +603,15 @@ function generateAll() {
 
     console.log(`\n📊 Database Summary:`);
     console.log(`   • Total items: ${database.content.length}`);
-    console.log(`   • Categories: ${database.categories.join(', ')}`);
     console.log(`   • Tags available: ${database.tags.length}`);
     console.log(`   • Work types: ${database.workTypes.join(', ')}\n`);
 
     // Define all the pages and what they should contain
     const pages = [
-        { file: 'index.html', dataName: 'allData', filter: item => !item.hidden }, // Changed to include all items
-        { file: 'art.html', dataName: 'characterData', filter: item => item.category === 'character-design' && !item.hidden },
-        { file: 'art.html', dataName: 'illustrationData', filter: item => item.category === 'illustration' && !item.hidden },
-        { file: 'art.html', dataName: 'gameArtData', filter: item => (item.category === 'game-art' || item.category === 'props' || item.category === 'ui') && !item.hidden },
-        { file: 'art.html', dataName: 'tattooData', filter: item => item.category === 'tattoo' && !item.hidden },
-        { file: 'character-design.html', dataName: 'galleryData', filter: item => item.category === 'character-design' && !item.hidden },
-        { file: 'illustration.html', dataName: 'galleryData', filter: item => item.category === 'illustration' && !item.hidden },
-        { file: '3d.html', dataName: 'threeDData', filter: item => item.category === '3d' && !item.hidden },
-        { file: 'video.html', dataName: 'galleryData', filter: item => item.category === 'video' && !item.hidden },
+        { file: 'index.html', dataName: 'allData', filter: item => !item.hidden }, // All items for home page
+        { file: 'art.html', dataName: 'allArtData', filter: item => (item.type === 'image' || item.type === 'video') && !item.hidden }, // All visual art
+        { file: '3d.html', dataName: 'threeDData', filter: item => (item.workType === '3D Art' || item.tags.includes('3d')) && !item.hidden },
+        { file: 'video.html', dataName: 'galleryData', filter: item => item.type === 'video' && !item.hidden },
         { file: 'audio.html', dataName: 'musicData', filter: item => item.type === 'audio' && !item.hidden }
     ];
 
@@ -531,6 +633,20 @@ function generateAll() {
                 return new Date(b.created || 0) - new Date(a.created || 0);
             });
         updatePageData(page.file, page.dataName, items);
+    });
+
+    // Update filter buttons based on filter mappings
+    console.log('\n🎛️ Updating filter buttons...');
+    const filterMappings = database.filterMappings || {};
+    
+    // Update filter buttons for key pages
+    const filterPages = [
+        { file: 'index.html', pageType: 'home' },
+        { file: 'art.html', pageType: 'art' }
+    ];
+    
+    filterPages.forEach(({ file, pageType }) => {
+        updateFilterButtons(file, filterMappings, pageType);
     });
 
     // Generate game development page

@@ -35,22 +35,6 @@
       "created": "2025-10-02T17:22:01.574Z"
     },
     {
-      "id": "1759425721574-0.48431686114169237",
-      "title": "Eyeball Monster",
-      "path": "images/character-design/Eyeball Monster.png",
-      "thumbnail": "thumbnails/images/character-design/Eyeball_thumb.png",
-      "type": "image",
-      "workType": "Professional",
-      "tags": [
-        "procreate",
-        "character"
-      ],
-      "nsfw": false,
-      "featured": false,
-      "created": "2025-10-02T17:22:01.574Z",
-      "description": "blah blah blah"
-    },
-    {
       "id": "1759425721614-0.40985764592182394",
       "title": "dirtpickle portrait",
       "path": "images/dirtpickle-portrait.png",
@@ -867,7 +851,7 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-18T20:24:22.795Z",
+  "lastModified": "2025-10-18T20:33:40.165Z",
   "settings": {
     "folders": [],
     "autoGenerateThumbnails": false

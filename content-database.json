@@ -408,7 +408,7 @@
     {
       "id": "1759531464079-0.7343884023910567",
       "title": "Attack of the Pigmen",
-      "path": "games/attack-of-the-pigmen.json",
+      "path": "games/Attack of the Pigmen.json",
       "thumbnail": "thumbnails/games/game_thumb.gif",
       "type": "embed",
       "workType": "Game Development",
@@ -421,7 +421,13 @@
       "featured": true,
       "linkUrl": "game-development.html",
       "created": "2025-10-03T22:44:24.079Z",
-      "description": "Top-Down Rogue-Like Shooter. Click to Play!"
+      "description": "Top-Down Rogue-Like Shooter. Click to Play!",
+      "externalLinks": [
+        {
+          "platform": "google-play",
+          "url": "https://play.google.com/store/apps/details?id=com.dirtpickle.atackofthepigmen&pcampaignid=web_share"
+        }
+      ]
     },
     {
       "id": "1759532991205-0.12844900131075132",
@@ -851,7 +857,7 @@
     "Commission",
     "Work in Progress"
   ],
-  "lastModified": "2025-10-22T20:17:08.779Z",
+  "lastModified": "2025-10-22T23:06:59.340Z",
   "settings": {
     "folders": [],
     "autoGenerateThumbnails": false

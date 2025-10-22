@@ -70,13 +70,13 @@
                     <div class="game-container">
                         <div id="game-preview-0" class="game-preview">
                             <div class="game-thumbnail">
-                                <img src="thumbnails/games/game_thumb.gif" alt="attack of the pigmen" class="game-thumbnail-img" style="transform: translate(0px, 0px);">
+                                <img src="thumbnails/games/game_thumb.gif" alt="Attack of the Pigmen" class="game-thumbnail-img" style="transform: translate(0px, 0px);">
                                 <div class="game-play-overlay" data-game-index="0">
                                     <div class="game-play-icon"></div>
                                 </div>
                                 <div class="game-title-overlay">
-                                    <h3>attack of the pigmen</h3>
-                                    <p>Click to play on itch.io</p>
+                                    <h3>Attack of the Pigmen</h3>
+                                    <p>Top-Down Rogue-Like Shooter. Click to Play!</p>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +89,15 @@
                             width="640"
                             height="380"
                             style="display:none;max-width:100%;border-radius:8px;">
-                            <a href="https://itch.io/embed-upload/15319183?color=000000">Play attack of the pigmen on itch.io</a>
+                            <a href="https://itch.io/embed-upload/15319183?color=000000">Play Attack of the Pigmen on itch.io</a>
                         </iframe>
+                        <div class="game-external-links" id="game-links-0">
+                            
+                            <a href="https://play.google.com/store/apps/details?id=com.dirtpickle.atackofthepigmen&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="game-platform-link" data-platform="google-play">
+                                <span class="platform-icon">▶</span>
+                                <span class="platform-label">Get it on Google Play</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -154,6 +161,81 @@
         window.addEventListener('popstate', function(e) {
             if (gameIsOpen) {
                 window.location.href = 'index.html';
+            }
+        });
+
+        // Fullscreen functionality
+        const fullscreenButtons = document.querySelectorAll('.game-fullscreen-btn');
+
+        fullscreenButtons.forEach(button => {
+            button.addEventListener('click', async function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const gameIndex = this.getAttribute('data-game-index');
+                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
+
+                if (!gameIframe) return;
+
+                try {
+                    // Enter fullscreen
+                    if (gameIframe.requestFullscreen) {
+                        await gameIframe.requestFullscreen();
+                    } else if (gameIframe.webkitRequestFullscreen) {
+                        await gameIframe.webkitRequestFullscreen();
+                    } else if (gameIframe.msRequestFullscreen) {
+                        await gameIframe.msRequestFullscreen();
+                    }
+
+                    // Lock orientation to landscape
+                    if (screen.orientation && screen.orientation.lock) {
+                        try {
+                            await screen.orientation.lock('landscape');
+                        } catch (err) {
+                            console.log('Orientation lock not supported or failed:', err);
+                        }
+                    }
+
+                    // Add fullscreen class for styling
+                    gameIframe.classList.add('fullscreen');
+
+                } catch (err) {
+                    console.error('Fullscreen request failed:', err);
+                }
+            });
+        });
+
+        // Handle fullscreen exit
+        document.addEventListener('fullscreenchange', function() {
+            const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+            if (!fullscreenElement) {
+                // Exited fullscreen - remove fullscreen class and unlock orientation
+                const gameIframes = document.querySelectorAll('[id^="game-iframe-"]');
+                gameIframes.forEach(iframe => {
+                    iframe.classList.remove('fullscreen');
+                });
+
+                // Unlock orientation
+                if (screen.orientation && screen.orientation.unlock) {
+                    try {
+                        screen.orientation.unlock();
+                    } catch (err) {
+                        console.log('Orientation unlock not needed or failed:', err);
+                    }
+                }
+            }
+        });
+
+        // Handle webkit fullscreen change
+        document.addEventListener('webkitfullscreenchange', function() {
+            const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+            if (!fullscreenElement) {
+                const gameIframes = document.querySelectorAll('[id^="game-iframe-"]');
+                gameIframes.forEach(iframe => {
+                    iframe.classList.remove('fullscreen');
+                });
             }
         });
     });

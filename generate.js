@@ -440,6 +440,20 @@ Crawl-delay: 1`;
     console.log('🤖 Generated robots.txt for search engines');
 }
 
+// Helper function to get platform icons
+function getPlatformIcon(platform) {
+    const icons = {
+        'google-play': '▶',
+        'app-store': '',
+        'itch-io': '🎮',
+        'steam': '🎮',
+        'github': '⚡',
+        'website': '🌐',
+        'custom': '🔗'
+    };
+    return icons[platform] || '🔗';
+}
+
 function generateGameDevelopmentPage() {
     const gamesDir = './games';
     let games = [];
@@ -502,7 +516,31 @@ function generateGameDevelopmentPage() {
         let content = fs.readFileSync(htmlFile, 'utf8');
 
         // Generate HTML for each game
-        const gamesHTML = games.map((game, index) => `                    <div class="game-container">
+        const gamesHTML = games.map((game, index) => {
+            // Generate external links HTML if available
+            const externalLinksHTML = (game.externalLinks && game.externalLinks.length > 0)
+                ? `
+                        <div class="game-external-links" id="game-links-${index}">
+                            ${game.externalLinks.map(link => {
+                                const platformLabels = {
+                                    'google-play': 'Get it on Google Play',
+                                    'app-store': 'Download on the App Store',
+                                    'itch-io': 'Play on itch.io',
+                                    'steam': 'Get it on Steam',
+                                    'github': 'View on GitHub',
+                                    'website': 'Visit Website'
+                                };
+                                const label = link.platform === 'custom' ? (link.label || 'Visit') : platformLabels[link.platform];
+                                return `
+                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="game-platform-link" data-platform="${link.platform}">
+                                <span class="platform-icon">${getPlatformIcon(link.platform)}</span>
+                                <span class="platform-label">${label}</span>
+                            </a>`;
+                            }).join('')}
+                        </div>`
+                : '';
+
+            return `                    <div class="game-container">
                         <div id="game-preview-${index}" class="game-preview">
                             <div class="game-thumbnail">
                                 <img src="${game.thumbnail || 'images/placeholder.png'}" alt="${game.title}" class="game-thumbnail-img" style="transform: translate(${game.thumbnailOffsetX}px, ${game.thumbnailOffsetY}px);">
@@ -525,8 +563,9 @@ function generateGameDevelopmentPage() {
                             height="380"
                             style="display:none;max-width:100%;border-radius:8px;">
                             <a href="${game.embedUrl}">Play ${game.title} on itch.io</a>
-                        </iframe>
-                    </div>`).join('\n');
+                        </iframe>${externalLinksHTML}
+                    </div>`;
+        }).join('\n');
 
         // Find and replace the project showcase content
         const showcaseStart = '<div class="project-showcase">';

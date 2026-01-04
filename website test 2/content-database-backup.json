@@ -1,0 +1,622 @@
+{
+  "content": [
+    {
+      "id": "1759425721572-0.0773874184246448",
+      "title": "Duik Rigg Punch",
+      "path": "images/character-design/Duik Rigg Punch.gif",
+      "thumbnail": "images/character-design/Duik Rigg Punch.gif",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Client Work",
+      "tags": [
+        "animation",
+        "after effects",
+        "illustrator"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.572Z"
+    },
+    {
+      "id": "1759425721574-0.14042854923518377",
+      "title": "Duik Rigg Walk Cycle",
+      "path": "images/character-design/Duik Rigg Walk Cycle.gif",
+      "thumbnail": "images/character-design/Duik Rigg Walk Cycle.gif",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Client Work",
+      "tags": [
+        "animation",
+        "after effects",
+        "illustrator"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.574Z"
+    },
+    {
+      "id": "1759425721574-0.48431686114169237",
+      "title": "Eyeball Monster",
+      "path": "images/character-design/Eyeball.png",
+      "thumbnail": "thumbnails/images/character-design/Eyeball_thumb.png",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Professional",
+      "tags": [
+        "procreate"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.574Z",
+      "description": "blah blah blah"
+    },
+    {
+      "id": "1759425721574-0.4028780799025906",
+      "title": "Walker Hayes",
+      "path": "images/character-design/Walker Hayes.jpg",
+      "thumbnail": "thumbnails/images/character-design/Walker Hayes.jpg",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "ibis paint"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:01.574Z"
+    },
+    {
+      "id": "1759425721614-0.40985764592182394",
+      "title": "dirtpickle portrait",
+      "path": "images/dirtpickle-portrait.png",
+      "thumbnail": "images/dirtpickle-portrait.png",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Personal Project",
+      "tags": [],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z",
+      "hidden": true
+    },
+    {
+      "id": "1759425721614-0.13341646914298377",
+      "title": "Arizona Volleyball Addicts Logo",
+      "path": "images/illustration/Arizona Volleyball Addicts Logo.jpg",
+      "thumbnail": "thumbnails/images/illustration/Arizona Volleyball Addicts Logo_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Client Work",
+      "tags": [
+        "illustrator"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.3133880258787518",
+      "title": "Attack of the Pigmen Promo Art",
+      "path": "images/illustration/Attack of the Pigmen Promo Art.png",
+      "thumbnail": "thumbnails/images/illustration/Attack of the Pigmen Promo Art.png",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Professional",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.3728176566899406",
+      "title": "Donut on a Unicorn",
+      "path": "images/illustration/Donut on a Unicorn.png",
+      "thumbnail": "thumbnails/images/illustration/Donut on a Unicorn_thumb.png",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Personal Project",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.8031398965110621",
+      "title": "Josh Morningstar Poster",
+      "path": "images/illustration/Josh Morningstar Poster.jpg",
+      "thumbnail": "thumbnails/images/illustration/Josh Morningstar Poster_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.07398986629042925",
+      "title": "The Polititian",
+      "path": "images/illustration/The Polititian.jpg",
+      "thumbnail": "thumbnails/images/illustration/The Polititian_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Personal Project",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.9157146048079032",
+      "title": "The Totem",
+      "path": "images/illustration/The Totem.jpg",
+      "thumbnail": "thumbnails/images/illustration/The Totem_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Personal Project",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.1198116420841866",
+      "title": "DPO 1",
+      "path": "images/tattoo/DPO 1.jpg",
+      "thumbnail": "thumbnails/images/tattoo/DPO 1_thumb.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.5920571551374167",
+      "title": "DPO 2 ",
+      "path": "images/tattoo/DPO 2 .jpg",
+      "thumbnail": "thumbnails/images/tattoo/DPO 2 _thumb.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.38803159185904956",
+      "title": "Googly Eyes (Flash and Final)",
+      "path": "images/tattoo/Googly Eyes.jpg",
+      "thumbnail": "thumbnails/images/tattoo/Googly Eyes.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "flash",
+        "tattoo"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z",
+      "frames": [
+        "images/tattoo/Googly Eyes.jpg",
+        "images/tattoo/3.jpg"
+      ]
+    },
+    {
+      "id": "1759425721614-0.6519558812177151",
+      "title": "Attack of the Pigmen Ad",
+      "path": "video/Attack of the Pigmen Ad.mp4",
+      "thumbnail": "thumbnails/video/Attack of the Pigmen Ad_thumb.jpg",
+      "type": "video",
+      "category": "video",
+      "workType": "Professional",
+      "tags": [
+        "after effects",
+        "aseprite",
+        "construct 3"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.6923732108255181",
+      "title": "Attack of the Pigmen Promo",
+      "path": "video/Attack of the Pigmen Promo.mp4",
+      "thumbnail": "thumbnails/video/Attack of the Pigmen Promo_thumb.jpg",
+      "type": "video",
+      "category": "video",
+      "workType": "Professional",
+      "tags": [
+        "aseprite",
+        "after effects"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.825409027092519",
+      "title": "Attack of the Pigmen Trailer",
+      "path": "video/Attack of the Pigmen Trailer.mp4",
+      "thumbnail": "thumbnails/video/Attack of the Pigmen Trailer_thumb.jpg",
+      "type": "video",
+      "category": "video",
+      "workType": "Professional",
+      "tags": [
+        "aseprite",
+        "after effects",
+        "construct 3"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.4376347151005169",
+      "title": "Floof Troop Motion Graphic",
+      "path": "video/Floof Troop Motion Graphic.mp4",
+      "thumbnail": "thumbnails/video/Floof Troop Motion Graphic.png",
+      "type": "video",
+      "category": "video",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "after effects"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:01.614Z"
+    },
+    {
+      "id": "1759425721614-0.6167507463358419",
+      "title": "Mormon Boys",
+      "path": "audio/Mormon Boys.mp3",
+      "thumbnail": "audio/Mormon Boys.mp3",
+      "type": "audio",
+      "category": "audio",
+      "workType": "Personal Project",
+      "tags": [],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:01.614Z",
+      "hidden": true
+    },
+    {
+      "id": "1759425722122-0.8445407402906602",
+      "title": "Arizona Stronghold Dayden Ad",
+      "path": "3d/Arizona Stronghold Dayden Ad.mp4",
+      "thumbnail": "thumbnails/3d/Arizona Stronghold Dayden Ad_thumb.jpg",
+      "type": "video",
+      "category": "3d",
+      "workType": "Client Work",
+      "tags": [
+        "animation",
+        "blender",
+        "after effects"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:02.122Z"
+    },
+    {
+      "id": "1759425722122-0.34167743598070577",
+      "title": "Arizona Stronghold Nachise Ad",
+      "path": "3d/Arizona Stronghold Nachise Ad.mp4",
+      "thumbnail": "thumbnails/3d/Arizona Stronghold Nachise Ad_thumb.jpg",
+      "type": "video",
+      "category": "3d",
+      "workType": "Client Work",
+      "tags": [
+        "animation",
+        "blender",
+        "after effects"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T17:22:02.122Z"
+    },
+    {
+      "id": "1759425722122-0.40877436470843653",
+      "title": "The Behelit",
+      "path": "3d/Blender Sculpt Behelit.mp4",
+      "thumbnail": "thumbnails/3d/Blender Sculpt Behelit.png",
+      "type": "video",
+      "category": "3d",
+      "workType": "Personal Project",
+      "tags": [
+        "animation",
+        "blender",
+        "sculpt"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-02T17:22:02.122Z"
+    },
+    {
+      "id": "1759446816177-0.7834900001077398",
+      "title": "Vomit Punch",
+      "path": "images/tattoo/6.jpg",
+      "thumbnail": "thumbnails/images/tattoo/6_thumb.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Client Work",
+      "tags": [],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T23:13:36.177Z"
+    },
+    {
+      "id": "1759446816316-0.6985801511066707",
+      "title": "Watercolor Cats (4 Images)",
+      "path": "images/tattoo/cat1.jpg",
+      "thumbnail": "thumbnails/images/tattoo/cat1_thumb.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Personal Project",
+      "tags": [
+        "watercolor",
+        "fw ink",
+        "black and gray"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-02T23:13:36.316Z",
+      "frames": [
+        "images/tattoo/cat3.jpg",
+        "images/tattoo/cat4.jpg",
+        "images/tattoo/cat5.jpg"
+      ]
+    },
+    {
+      "id": "1759497449661-0.5757195693232111",
+      "title": "Screaming Horror",
+      "path": "images/game-art/startScreenNewEyes.png",
+      "thumbnail": "thumbnails/images/game-art/startScreenNewEyes_thumb.jpg",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Personal Project",
+      "tags": [
+        "aseprite"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-03T13:17:29.661Z"
+    },
+    {
+      "id": "1759511097185-0.3505938684403729",
+      "title": "Husky Walk Cycle",
+      "path": "images/game-art/Husky Walk Cycle.gif",
+      "thumbnail": "images/game-art/Husky Walk Cycle.gif",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Professional",
+      "tags": [
+        "animation",
+        "aseprite",
+        "construct 3"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-03T17:04:57.185Z"
+    },
+    {
+      "id": "1759511097196-0.7835045299408951",
+      "title": "Attack of the Pigmen Profile Art (21 Images)",
+      "path": "images/game-art/faces1.png",
+      "thumbnail": "thumbnails/images/game-art/faces4.png",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Professional",
+      "tags": [
+        "aseprite",
+        "construct 3"
+      ],
+      "nsfw": false,
+      "featured": true,
+      "created": "2025-10-03T17:04:57.197Z",
+      "frames": [
+        "images/game-art/faces10.png",
+        "images/game-art/faces11.png",
+        "images/game-art/faces12.png",
+        "images/game-art/faces13.png",
+        "images/game-art/faces14.png",
+        "images/game-art/faces15.png",
+        "images/game-art/faces16.png",
+        "images/game-art/faces17.png",
+        "images/game-art/faces18.png",
+        "images/game-art/faces19.png",
+        "images/game-art/faces2.png",
+        "images/game-art/faces20.png",
+        "images/game-art/faces21.png",
+        "images/game-art/faces3.png",
+        "images/game-art/faces4.png",
+        "images/game-art/faces5.png",
+        "images/game-art/faces6.png",
+        "images/game-art/faces7.png",
+        "images/game-art/faces8.png",
+        "images/game-art/faces9.png"
+      ]
+    },
+    {
+      "id": "1759531464079-0.7343884023910567",
+      "title": "Attack of the Pigmen",
+      "path": "games/attack-of-the-pigmen.json",
+      "thumbnail": "thumbnails/games/game_thumb.gif",
+      "type": "embed",
+      "category": "game-development",
+      "workType": "Professional",
+      "tags": [],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-03T22:44:24.079Z",
+      "description": "Top-Down Rogue-Like Shooter. Click to Play!"
+    },
+    {
+      "id": "1759532991205-0.12844900131075132",
+      "title": "Character Select UI",
+      "path": "images/game-art/Character Select UI.png",
+      "thumbnail": "thumbnails/images/game-art/Character Select UI_thumb.jpg",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Professional",
+      "tags": [
+        "aseprite",
+        "construct 3",
+        "ui"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-03T23:09:51.205Z"
+    },
+    {
+      "id": "1759532991216-0.93103381238766",
+      "title": "In Game Menu UI",
+      "path": "images/game-art/In Game Menu UI.png",
+      "thumbnail": "thumbnails/images/game-art/In Game Menu UI_thumb.jpg",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Professional",
+      "tags": [
+        "aseprite",
+        "construct 3",
+        "ui"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-03T23:09:51.216Z"
+    },
+    {
+      "id": "1759532991263-0.22238829388678183",
+      "title": "game thumb",
+      "path": "images/game-art/game_thumb.gif",
+      "thumbnail": "images/game-art/game_thumb.gif",
+      "type": "image",
+      "category": "game-art",
+      "workType": "Personal Project",
+      "tags": [],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-03T23:09:51.263Z",
+      "hidden": true
+    },
+    {
+      "id": "1759961879708-0.9276277698316795",
+      "title": "Dirtpickle",
+      "path": "images/character-design/dirt.png",
+      "thumbnail": "thumbnails/images/character-design/dirt_thumb.jpg",
+      "type": "image",
+      "category": "character-design",
+      "workType": "Work in Progress",
+      "tags": [
+        "3d"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-08T22:17:59.708Z"
+    },
+    {
+      "id": "1759964323520-0.35786984022672996",
+      "title": "Super Bee",
+      "path": "images/illustration/Super Bee.jpg",
+      "thumbnail": "thumbnails/images/illustration/Super Bee_thumb.jpg",
+      "type": "image",
+      "category": "illustration",
+      "workType": "Client Work",
+      "tags": [
+        "photoshop",
+        "procreate"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-08T22:58:43.520Z"
+    },
+    {
+      "id": "1760104975951-0.6867257902218373",
+      "title": "Cat Flash",
+      "path": "images/tattoo/cats1.jpg",
+      "thumbnail": "thumbnails/images/tattoo/cats2.jpg",
+      "type": "image",
+      "category": "tattoo",
+      "workType": "Personal Project",
+      "tags": [
+        "tattoo",
+        "flash",
+        "ibis paint"
+      ],
+      "nsfw": false,
+      "featured": false,
+      "created": "2025-10-10T14:02:55.951Z",
+      "frames": [
+        "images/tattoo/cats2.jpg",
+        "images/tattoo/cats3.jpg",
+        "images/tattoo/cats4.jpg",
+        "images/tattoo/cats1.jpg"
+      ]
+    }
+  ],
+  "tags": [
+    "animation",
+    "nsfw",
+    "3d",
+    "blender",
+    "after effects",
+    "ibis paint",
+    "aseprite",
+    "photoshop",
+    "illustrator",
+    "construct 3",
+    "sculpt",
+    "procreate",
+    "watercolor",
+    "fw ink",
+    "indie",
+    "multiple frames",
+    "black and gray",
+    "ui",
+    "tattoo",
+    "flash"
+  ],
+  "categories": [
+    "character-design",
+    "game-art",
+    "illustration",
+    "tattoo",
+    "3d",
+    "video",
+    "audio"
+  ],
+  "workTypes": [
+    "Professional",
+    "Client Work",
+    "Personal Project",
+    "Commission",
+    "Work in Progress"
+  ],
+  "lastModified": "2025-10-10T17:53:52.954Z",
+  "settings": {
+    "folders": [
+      "images/tattoo"
+    ],
+    "autoGenerateThumbnails": false
+  }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>About - Dirtpickle | Artist & Designer Background</title>
+    <meta name="title" content="About - Dirtpickle | Artist & Designer Background">
+    <meta name="description" content="Learn about Dirtpickle's artistic journey, creative process, and passion for game art, character design, and digital illustration. Discover the story behind the portfolio.">
+    <meta name="keywords" content="about artist, creative background, artistic journey, game artist bio, character designer story, digital art process">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/about.html">
+    <meta property="og:title" content="About Dirtpickle - Artist & Designer">
+    <meta property="og:description" content="Learn about the creative journey and artistic process behind Dirtpickle's work.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="About Dirtpickle">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/about.html">
+    <meta property="twitter:title" content="About Dirtpickle - Artist & Designer">
+    <meta property="twitter:description" content="Learn about the creative journey and artistic process.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="About Dirtpickle">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/about.html">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data for About Page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About Dirtpickle",
+        "description": "Learn about the artist and designer behind the creative work",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Game Artist & Designer"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>About</h1>
+                <p>Creative journey and artistic process</p>
+            </div>
+            
+            <section class="content-section">
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>I'm a multidisciplinary creative who builds complete projects across games, art, and web. I ship work—not just concepts.</p>
+
+                        <h2>Game Development</h2>
+                        <p>I've shipped a pixel art rogue-like built in Construct 3. Since then, I've been developing modular game systems in Godot, specializing in data-driven architecture: JSON dialogue trees, component-based NPCs, extensible quest systems. My approach: if adding a feature requires rewriting existing code, the system needs work.</p>
+
+                        <h2>Visual Work</h2>
+                        <p>Character designer with a love for weird, memorable designs. I create illustrations across multiple styles, work in 3D (Blender, Maya), and do motion graphics in After Effects.</p>
+
+                        <h2>Direction & Collaboration</h2>
+                        <p>Strong creative director with experience managing artists and maintaining cohesive visual style across projects. On my shipped game, I directed multiple artists to produce assets that fit the game's aesthetic.</p>
+
+                        <h2>Other Skills</h2>
+                        <p>Video editing, web development (like this site—designed and built by me), UI/UX design, and audio production. Background in tattooing and music composition informs how I approach visual storytelling and user experience.</p>
+
+                        <h2>Philosophy</h2>
+                        <p>I use AI as a force multiplier for technical execution, which lets me focus on creative problem-solving, system design, and visual storytelling. I'm the director and designer—AI is the assistant.</p>
+
+                        <div class="cta-section">
+                            <h2>Let's Create Together</h2>
+                            <p>Interested in collaborating or learning more about my work?</p>
+                            <a href="contact.html" class="btn-primary">Get In Touch</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+        fetch('nav.html').then(r=>r.text()).then(html=>{
+            const navDiv = document.createElement('div');
+            navDiv.innerHTML = html;
+            document.body.insertBefore(navDiv, document.body.firstChild);
+            const aboutLinks = document.querySelectorAll('a[href="about.html"]');
+            aboutLinks.forEach(link => link.classList.add('active'));
+            setTimeout(() => {
+                setupMobileMenu();
+                setupDropdowns();
+            }, 50);
+        });
+    })();
+    </script>
+</body>
+</html>

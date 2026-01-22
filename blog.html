@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Blog - Dirtpickle | Creative Insights & Art Process</title>
+    <meta name="title" content="Blog - Dirtpickle | Creative Insights & Art Process">
+    <meta name="description" content="Explore creative insights, art tutorials, and behind-the-scenes content from Dirtpickle. Learn about the artistic process, techniques, and inspiration behind game art and character design.">
+    <meta name="keywords" content="art blog, creative process, art tutorials, design insights, game art blog, character design tips, digital art techniques">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/blog.html">
+    <meta property="og:title" content="Blog - Dirtpickle | Creative Insights">
+    <meta property="og:description" content="Creative insights, tutorials, and behind-the-scenes content from an artist and designer.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dirtpickle blog">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/blog.html">
+    <meta property="twitter:title" content="Blog - Dirtpickle | Creative Insights">
+    <meta property="twitter:description" content="Creative insights and tutorials from an artist and designer.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="Dirtpickle blog">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/blog.html">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data for Blog -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Dirtpickle Blog",
+        "description": "Creative insights, tutorials, and artistic process content",
+        "author": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Game Artist & Designer"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>Blog</h1>
+                <p>Creative insights and artistic process</p>
+            </div>
+            
+            <section class="content-section">
+                <div class="blog-content">
+                    <div class="coming-soon">
+                        <h2>Coming Soon</h2>
+                        <p>I'm working on creating engaging content about my creative process, tutorials, and insights into game art and character design.</p>
+                        <p>Check back soon for updates, or follow my work through the portfolio sections to see the latest projects.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+        fetch('nav.html').then(r=>r.text()).then(html=>{
+            const navDiv = document.createElement('div');
+            navDiv.innerHTML = html;
+            document.body.insertBefore(navDiv, document.body.firstChild);
+            const blogLinks = document.querySelectorAll('a[href="blog.html"]');
+            blogLinks.forEach(link => link.classList.add('active'));
+            setTimeout(() => {
+                setupMobileMenu();
+                setupDropdowns();
+            }, 50);
+        });
+    })();
+    </script>
+</body>
+</html>

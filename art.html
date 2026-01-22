@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Art - Dirtpickle's Portfolio</title>
+    <meta name="description" content="Creative expressions across digital and traditional media">
+    <meta name="keywords" content="character design, game art, digital illustration, tattoo design, visual arts, concept art">
+    <meta name="author" content="Dirtpickle">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/art.html">
+    <meta property="og:title" content="Visual Arts Portfolio - Dirtpickle">
+    <meta property="og:description" content="Character design, game art, digital illustrations, and creative visual works by Dirtpickle.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dirtpickle visual arts portfolio">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/art.html">
+    <meta property="twitter:title" content="Visual Arts Portfolio - Dirtpickle">
+    <meta property="twitter:description" content="Character design, game art, digital illustrations, and creative visual works.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="Dirtpickle visual arts portfolio">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/art.html">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data for Art Portfolio -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Visual Arts Portfolio",
+        "description": "Character design, game art, digital illustrations, and tattoo designs",
+        "creator": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Visual Artist & Character Designer"
+        }
+    }
+    </script>
+
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-container">
+                    <button class="filter-pill active" data-filter="all">All</button>
+                    <button class="filter-pill" data-filter="tattoo">Tattoo</button>
+                    <button class="filter-pill" data-filter="traditional">Traditional</button>
+                    <button class="filter-pill" data-filter="pixel-art">Pixel Art</button>
+                    <button class="filter-pill" data-filter="motion-graphics">Motion Graphics</button>
+                    <button class="filter-pill" data-filter="animation">Animation</button>
+                    <button class="filter-pill" data-filter="3d">3D</button>
+                    <button class="filter-pill" data-filter="game-development">Game Development</button>
+                    <button class="filter-pill" data-filter="tattoo-flash">Tattoo Flash</button>
+                    <button class="filter-pill" data-filter="illustration">Illustration</button>
+                    <button class="filter-pill" data-filter="characters">Characters</button>
+                </div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div class="featured-section">
+                <div class="section-header">
+                    <h2 id="section-title">All</h2>
+                </div>
+                <div class="item-count-container">
+                    <span class="item-count" id="item-count"></span>
+                </div>
+                <div id="art-gallery" class="gallery-grid">
+                    <!-- Art items will be generated here -->
+                </div>
+            </div>
+
+            <!-- Individual Category Sections (Hidden by default, shown when no filters active) -->
+            <div id="category-sections" style="display: none;">
+            <!-- Character Design Section -->
+            <section class="art-section">
+                <h2 class="section-title">Character Design</h2>
+                <div id="character-gallery" class="gallery-grid">
+                    <!-- Character design items will be generated here -->
+                </div>
+            </section>
+
+            <!-- Game Art Section -->
+            <section class="art-section">
+                <h2 class="section-title">Game Art</h2>
+                <div id="game-art-gallery" class="gallery-grid">
+                    <!-- Game art items will be generated here -->
+                </div>
+            </section>
+
+            <!-- Illustration Section -->
+            <section class="art-section">
+                <h2 class="section-title">Illustration</h2>
+                <div id="illustration-gallery" class="gallery-grid">
+                    <!-- Illustration items will be generated here -->
+                </div>
+            </section>
+
+            <!-- Tattoo Section -->
+            <section class="art-section">
+                <h2 class="section-title">Tattoo Design</h2>
+                <div id="tattoo-gallery" class="gallery-grid">
+                    <!-- Tattoo items will be generated here -->
+                </div>
+            </section>
+            </div>
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-img-wrapper" id="lightbox-img-wrapper">
+            <img id="lightbox-img" class="lightbox-content">
+            <div class="swipe-hint">Swipe to navigate</div>
+        </div>
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/lightbox.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/media-player.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Filter mappings - auto-generated from CMS
+        const filterMappings = {
+            "tattoo": [
+                "tattoo",
+                "black and gray"
+            ],
+            "traditional": [
+                "traditional",
+                "fw ink",
+                "watercolor"
+            ],
+            "pixel-art": [
+                "aseprite"
+            ],
+            "motion-graphics": [
+                "after effects"
+            ],
+            "animation": [
+                "animation"
+            ],
+            "game-development": [
+                "construct 3",
+                "game development",
+                "ui",
+                "indie"
+            ],
+            "tattoo-flash": [
+                "flash"
+            ],
+            "illustration": [
+                "illustrator",
+                "photoshop",
+                "procreate",
+                "ibis paint"
+            ],
+            "characters": [
+                "character"
+            ]
+        };
+
+        // Art data - auto-generated by generate.js
+        // Combine all art data for filtering
+        const allArtData = [
+    {
+        "title": "Walker Hayes",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Walker Hayes - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "ibis paint",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "image": "thumbnails/images/character-design/Walker Hayes.jpg?v=1769091580676",
+        "fullImage": "images/character-design/Walker Hayes.jpg?v=1769091580676"
+    },
+    {
+        "title": "Attack of the Pigmen Profile Art (21 Images)",
+        "type": "image",
+        "workType": "Professional",
+        "description": "Attack of the Pigmen Profile Art (21 Images) - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite",
+            "ui",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "image": "thumbnails/images/game-art/faces4.png?v=1769091580676",
+        "frames": [
+            "images/game-art/faces10.png?v=1769091580676",
+            "images/game-art/faces11.png?v=1769091580676",
+            "images/game-art/faces12.png?v=1769091580676",
+            "images/game-art/faces13.png?v=1769091580676",
+            "images/game-art/faces14.png?v=1769091580676",
+            "images/game-art/faces15.png?v=1769091580676",
+            "images/game-art/faces16.png?v=1769091580676",
+            "images/game-art/faces17.png?v=1769091580676",
+            "images/game-art/faces18.png?v=1769091580676",
+            "images/game-art/faces19.png?v=1769091580676",
+            "images/game-art/faces2.png?v=1769091580676",
+            "images/game-art/faces20.png?v=1769091580676",
+            "images/game-art/faces21.png?v=1769091580676",
+            "images/game-art/faces3.png?v=1769091580676",
+            "images/game-art/faces4.png?v=1769091580676",
+            "images/game-art/faces5.png?v=1769091580676",
+            "images/game-art/faces6.png?v=1769091580676",
+            "images/game-art/faces7.png?v=1769091580676",
+            "images/game-art/faces8.png?v=1769091580676",
+            "images/game-art/faces9.png?v=1769091580676"
+        ],
+        "fullImage": "images/game-art/faces10.png?v=1769091580676"
+    },
+    {
+        "title": "Husky Walk Cycle",
+        "type": "image",
+        "workType": "Professional",
+        "description": "Husky Walk Cycle - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "animation",
+            "aseprite",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "image": "images/game-art/Husky Walk Cycle.gif?v=1769091580676",
+        "fullImage": "images/game-art/Husky Walk Cycle.gif?v=1769091580676"
+    },
+    {
+        "title": "The Behelit",
+        "type": "video",
+        "workType": "Personal Project",
+        "description": "The Behelit - time-lapse 3D sculpting process demonstrating organic modeling and texturing techniques",
+        "tags": [
+            "animation",
+            "blender",
+            "sculpt"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "video": "3d/Blender Sculpt Behelit.mp4",
+        "thumbnail": "thumbnails/3d/Blender Sculpt Behelit.png?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "The Totem",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "The Totem - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "image": "thumbnails/images/illustration/The Totem_thumb.jpg?v=1769091580676",
+        "fullImage": "images/illustration/The Totem.jpg?v=1769091580676"
+    },
+    {
+        "title": "DPO 2 ",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "DPO 2  - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "flash"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "image": "thumbnails/images/tattoo/flash/DPO 2 _thumb.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/flash/DPO 2 .jpg?v=1769091580676"
+    },
+    {
+        "title": "Floof Troop Motion Graphic",
+        "type": "video",
+        "workType": "Client Work",
+        "description": "Floof Troop Motion Graphic - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "after effects"
+        ],
+        "nsfw": false,
+        "featured": true,
+        "video": "video/Floof Troop Motion Graphic.mp4",
+        "thumbnail": "thumbnails/video/Floof Troop Motion Graphic.png?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Valentines Skull",
+        "type": "image",
+        "workType": "Professional",
+        "description": "Valentines Skull - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "ibis paint"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/illustration/Valentines Skull.jpg?v=1769091580676",
+        "fullImage": "images/illustration/Valentines Skull.jpg?v=1769091580676"
+    },
+    {
+        "title": "Mike",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Mike - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "character",
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/sketches/Mike.jpg?v=1769091580676",
+        "fullImage": "images/sketches/Mike.jpg?v=1769091580676"
+    },
+    {
+        "title": "Untitled ",
+        "type": "image",
+        "workType": "Work in Progress",
+        "description": "Untitled  - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/sketches/Untitled.jpg?v=1769091580676",
+        "fullImage": "images/sketches/Untitled.jpg?v=1769091580676"
+    },
+    {
+        "title": "Random Flash",
+        "type": "video",
+        "workType": "Professional",
+        "description": "Random Flash - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "flash"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "images/tattoo/flash/Random Flash.mp4",
+        "thumbnail": "thumbnails/images/tattoo/flash/Random Flash_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Mutant Fish",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Mutant Fish - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Mutant Fish.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Mutant Fish.jpg?v=1769091580676"
+    },
+    {
+        "title": "Cat, Bunny, Lighthouse",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Cat, Bunny, Lighthouse - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Cat, Bunny, Lighthouse.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Cat, Bunny, Lighthouse.jpg?v=1769091580676"
+    },
+    {
+        "title": "Mutated Tentacle Skull",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Mutated Tentacle Skull - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Mutated Tentacle Skull.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Mutated Tentacle Skull.jpg?v=1769091580676"
+    },
+    {
+        "title": "Armored Dragon",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Armored Dragon - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Armored Dragon.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Armored Dragon.jpg?v=1769091580676"
+    },
+    {
+        "title": "Animal",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Animal - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Animal.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Animal.jpg?v=1769091580676"
+    },
+    {
+        "title": "Koi",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Koi - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Koi.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Koi.jpg?v=1769091580676"
+    },
+    {
+        "title": "Mutated Wolf",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Mutated Wolf - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Mutated Wolf.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Mutated Wolf.jpg?v=1769091580676"
+    },
+    {
+        "title": "Vomit Punch",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Vomit Punch - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Vomit Punch.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Vomit Punch.jpg?v=1769091580676"
+    },
+    {
+        "title": "Deadly Unicorn",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Deadly Unicorn - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Deadly Unicorn.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Deadly Unicorn.jpg?v=1769091580676"
+    },
+    {
+        "title": "Angry Dog",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Angry Dog - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Angry Dog.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Angry Dog.jpg?v=1769091580676"
+    },
+    {
+        "title": "Turbo Kid",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Turbo Kid - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/tattoo/tattoos/Turbo Kid.PNG?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Turbo Kid.PNG?v=1769091580676"
+    },
+    {
+        "title": "Water Color Cat",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Water Color Cat - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "watercolor",
+            "traditional"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/traditional/Water Color Cat.jpg?v=1769091580676",
+        "fullImage": "images/traditional/Water Color Cat.jpg?v=1769091580676"
+    },
+    {
+        "title": "Psychedelic Watercolor",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Psychedelic Watercolor - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "watercolor",
+            "traditional"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/traditional/17872259245437022_thumb.jpg?v=1769091580676",
+        "fullImage": "images/traditional/Psychedelic Watercolor.jpg?v=1769091580676"
+    },
+    {
+        "title": "Husky Life Promo",
+        "type": "video",
+        "workType": "Professional",
+        "description": "Husky Life Promo - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "game development",
+            "after effects",
+            "aseprite"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "video/Husky Life Promo.mp4",
+        "thumbnail": "thumbnails/video/18011092390702186_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Xenochicken",
+        "type": "video",
+        "workType": "Personal Project",
+        "description": "Xenochicken - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "blender",
+            "3d"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "3d/Xenochicken.mp4",
+        "thumbnail": "thumbnails/3d/Xenochicken_thumb.jpg?v=1769091580676",
+        "genre": "3D Animation",
+        "duration": "PT2M",
+        "technique": "3D Modeling",
+        "software": "Blender"
+    },
+    {
+        "title": "Mercat",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Mercat - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/character-design/Mercat.jpg?v=1769091580676",
+        "fullImage": "images/character-design/Mercat.jpg?v=1769091580676"
+    },
+    {
+        "title": "Cat Flash",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Cat Flash - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "flash",
+            "ibis paint"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/tattoo/flash/cats2.jpg?v=1769091580676",
+        "frames": [
+            "images/tattoo/flash/cats2.jpg?v=1769091580676",
+            "images/tattoo/flash/cats3.jpg?v=1769091580676",
+            "images/tattoo/flash/cats4.jpg?v=1769091580676",
+            "images/tattoo/flash/cats1.jpg?v=1769091580676"
+        ],
+        "fullImage": "images/tattoo/flash/cats2.jpg?v=1769091580676"
+    },
+    {
+        "title": "Super Bee",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Super Bee - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "procreate",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/Super Bee_thumb.jpg?v=1769091580676",
+        "fullImage": "images/illustration/Super Bee.jpg?v=1769091580676"
+    },
+    {
+        "title": "Dirtpickle",
+        "type": "image",
+        "workType": "Work in Progress",
+        "description": "Dirtpickle - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "3d",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/character-design/dirt_thumb.jpg?v=1769091580676",
+        "fullImage": "images/character-design/Dirtpickle.png?v=1769091580676"
+    },
+    {
+        "title": "In Game Menu UI",
+        "type": "image",
+        "workType": "Professional",
+        "description": "In Game Menu UI - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite",
+            "ui"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/game-art/In Game Menu UI_thumb.jpg?v=1769091580676",
+        "fullImage": "images/game-art/In Game Menu UI.png?v=1769091580676"
+    },
+    {
+        "title": "Character Select UI",
+        "type": "image",
+        "workType": "Professional",
+        "description": "Character Select UI - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite",
+            "ui"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/game-art/Character Select UI_thumb.jpg?v=1769091580676",
+        "fullImage": "images/game-art/Character Select UI.png?v=1769091580676"
+    },
+    {
+        "title": "Screaming Horror",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Screaming Horror - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/game-art/startScreenNewEyes_thumb.jpg?v=1769091580676",
+        "fullImage": "images/game-art/startScreenNewEyes.png?v=1769091580676"
+    },
+    {
+        "title": "Watercolor Cats (4 Images)",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Watercolor Cats (4 Images) - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "watercolor",
+            "fw ink",
+            "black and gray",
+            "flash"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/tattoo/flash/cat1_thumb.jpg?v=1769091580676",
+        "frames": [
+            "images/tattoo/flash/cat3.jpg?v=1769091580676",
+            "images/tattoo/flash/cat4.jpg?v=1769091580676",
+            "images/tattoo/flash/cat5.jpg?v=1769091580676"
+        ],
+        "fullImage": "images/tattoo/flash/cat3.jpg?v=1769091580676"
+    },
+    {
+        "title": "Vomit Punch",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Vomit Punch - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "tattoo"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/tattoo/tattoos/Vomit Punch.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/tattoos/Vomit Punch.jpg?v=1769091580676"
+    },
+    {
+        "title": "Arizona Stronghold Dayden Ad",
+        "type": "video",
+        "workType": "Client Work",
+        "description": "Arizona Stronghold Dayden Ad - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "animation",
+            "blender",
+            "after effects"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "3d/Arizona Stronghold Dayden Ad.mp4",
+        "thumbnail": "thumbnails/3d/Arizona Stronghold Dayden Ad_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Arizona Stronghold Nachise Ad",
+        "type": "video",
+        "workType": "Client Work",
+        "description": "Arizona Stronghold Nachise Ad - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "animation",
+            "blender",
+            "after effects"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "3d/Arizona Stronghold Nachise Ad.mp4",
+        "thumbnail": "thumbnails/3d/Arizona Stronghold Nachise Ad_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Arizona Volleyball Addicts Logo",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Arizona Volleyball Addicts Logo - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "illustrator"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/Arizona Volleyball Addicts Logo_thumb.jpg?v=1769091580676",
+        "fullImage": "images/illustration/Arizona Volleyball Addicts Logo.jpg?v=1769091580676"
+    },
+    {
+        "title": "Attack of the Pigmen Promo Art",
+        "type": "image",
+        "workType": "Professional",
+        "description": "Attack of the Pigmen Promo Art - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/Attack of the Pigmen Promo Art_thumb.png?v=1769091580676",
+        "fullImage": "images/illustration/Attack of the Pigmen Promo Art.png?v=1769091580676"
+    },
+    {
+        "title": "Donut on a Unicorn",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "Donut on a Unicorn - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/Donut on a Unicorn_thumb.png?v=1769091580676",
+        "fullImage": "images/illustration/Donut on a Unicorn.png?v=1769091580676"
+    },
+    {
+        "title": "Josh Morningstar Poster",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Josh Morningstar Poster - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/Josh Morningstar Poster_thumb.jpg?v=1769091580676",
+        "fullImage": "images/illustration/Josh Morningstar Poster.jpg?v=1769091580676"
+    },
+    {
+        "title": "The Polititian",
+        "type": "image",
+        "workType": "Personal Project",
+        "description": "The Polititian - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/illustration/The Polititian_thumb.jpg?v=1769091580676",
+        "fullImage": "images/illustration/The Polititian.jpg?v=1769091580676"
+    },
+    {
+        "title": "DPO 1",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "DPO 1 - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/tattoo/flash/DPO 1_thumb.jpg?v=1769091580676",
+        "fullImage": "images/tattoo/flash/DPO 1.jpg?v=1769091580676"
+    },
+    {
+        "title": "Googly Eyes (Flash and Final)",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Googly Eyes (Flash and Final) - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "photoshop",
+            "flash"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/tattoo/flash/Googly Eyes.jpg?v=1769091580676",
+        "frames": [
+            "images/tattoo/flash/Googly Eyes.jpg?v=1769091580676",
+            "images/tattoo/tattoos/3.jpg?v=1769091580676"
+        ],
+        "fullImage": "images/tattoo/flash/Googly Eyes.jpg?v=1769091580676"
+    },
+    {
+        "title": "Attack of the Pigmen Ad",
+        "type": "video",
+        "workType": "Professional",
+        "description": "Attack of the Pigmen Ad - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "after effects",
+            "aseprite"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "video/Attack of the Pigmen Ad.mp4",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Ad_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Attack of the Pigmen Promo",
+        "type": "video",
+        "workType": "Professional",
+        "description": "Attack of the Pigmen Promo - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite",
+            "after effects"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "video/Attack of the Pigmen Promo.mp4",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Promo_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Attack of the Pigmen Trailer",
+        "type": "video",
+        "workType": "Professional",
+        "description": "Attack of the Pigmen Trailer - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "aseprite",
+            "after effects"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "video/Attack of the Pigmen Trailer.mp4",
+        "thumbnail": "thumbnails/video/Attack of the Pigmen Trailer_thumb.jpg?v=1769091580676",
+        "genre": "Creative Video",
+        "duration": "PT2M"
+    },
+    {
+        "title": "Duik Rigg Walk Cycle",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Duik Rigg Walk Cycle - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "animation",
+            "after effects",
+            "illustrator",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/character-design/Duik Rigg Walk Cycle.gif?v=1769091580676",
+        "fullImage": "images/character-design/Duik Rigg Walk Cycle.gif?v=1769091580676"
+    },
+    {
+        "title": "Duik Rigg Punch",
+        "type": "image",
+        "workType": "Client Work",
+        "description": "Duik Rigg Punch - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "animation",
+            "after effects",
+            "illustrator",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "images/character-design/Duik Rigg Punch.gif?v=1769091580676",
+        "fullImage": "images/character-design/Duik Rigg Punch.gif?v=1769091580676"
+    }
+];
+
+        // Generate all galleries when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            } else {
+                setTimeout(function() {
+                    if (typeof initializeNavigation === 'function') {
+                        initializeNavigation();
+                    }
+                }, 100);
+            }
+            
+            // Initialize filter system for art page
+            initializeArtFilter();
+        });
+
+        // Art page specific filter function
+        function initializeArtFilter() {
+            const filterButtons = document.querySelectorAll('.filter-pill');
+            const gallery = document.getElementById('art-gallery');
+            const categorySections = document.getElementById('category-sections');
+            const sectionTitle = document.getElementById('section-title');
+            const itemCount = document.getElementById('item-count');
+            
+            if (!filterButtons.length || !gallery) return;
+            
+            // Filter the data based on selected filter
+            function filterArtItems(filterValue) {
+                let filteredData;
+                
+                if (filterValue === 'all') {
+                    // Show all art items
+                    filteredData = allArtData.filter(item => !item.hidden);
+                    if (categorySections) categorySections.style.display = 'none';
+                } else {
+                    // Map old category/folder names to proper filter values
+                    const filterValueMappings = {
+                        'character-design': 'characters',
+                        'game-art': 'game-development',
+                        'client work': 'illustration', // Could be any type, but illustration is common
+                        'personal project': 'illustration' // Could be any type, but illustration is common
+                    };
+                    
+                    // Use mapped filter value if available, otherwise use original
+                    const actualFilterValue = filterValueMappings[filterValue.toLowerCase()] || filterValue;
+                    
+                    // Use filter mappings to determine which tags/workTypes match this filter
+                    const mappedTags = filterMappings[actualFilterValue];
+                    
+                    if (mappedTags && mappedTags.length > 0) {
+                        // Use sophisticated mapping - check if any mapped tag is present
+                        filteredData = allArtData.filter(item => {
+                            if (item.hidden) return false;
+                            
+                            const tags = item.tags || [];
+                            const workType = item.workType || '';
+                            const allSearchTerms = [...tags, workType].map(term => term.toLowerCase());
+                            
+                            // Check if any of the mapped tags match any of the item's tags or workType
+                            return mappedTags.some(mappedTag => 
+                                allSearchTerms.includes(mappedTag.toLowerCase())
+                            );
+                        });
+                    } else {
+                        // Fallback to simple matching for completely unmapped filters
+                        filteredData = allArtData.filter(item => {
+                            if (item.hidden) return false;
+                            
+                            const tags = item.tags || [];
+                            const workType = item.workType || '';
+                            const allSearchTerms = [...tags, workType].map(term => term.toLowerCase());
+                            
+                            return allSearchTerms.includes(actualFilterValue.toLowerCase());
+                        });
+                    }
+                    if (categorySections) categorySections.style.display = 'none';
+                }
+                
+                // Update section title and count
+                let title = filterValue === 'all' ? 'All' : 
+                           filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
+                
+                // Handle special cases for display names based on actual filter mappings
+                if (filterValue === 'tattoo-flash') title = 'Tattoo Flash';
+                if (filterValue === 'pixel-art') title = 'Pixel Art';
+                if (filterValue === 'motion-graphics') title = 'Motion Graphics';
+                if (filterValue === 'game-development') title = 'Game Development';
+                
+                if (sectionTitle) sectionTitle.textContent = title;
+                if (itemCount) itemCount.textContent = `${filteredData.length} items`;
+                
+                // Generate gallery with filtered data
+                generateGallery('#art-gallery', filteredData);
+            }
+            
+            // Add click event listeners to filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Filter items
+                    const filterValue = this.getAttribute('data-filter');
+                    filterArtItems(filterValue);
+                });
+            });
+            
+            // Initialize with all items
+            filterArtItems('all');
+        }
+</script>
+<div id="footer-placeholder"></div>
+    <script>
+    // Dynamic nav.html loader
+        (function(){
+            fetch('nav.html').then(r=>r.text()).then(html=>{
+                const navDiv = document.createElement('div');
+                navDiv.innerHTML = html;
+                document.body.insertBefore(navDiv, document.body.firstChild);
+                // Set active class on art link
+                const artLinks = document.querySelectorAll('a[href="art.html"]');
+                artLinks.forEach(link => link.classList.add('active'));
+                setTimeout(() => {
+                    setupMobileMenu();
+                    setupDropdowns();
+                }, 50);
+            });
+        })();
+    </script>
+
+    <!-- Lightbox Structure -->
+    <div id="lightbox" class="lightbox" style="display: none;" aria-hidden="true">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">&times;</button>
+        <div id="lightbox-img-wrapper" class="lightbox-img-wrapper">
+            <img id="lightbox-img" class="lightbox-content" src="" alt="">
+            <div class="swipe-hint">Swipe to navigate</div>
+        </div>
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+
+        <!-- Frame navigation arrows -->
+        <div id="lightbox-prev" class="lightbox-nav lightbox-prev" onclick="changeFrame(-1)" style="display: none;">
+            <span>&#8249;</span>
+        </div>
+        <div id="lightbox-next" class="lightbox-nav lightbox-next" onclick="changeFrame(1)" style="display: none;">
+            <span>&#8250;</span>
+        </div>
+    </div>
+</body>
+</html>

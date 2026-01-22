@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>404 - Page Not Found | Dirtpickle</title>
+    <meta name="description" content="Oops! The page you're looking for doesn't exist. Return to Dirtpickle's portfolio to explore game art, character design, and creative work.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-content {
+            max-width: 600px;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            color: #a3a3a3;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .error-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .error-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+        }
+
+        .error-btn:hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .error-btn.secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-btn.secondary:hover {
+            border-color: var(--accent);
+            background: rgba(255, 45, 85, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .error-message {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    <main class="main-content">
+        <div class="error-container">
+            <div class="error-content">
+                <div class="error-code">404</div>
+                <h1 class="error-title">Page Not Found</h1>
+                <p class="error-message">
+                    Oops! Looks like this page took a wrong turn. The content you're looking for might have been moved or doesn't exist.
+                </p>
+                <div class="error-links">
+                    <a href="index.html" class="error-btn">Back to Home</a>
+                    <a href="art.html" class="error-btn secondary">View Portfolio</a>
+                    <a href="contact.html" class="error-btn secondary">Contact</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+        fetch('nav.html').then(r=>r.text()).then(html=>{
+            const navDiv = document.createElement('div');
+            navDiv.innerHTML = html;
+            document.body.insertBefore(navDiv, document.body.firstChild);
+            setTimeout(() => {
+                setupMobileMenu();
+                setupDropdowns();
+            }, 50);
+        });
+    })();
+    </script>
+</body>
+</html>

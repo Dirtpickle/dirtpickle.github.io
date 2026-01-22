@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Game Development - Dirtpickle's Portfolio | Interactive Games & Experiences</title>
+    <meta name="title" content="Game Development - Dirtpickle's Portfolio | Interactive Games & Experiences">
+    <meta name="description" content="Play and explore interactive games and experiences created by Dirtpickle. Full game development portfolio featuring rogue-like shooters, puzzle games, and creative gameplay mechanics.">
+    <meta name="keywords" content="game development, indie games, interactive experiences, game design, rogue-like games, pixel art games, playable games, game portfolio">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/game-development.html">
+    <meta property="og:title" content="Game Development - Dirtpickle | Interactive Games Portfolio">
+    <meta property="og:description" content="Play interactive games and experiences. Full game development portfolio featuring unique gameplay and creative design.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dirtpickle game development portfolio">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/game-development.html">
+    <meta property="twitter:title" content="Game Development - Dirtpickle">
+    <meta property="twitter:description" content="Interactive games and experiences showcasing creative game design.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="Dirtpickle game development portfolio">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/game-development.html">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data for Game Development -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Game Development Portfolio",
+        "description": "Interactive games and playable experiences",
+        "creator": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "Game Developer & Designer"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>Game Development</h1>
+                <p>Interactive experiences and games</p>
+            </div>
+
+            <section class="project-section">
+                <div class="project-showcase">
+                    <div class="game-container">
+                        <div id="game-preview-0" class="game-preview">
+                            <div class="game-thumbnail">
+                                <img src="thumbnails/games/game_thumb.gif" alt="Attack of the Pigmen" class="game-thumbnail-img" style="transform: translate(0px, 0px);">
+                                <div class="game-play-overlay" data-game-index="0">
+                                    <div class="game-play-icon"></div>
+                                </div>
+                                <div class="game-title-overlay">
+                                    <h3>Attack of the Pigmen</h3>
+                                    <p>Top-Down Rogue-Like Shooter. Click to Play!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <iframe
+                            id="game-iframe-0"
+                            src=""
+                            data-embed-url="https://itch.io/embed-upload/16213569?color=000000"
+                            frameborder="0"
+                            allowfullscreen
+                            width="640"
+                            height="380"
+                            style="display:none;max-width:100%;border-radius:8px;">
+                            <a href="https://itch.io/embed-upload/16213569?color=000000">Play Attack of the Pigmen on itch.io</a>
+                        </iframe>
+                        <div class="game-external-links" id="game-links-0">
+                            
+                            <a href="https://play.google.com/store/apps/details?id=com.dirtpickle.atackofthepigmen&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="game-platform-link" data-platform="google-play">
+                                <span class="platform-icon">▶</span>
+                                <span class="platform-label">Get it on Google Play</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+    // Dynamic nav.html loader
+    (function(){
+            fetch('nav.html').then(r=>r.text()).then(html=>{
+                const navDiv = document.createElement('div');
+                navDiv.innerHTML = html;
+                document.body.insertBefore(navDiv, document.body.firstChild);
+                const gameLinks = document.querySelectorAll('a[href="game-development.html"]');
+                gameLinks.forEach(link => link.classList.add('active'));
+                setTimeout(() => {
+                    setupMobileMenu();
+                    setupDropdowns();
+                }, 50);
+            });
+    })();
+    // Game loading functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        let gameIsOpen = false;
+
+        const gameOverlays = document.querySelectorAll('.game-play-overlay');
+
+        gameOverlays.forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const gameIndex = this.getAttribute('data-game-index');
+                const gamePreview = document.getElementById('game-preview-' + gameIndex);
+                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
+                const gameContainer = gamePreview.closest('.game-container');
+                const embedUrl = gameIframe.getAttribute('data-embed-url');
+
+                if (gamePreview) gamePreview.style.display = 'none';
+                if (gameIframe && embedUrl) {
+                    gameIframe.src = embedUrl;
+                    gameIframe.style.display = 'block';
+                }
+
+                // Add game-active class to disable hover animations
+                if (gameContainer) {
+                    gameContainer.classList.add('game-active');
+                }
+
+                gameIsOpen = true;
+                // Push a history state so back button can be intercepted
+                history.pushState({ game: true }, '');
+            });
+        });
+
+        // Navigate to index when back is pressed
+        window.addEventListener('popstate', function(e) {
+            if (gameIsOpen) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Fullscreen functionality
+        const fullscreenButtons = document.querySelectorAll('.game-fullscreen-btn');
+
+        fullscreenButtons.forEach(button => {
+            button.addEventListener('click', async function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const gameIndex = this.getAttribute('data-game-index');
+                const gameIframe = document.getElementById('game-iframe-' + gameIndex);
+
+                if (!gameIframe) return;
+
+                try {
+                    // Enter fullscreen
+                    if (gameIframe.requestFullscreen) {
+                        await gameIframe.requestFullscreen();
+                    } else if (gameIframe.webkitRequestFullscreen) {
+                        await gameIframe.webkitRequestFullscreen();
+                    } else if (gameIframe.msRequestFullscreen) {
+                        await gameIframe.msRequestFullscreen();
+                    }
+
+                    // Lock orientation to landscape
+                    if (screen.orientation && screen.orientation.lock) {
+                        try {
+                            await screen.orientation.lock('landscape');
+                        } catch (err) {
+                            console.log('Orientation lock not supported or failed:', err);
+                        }
+                    }
+
+                    // Add fullscreen class for styling
+                    gameIframe.classList.add('fullscreen');
+
+                } catch (err) {
+                    console.error('Fullscreen request failed:', err);
+                }
+            });
+        });
+
+        // Handle fullscreen exit
+        document.addEventListener('fullscreenchange', function() {
+            const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+            if (!fullscreenElement) {
+                // Exited fullscreen - remove fullscreen class and unlock orientation
+                const gameIframes = document.querySelectorAll('[id^="game-iframe-"]');
+                gameIframes.forEach(iframe => {
+                    iframe.classList.remove('fullscreen');
+                });
+
+                // Unlock orientation
+                if (screen.orientation && screen.orientation.unlock) {
+                    try {
+                        screen.orientation.unlock();
+                    } catch (err) {
+                        console.log('Orientation unlock not needed or failed:', err);
+                    }
+                }
+            }
+        });
+
+        // Handle webkit fullscreen change
+        document.addEventListener('webkitfullscreenchange', function() {
+            const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+            if (!fullscreenElement) {
+                const gameIframes = document.querySelectorAll('[id^="game-iframe-"]');
+                gameIframes.forEach(iframe => {
+                    iframe.classList.remove('fullscreen');
+                });
+            }
+        });
+    });
+    </script>
+</body>
+</html>

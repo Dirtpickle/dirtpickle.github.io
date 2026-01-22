@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>3D Art Portfolio - Dirtpickle | 3D Modeling, Digital Sculpting & Animation</title>
+    <meta name="title" content="3D Art Portfolio - Dirtpickle | 3D Modeling, Digital Sculpting & Animation">
+    <meta name="description" content="Explore Dirtpickle's 3D artwork portfolio featuring digital sculptures, 3D character models, architectural visualization, and animated sequences. Professional 3D modeling and animation services.">
+    <meta name="keywords" content="3D modeling, digital sculpting, 3D animation, Blender artist, 3D character design, architectural visualization, 3D portfolio, digital sculpture, 3D art, CGI">
+    <meta name="author" content="Dirtpickle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dirtpickle.com/3d.html">
+    <meta property="og:title" content="3D Art Portfolio - Dirtpickle | Digital Sculpting & 3D Animation">
+    <meta property="og:description" content="Professional 3D modeling, digital sculpting, and animation work showcasing technical skill and artistic vision.">
+    <meta property="og:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="3D artwork portfolio featuring digital sculptures and character models">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dirtpickle.com/3d.html">
+    <meta property="twitter:title" content="3D Art Portfolio - Dirtpickle">
+    <meta property="twitter:description" content="3D modeling, digital sculpting, and animation showcasing technical expertise.">
+    <meta property="twitter:image" content="https://dirtpickle.com/dirtpickle-portrait.png">
+    <meta property="twitter:image:alt" content="3D artwork portfolio showcase">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtpickle.com/3d.html">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data for 3D Artwork -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "3D Artwork Portfolio",
+        "description": "Collection of 3D models, digital sculptures, and animated sequences",
+        "creator": {
+            "@type": "Person",
+            "name": "Dirtpickle",
+            "jobTitle": "3D Artist & Digital Sculptor"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- NAV_INCLUDE -->
+    <main class="main-content">
+        <div class="container">
+            <div class="hero">
+                <h1>3D Artwork</h1>
+                <p>Three-dimensional modeling, animation, and digital sculptures</p>
+            </div>
+            
+            <section class="art-section">
+                <div id="gallery-container" class="gallery-grid">
+                    <!-- 3D items will be generated here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/lightbox.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/media-player.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // 3D gallery data (will be populated by generator)
+        const threeDData = [
+    {
+        "title": "Xenochicken",
+        "type": "video",
+        "workType": "Personal Project",
+        "description": "Xenochicken - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "blender",
+            "3d"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "video": "3d/Xenochicken.mp4",
+        "thumbnail": "thumbnails/3d/Xenochicken_thumb.jpg?v=1769091580677",
+        "genre": "3D Animation",
+        "duration": "PT2M",
+        "technique": "3D Modeling",
+        "software": "Blender"
+    },
+    {
+        "title": "Dirtpickle",
+        "type": "image",
+        "workType": "Work in Progress",
+        "description": "Dirtpickle - Digital illustration showcasing artistic creativity and technical skill",
+        "tags": [
+            "3d",
+            "character"
+        ],
+        "nsfw": false,
+        "featured": false,
+        "image": "thumbnails/images/character-design/dirt_thumb.jpg?v=1769091580677",
+        "fullImage": "images/character-design/Dirtpickle.png?v=1769091580677"
+    }
+];
+        
+        // Generate 3D gallery when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            } else {
+                setTimeout(function() {
+                    if (typeof initializeNavigation === 'function') {
+                        initializeNavigation();
+                    }
+                }, 100);
+            }
+            
+            if (threeDData.length > 0) {
+                generateGallery('#gallery-container', threeDData);
+            } else {
+                document.getElementById('gallery-container').innerHTML = '<p style="text-align: center; color: #666; padding: 2rem; font-style: italic;">3D collection coming soon... Add videos and images to the 3d/ folder and run "node generate.js"</p>';
+            }
+        });
+    </script>
+    <script>
+    // Dynamic nav.html loader
+        (function(){
+            fetch('nav.html').then(r=>r.text()).then(html=>{
+                const navDiv = document.createElement('div');
+                navDiv.innerHTML = html;
+                document.body.insertBefore(navDiv, document.body.firstChild);
+                // Set active class on 3d link
+                const threeDLinks = document.querySelectorAll('a[href="3d.html"]');
+                threeDLinks.forEach(link => link.classList.add('active'));
+                setTimeout(() => {
+                    setupMobileMenu();
+                    setupDropdowns();
+                }, 50);
+            });
+        })();
+    </script>
+</body>
+</html>

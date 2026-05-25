@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
 Sitemap: https://dirtpickle.com/sitemap.xml
-
-# Optimize crawling
-Crawl-delay: 1

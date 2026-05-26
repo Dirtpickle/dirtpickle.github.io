@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/site.css">
-  <style>:root{--bg:#000000;--surf:#0f0f0f;--surf2:#1a1a1a;--bdr:#2a2a2a;--txt:#f5f5f5;--dim:#9a9a9a;--brt:#ffffff;--acc:#ff2d55;--acc2:#64d2ff;--grn:#30d158;}</style>
+  <style>:root{--bg:#000000;--surf:#0f0f0f;--surf2:#1a1a1a;--bdr:#2a2a2a;--txt:#f5f5f5;--dim:#9a9a9a;--brt:#ffffff;--acc:#ff2d55;--acc2:#64d2ff;--grn:#30d158;--mobile-gallery-columns:3;}</style>
 </head>
 <body>
   <div class="dp">
@@ -25,14 +25,22 @@
       </div>
     </section>
     
-    <section class="filter-bar" aria-label="Portfolio filters">
-      
-        <button class="filter-btn active" type="button" data-filter="2d">
-          2D <span class="filter-count">13</span>
+    <section class="filter-wrap" aria-label="Portfolio filters">
+      <div class="filter-mobile-head">
+        <button class="filter-menu-toggle" type="button" aria-expanded="false" aria-controls="filterBar">
+          <span class="filter-toggle-label">Filter</span>
+          <span class="filter-active-label">All</span>
         </button>
-        <button class="filter-btn" type="button" data-filter="3d">
-          3D <span class="filter-count">62</span>
-        </button>
+      </div>
+      <div class="filter-bar" id="filterBar">
+        
+          <button class="filter-btn active" type="button" data-filter="2d">
+            2D <span class="filter-count">13</span>
+          </button>
+          <button class="filter-btn" type="button" data-filter="3d">
+            3D <span class="filter-count">62</span>
+          </button>
+      </div>
     </section>
     
     <main class="gallery" id="work">
@@ -1104,7 +1112,7 @@
             
               <span class="gi-badges">
                 
-                <span class="gi-badge">Video</span>
+                <span class="gi-badge gi-badge-video" title="Video"><span class="gi-badge-icon" aria-hidden="true">▶</span><span class="gi-badge-text">Video</span></span>
                 
               </span>
             <span class="gi-label">
@@ -1126,7 +1134,7 @@
             
               <span class="gi-badges">
                 
-                <span class="gi-badge">Video</span>
+                <span class="gi-badge gi-badge-video" title="Video"><span class="gi-badge-icon" aria-hidden="true">▶</span><span class="gi-badge-text">Video</span></span>
                 
               </span>
             <span class="gi-label">

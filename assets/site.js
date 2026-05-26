@@ -3,6 +3,9 @@
   const filters = window.PORTFOLIO_FILTERS || [];
   const gallery = document.querySelector('.gallery');
   const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
+  const filterToggle = document.querySelector('.filter-menu-toggle');
+  const filterBar = document.getElementById('filterBar');
+  const filterActiveLabel = document.querySelector('.filter-active-label');
   const lightbox = document.getElementById('lightbox');
   const lightboxMedia = document.getElementById('lightboxMedia');
   const lightboxCaption = document.getElementById('lightboxCaption');
@@ -35,11 +38,26 @@
       filterButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
       applyFilter(button.dataset.filter);
+      if (filterToggle && filterBar) {
+        filterBar.classList.remove('open');
+        filterToggle.setAttribute('aria-expanded', 'false');
+        if (filterActiveLabel) filterActiveLabel.textContent = button.textContent.trim();
+      }
     });
   });
 
+  if (filterToggle && filterBar) {
+    filterToggle.addEventListener('click', () => {
+      const isOpen = filterBar.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
   const activeFilter = document.querySelector('.filter-btn.active');
-  if (activeFilter) applyFilter(activeFilter.dataset.filter);
+  if (activeFilter) {
+    applyFilter(activeFilter.dataset.filter);
+    if (filterActiveLabel) filterActiveLabel.textContent = activeFilter.textContent.trim();
+  }
 
   function closeLightbox() {
     if (!lightbox) return;

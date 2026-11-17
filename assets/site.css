@@ -172,6 +172,15 @@ button {
   margin: 0;
 }
 
+.hero-name-img {
+  display: block;
+  margin: 0 auto;
+  height: 180px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .hero-name span {
   color: var(--acc);
 }
@@ -1327,4 +1336,9 @@ button {
   .nav-cta {
     padding: 7px 8px;
   }
+}
+
+.form-status.is-error {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
 }

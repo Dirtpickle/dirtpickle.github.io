@@ -178,25 +178,4 @@
       frame.classList.add('is-active');
     });
   });
-
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm) {
-    const submitButton = contactForm.querySelector('.submit-btn');
-    const status = document.getElementById('form-status');
-
-    contactForm.addEventListener('submit', () => {
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.classList.add('is-loading');
-      }
-      if (status) status.hidden = true;
-    });
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('success') === '1' && status) {
-      status.textContent = 'Thank you. Your message has been sent.';
-      status.hidden = false;
-      window.history.replaceState({}, document.title, `${window.location.pathname}#contact`);
-    }
-  }
 })();

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/gallery-scale.css">
   <style>:root{--bg:#000000;--surf:#0f0f0f;--surf2:#1a1a1a;--bdr:#2a2a2a;--txt:#f5f5f5;--dim:#9a9a9a;--brt:#ffffff;--acc:#ff2d55;--acc2:#64d2ff;--grn:#30d158;}
   .flash-sections{background:var(--bg);padding:0 0 20px}
   .flash-note{margin:0;padding:30px 24px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--txt)}
@@ -23,6 +24,9 @@
   .flash-placeholder{display:grid;place-items:center;width:100%;height:100%;font:900 34px 'Barlow Condensed',sans-serif;color:var(--acc)}
   .flash-item.is-sold img,.flash-item.is-sold .flash-placeholder{filter:grayscale(1) brightness(.85)}
   .flash-item.is-hold img,.flash-item.is-hold .flash-placeholder{filter:sepia(1) saturate(2.5) hue-rotate(-12deg) brightness(.95)}
+  .gi-badge.flash-kind-repeatable{border-color:rgba(255,255,255,.35);color:var(--txt);font-size:11px}
+  .gi-badge.flash-kind-one-off,.gi-badge.flash-kind-limited{font-size:11px}
+  .flash-info{margin:0 auto;max-width:760px;padding:18px 24px 4px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;line-height:1.6;color:var(--txt)}
   .gi-badge.flash-status-sold{border-color:#ff4d4d;color:#ff4d4d;font-size:11px}
   .gi-badge.flash-status-hold{font-size:11px}
 </style>
@@ -53,7 +57,9 @@
 
       </div>
     </section>
+    <div class="scale-bar" id="scaleBar" data-default="medium" role="group" aria-label="Gallery size"><span class="scale-label">Size</span><button class="scale-btn" type="button" data-scale="small" title="Small thumbnails" aria-label="Small thumbnails" aria-pressed="false">S</button><button class="scale-btn" type="button" data-scale="medium" title="Medium thumbnails" aria-label="Medium thumbnails" aria-pressed="true">M</button><button class="scale-btn" type="button" data-scale="large" title="Large thumbnails" aria-label="Large thumbnails" aria-pressed="false">L</button></div>
     <div class="flash-sections" id="flashSections" data-feed="/dirtpickle-intake/flash/flash.json">
+      <p class="flash-info" id="flashInfo" hidden></p>
       <p class="flash-note" id="flashNote">Loading flash&hellip;</p>
     </div>
 
@@ -72,5 +78,6 @@
   </div>
   <script src="assets/lightbox.js"></script>
   <script src="assets/flash-gallery.js"></script>
+  <script src="assets/gallery-scale.js"></script>
 </body>
 </html>

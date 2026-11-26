@@ -8,8 +8,10 @@
 
   var SECTIONS = [
     { kind: 'repeatable', title: 'Repeatable flash', sub: 'Can be tattooed more than once.' },
-    { kind: 'one-off', title: 'One-off flash', sub: 'Only one of each will ever be done. Once it is sold, it is gone.' }
+    { kind: 'limited', title: 'Limited edition flash', sub: 'A set number of each will be done. When they are gone, they are gone.' },
+    { kind: 'one-off', title: 'Unique flash', sub: 'Only one of each will ever be done. Once it is sold, it is gone.' }
   ];
+  var DEFAULT_INFO = 'Claim a design in person at the shop. Unique designs can be held with a deposit; if one is not held, it goes to whoever gets it tattooed first.';
   var feedUrl = new URL(root.getAttribute('data-feed'), window.location.href);
 
   function el(tag, className, text) {
@@ -22,14 +24,21 @@
   // Repeatables are never sold or held; unknown statuses count as available. Feed order is kept.
   function normalize(raw) {
     if (!raw || typeof raw !== 'object') return null;
-    var kind = raw.kind === 'one-off' ? 'one-off' : 'repeatable';
+    var kind = raw.kind === 'one-off' || raw.kind === 'limited' ? raw.kind : 'repeatable';
     var status = kind === 'one-off' && (raw.status === 'sold' || raw.status === 'hold') ? raw.status : 'available';
+    var quantity = null, remaining = null;
+    if (kind === 'limited') {
+      quantity = whole(raw.quantity); remaining = whole(raw.remaining);
+      if (remaining === 0 || raw.status === 'sold') status = 'sold';
+    }
     var price = raw.price === '' || raw.price == null ? null : Number(raw.price);
     return {
       code: String(raw.code || ''), name: String(raw.name || ''), image: imageUrl(raw.image),
-      price: price !== null && isFinite(price) ? price : null, kind: kind, status: status
+      price: price !== null && isFinite(price) ? price : null, kind: kind, status: status, quantity: quantity, remaining: remaining
     };
   }
+
+  function whole(value) { var n = Number(value); return value !== '' && value != null && isFinite(n) && n >= 0 ? Math.floor(n) : null; }
 
   function imageUrl(path) {
     if (!path) return null;
@@ -40,7 +49,9 @@
   }
 
   function priceText(item) { return item.price === null ? '' : '$' + item.price; }
-  function statusText(item) { return item.status === 'sold' ? 'Sold' : item.status === 'hold' ? 'On hold' : ''; }
+  function kindText(item) { return item.kind === 'one-off' ? 'Unique' : item.kind === 'limited' ? 'Limited edition' : 'Repeatable'; }
+  function leftText(item) { return item.kind === 'limited' && item.status !== 'sold' && item.remaining !== null ? item.remaining + (item.remaining === 1 ? ' left' : ' left') : ''; }
+  function statusText(item) { return item.status === 'sold' ? (item.kind === 'limited' ? 'Sold out' : 'Sold') : item.status === 'hold' ? 'On hold' : ''; }
 
   function card(item) {
     var article = el('article', 'gallery-item flash-item is-' + item.status);
@@ -56,18 +67,17 @@
       open.appendChild(el('span', 'flash-placeholder', item.code));
     }
     open.appendChild(el('span', 'gi-shade'));
-    if (statusText(item)) {
-      var badges = el('span', 'gi-badges');
-      badges.appendChild(el('span', 'gi-badge flash-status-' + item.status, statusText(item)));
-      open.appendChild(badges);
-    }
+    var badges = el('span', 'gi-badges');
+    badges.appendChild(el('span', 'gi-badge flash-kind-' + item.kind, kindText(item)));
+    if (statusText(item)) badges.appendChild(el('span', 'gi-badge flash-status-' + item.status, statusText(item)));
+    open.appendChild(badges);
     var label = el('span', 'gi-label');
-    label.appendChild(el('span', 'gi-title flash-code', item.code));
-    label.appendChild(el('span', 'gi-tag', [priceText(item), item.name].filter(Boolean).join(' / ')));
+    label.appendChild(el('span', 'gi-title flash-code', item.name || item.code));
+    label.appendChild(el('span', 'gi-tag', [item.name ? item.code : '', priceText(item), leftText(item)].filter(Boolean).join(' / ')));
     open.appendChild(label);
     open.addEventListener('click', function () {
       if (!item.image || !window.PortfolioLightbox) return;
-      var caption = [item.code, item.name, priceText(item), statusText(item)].filter(Boolean).join(' - ');
+      var caption = [item.name || item.code, item.name ? item.code : '', priceText(item), kindText(item), leftText(item), statusText(item)].filter(Boolean).join(' - ');
       window.PortfolioLightbox.open({ type: 'image', full: item.image, title: caption });
     });
     article.appendChild(open);
@@ -90,6 +100,9 @@
     var raw = feed && Array.isArray(feed.items) ? feed.items : [];
     var items = raw.map(normalize).filter(Boolean);
     if (feed && feed.event) document.title = feed.event + ' / ' + document.title;
+    var info = document.getElementById('flashInfo');
+    var text = feed && typeof feed.info === 'string' && feed.info.trim() ? feed.info.trim() : DEFAULT_INFO;
+    if (info) { info.textContent = text; info.hidden = false; }
     if (!items.length) { note.textContent = 'No flash available right now. Check back soon.'; return; }
     note.hidden = true;
     SECTIONS.forEach(function (def) {

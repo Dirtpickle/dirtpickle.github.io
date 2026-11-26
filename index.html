@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/gallery-scale.css">
   <style>:root{--bg:#000000;--surf:#0f0f0f;--surf2:#1a1a1a;--bdr:#2a2a2a;--txt:#f5f5f5;--dim:#9a9a9a;--brt:#ffffff;--acc:#ff2d55;--acc2:#64d2ff;--grn:#30d158;--mobile-gallery-columns:3;}</style>
 </head>
 <body>
@@ -79,6 +80,7 @@
           </button>
       </div>
     </section>
+    <div class="scale-bar" id="scaleBar" data-default="medium" role="group" aria-label="Gallery size"><span class="scale-label">Size</span><button class="scale-btn" type="button" data-scale="small" title="Small thumbnails" aria-label="Small thumbnails" aria-pressed="false">S</button><button class="scale-btn" type="button" data-scale="medium" title="Medium thumbnails" aria-label="Medium thumbnails" aria-pressed="true">M</button><button class="scale-btn" type="button" data-scale="large" title="Large thumbnails" aria-label="Large thumbnails" aria-pressed="false">L</button></div>
 
     <main class="gallery" id="work">
 
@@ -1215,5 +1217,6 @@
   <script src="assets/lightbox.js"></script>
   <script src="assets/site.js"></script>
   <script src="assets/contact-form.js"></script>
+  <script src="assets/gallery-scale.js"></script>
 </body>
 </html>

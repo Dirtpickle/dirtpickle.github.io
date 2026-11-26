@@ -1,0 +1,64 @@
+/* Gallery size control. Medium = the site's normal layout, so it changes nothing by default.
+   Applies to every .gallery on the page (portfolio grid and flash sections). */
+
+.scale-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 24px 16px;
+  background: var(--bg);
+}
+
+.scale-label {
+  margin-right: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.scale-btn {
+  min-width: 40px;
+  padding: 8px 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: var(--surf);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.scale-btn[aria-pressed="true"] {
+  color: var(--bg);
+  background: var(--acc);
+  border-color: var(--acc);
+}
+
+/* Desktop */
+html[data-gallery-scale="small"] .gallery {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 170px));
+  gap: 12px;
+}
+
+html[data-gallery-scale="large"] .gallery {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 440px));
+  gap: 24px;
+}
+
+/* Phones: small = one more column than the page's setting, large = a single column. */
+@media (max-width: 560px) {
+  html[data-gallery-scale="small"] .gallery {
+    grid-template-columns: repeat(calc(var(--mobile-gallery-columns, 3) + 1), minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  html[data-gallery-scale="large"] .gallery {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+}

@@ -11,21 +11,17 @@
 }
 
 .scale-btn {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  color: var(--acc);
+  padding: 10px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--txt);
   background: var(--surf);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   cursor: pointer;
 }
-
-.scale-btn g { display: none; }
-html[data-gallery-scale="small"] .sz-small,
-html[data-gallery-scale="medium"] .sz-medium,
-html[data-gallery-scale="large"] .sz-large { display: inline; }
 
 /* Desktop */
 html[data-gallery-scale="small"] .gallery {

@@ -21,6 +21,8 @@
 
   function apply(value) {
     document.documentElement.setAttribute('data-gallery-scale', value);
+    var name = document.getElementById('scaleName');
+    if (name) name.textContent = value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   var button = document.getElementById('scaleCycle');

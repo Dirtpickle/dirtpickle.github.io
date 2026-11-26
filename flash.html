@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Friday Flash / Dirtpickle the Artist</title>
+  <meta name="description" content="Black Friday flash tattoo designs. Prices, availability and one-offs, updated live.">
+  <link rel="canonical" href="https://dirtpickle.com/flash.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>:root{--bg:#000000;--surf:#0f0f0f;--surf2:#1a1a1a;--bdr:#2a2a2a;--txt:#f5f5f5;--dim:#9a9a9a;--brt:#ffffff;--acc:#ff2d55;--acc2:#64d2ff;--grn:#30d158;}
+  .flash-sections{background:var(--bg);padding:0 0 20px}
+  .flash-note{margin:0;padding:30px 24px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--txt)}
+  .flash-head{padding:26px 24px 6px;max-width:1200px;margin:0 auto}
+  .flash-head h2{margin:0;font:900 28px/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brt)}
+  .flash-head p{margin:6px 0 0;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--txt)}
+  .flash-section + .flash-section{border-top:1px solid rgba(255,255,255,.08);margin-top:14px}
+  .flash-gallery{padding-top:14px}
+  .flash-item .gi-title.flash-code{font-size:20px}
+  .flash-item .gi-tag{font-size:12px}
+  .flash-placeholder{display:grid;place-items:center;width:100%;height:100%;font:900 34px 'Barlow Condensed',sans-serif;color:var(--acc)}
+  .flash-item.is-sold img,.flash-item.is-sold .flash-placeholder{filter:grayscale(1) brightness(.85)}
+  .flash-item.is-hold img,.flash-item.is-hold .flash-placeholder{filter:sepia(1) saturate(2.5) hue-rotate(-12deg) brightness(.95)}
+  .gi-badge.flash-status-sold{border-color:#ff4d4d;color:#ff4d4d;font-size:11px}
+  .gi-badge.flash-status-hold{font-size:11px}
+</style>
+</head>
+<body>
+  <div class="dp">
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a class="nav-logo" href="index.html">Dirtpickle the Artist <span>// Portfolio</span></a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a class="nav-link" href="index.html#work">Work</a>
+        <a class="nav-link" href="index.html#games">Games</a>
+
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <div class="nav-tag">dirtpickle.com</div>
+        <a class="nav-cta" href="#contact">Hire Me</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-left">
+
+        <h1 class="hero-name">Black Friday Flash</h1>
+        <p class="hero-sub">Grab a design before it is gone.</p>
+
+      </div>
+    </section>
+    <div class="flash-sections" id="flashSections" data-feed="/dirtpickle-intake/flash/flash.json">
+      <p class="flash-note" id="flashNote">Loading flash&hellip;</p>
+    </div>
+
+    <footer class="footer" id="contact">
+      <div class="footer-logo">Dirtpickle the Artist</div>
+      <div class="footer-links">
+        <a class="footer-link" href="https://www.instagram.com/dirt.pickle/" rel="noopener noreferrer">Instagram</a><a class="footer-link" href="https://x.com/Dirtpickle" rel="noopener noreferrer">X</a><a class="footer-link" href="http://www.fiverr.com/dirtpickle" rel="noopener noreferrer">Fiverr</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 dirtpickle.com / All rights reserved</div>
+    </footer>
+  </div>
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+  <script src="assets/lightbox.js"></script>
+  <script src="assets/flash-gallery.js"></script>
+</body>
+</html>

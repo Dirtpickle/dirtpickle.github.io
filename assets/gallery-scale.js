@@ -5,7 +5,6 @@
   if (!bar) return;
   var KEY = 'dp-gallery-scale';
   var VALID = ['small', 'medium', 'large'];
-  var buttons = Array.prototype.slice.call(bar.querySelectorAll('.scale-btn'));
 
   function stored() {
     try {
@@ -22,17 +21,14 @@
 
   function apply(value) {
     document.documentElement.setAttribute('data-gallery-scale', value);
-    buttons.forEach(function (button) {
-      button.setAttribute('aria-pressed', String(button.getAttribute('data-scale') === value));
-    });
   }
 
-  buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      var value = button.getAttribute('data-scale');
-      apply(value);
-      remember(value);
-    });
+  var button = document.getElementById('scaleCycle');
+  if (button) button.addEventListener('click', function () {
+    var now = document.documentElement.getAttribute('data-gallery-scale');
+    var value = VALID[(VALID.indexOf(now) + 1) % VALID.length];
+    apply(value);
+    remember(value);
   });
 
   apply(stored() || bar.getAttribute('data-default') || 'medium');

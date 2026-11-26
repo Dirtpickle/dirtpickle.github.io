@@ -3,41 +3,29 @@
 
 .scale-bar {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 24px 16px;
+  justify-content: flex-end;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 12px;
   background: var(--bg);
 }
 
-.scale-label {
-  margin-right: 4px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
 .scale-btn {
-  min-width: 40px;
-  padding: 8px 12px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.08em;
-  color: var(--dim);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--acc);
   background: var(--surf);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.scale-btn[aria-pressed="true"] {
-  color: var(--bg);
-  background: var(--acc);
-  border-color: var(--acc);
-}
+.scale-btn g { display: none; }
+html[data-gallery-scale="small"] .sz-small,
+html[data-gallery-scale="medium"] .sz-medium,
+html[data-gallery-scale="large"] .sz-large { display: inline; }
 
 /* Desktop */
 html[data-gallery-scale="small"] .gallery {

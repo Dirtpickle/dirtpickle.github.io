@@ -50,7 +50,7 @@
 
   function priceText(item) { return item.price === null ? '' : '$' + item.price; }
   function kindText(item) { return item.kind === 'one-off' ? 'Unique' : item.kind === 'limited' ? 'Limited edition' : 'Repeatable'; }
-  function leftText(item) { return item.kind === 'limited' && item.status !== 'sold' && item.remaining !== null ? item.remaining + (item.remaining === 1 ? ' left' : ' left') : ''; }
+  function leftText(item) { return item.kind === 'limited' && item.status !== 'sold' && item.remaining !== null ? item.remaining + (item.quantity !== null ? ' of ' + item.quantity : '') + ' left' : ''; }
   function statusText(item) { return item.status === 'sold' ? (item.kind === 'limited' ? 'Sold out' : 'Sold') : item.status === 'hold' ? 'On hold' : ''; }
 
   function card(item) {

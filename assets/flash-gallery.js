@@ -105,10 +105,32 @@
     if (info) { info.textContent = text; info.hidden = false; }
     if (!items.length) { note.textContent = 'No flash available right now. Check back soon.'; return; }
     note.hidden = true;
-    SECTIONS.forEach(function (def) {
-      var list = items.filter(function (item) { return item.kind === def.kind; });
-      if (list.length) root.appendChild(section(def, list));
-    });
+    var mode = 0, button = el('button', 'scale-btn sort-btn');
+    button.type = 'button';
+    var MODES = [{ label: 'Sort: Featured' }, { label: 'Price: Low to high', dir: 1 }, { label: 'Price: High to low', dir: -1 }];
+    function ordered(list) {
+      var dir = MODES[mode].dir;
+      if (!dir) return list;
+      return list.slice().sort(function (x, y) {
+        if (x.price === null && y.price === null) return 0;
+        if (x.price === null) return 1;
+        if (y.price === null) return -1;
+        return (x.price - y.price) * dir;
+      });
+    }
+    function draw() {
+      Array.prototype.slice.call(root.querySelectorAll('.flash-section')).forEach(function (n) { n.remove(); });
+      button.textContent = MODES[mode].label;
+      SECTIONS.forEach(function (def) {
+        var list = items.filter(function (item) { return item.kind === def.kind; });
+        if (list.length) root.appendChild(section(def, ordered(list)));
+      });
+    }
+    button.addEventListener('click', function () { mode = (mode + 1) % MODES.length; draw(); });
+    var bar = document.getElementById('scaleBar');
+    if (bar) bar.insertBefore(button, bar.firstChild);
+    else { var own = el('div', 'scale-bar'); own.appendChild(button); root.parentNode.insertBefore(own, root); }
+    draw();
   }
 
   fetch(feedUrl.href, { cache: 'no-cache' })
